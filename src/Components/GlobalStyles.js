@@ -6,7 +6,7 @@ const GlobalStyles = createGlobalStyle`
     
     @font-face {
         font-family: 'NanumGothic';
-        src: url('https://fonts.googleapis.com/css?family=Nanum+Gothic&display=swap');
+        src: url('https://fonts.googleapis.com/css?family=Nanum+Gothic|Anton&display=swap');
     }
     ${reset}
     body {

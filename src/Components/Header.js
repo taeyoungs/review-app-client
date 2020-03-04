@@ -24,7 +24,7 @@ const FList = styled('ul')`
 
 const BList = styled('ul')`
   display: flex;
-  margin-right: 30px;
+  margin-right: 70px;
 `;
 
 const Item = styled('li')`

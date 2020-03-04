@@ -3,7 +3,7 @@ import Axios from 'axios';
 const axios = Axios.create({
   baseURL: 'https://api.themoviedb.org/3/',
   params: {
-    api_key: 'e58a81dc501947f271b5a7d7fb46764f',
+    api_key: '93938de29ee06b9d46369c6d6d363f01',
     language: 'ko-KR',
   },
 });
@@ -11,7 +11,6 @@ const axios = Axios.create({
 export const movieApi = {
   nowPlaying: () => axios.get('movie/now_playing'),
   upComing: () => axios.get('movie/upcoming'),
-  getBackdrop: id => axios.get(`movie/${id}/images`),
   search: term =>
     axios.get('search/movie', {
       params: {
