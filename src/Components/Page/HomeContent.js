@@ -1,6 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import { ControllerPlay } from '@styled-icons/entypo';
+import { RotateCcw } from '@styled-icons/feather';
+import YoutubePlayer from 'Components/YoutubePlayer';
 
 const Backdrop = styled('div')`
   height: 650px;
@@ -10,19 +12,19 @@ const Backdrop = styled('div')`
 `;
 
 const Container = styled('div')`
-  width: calc(100% - 300px);
+  width: calc(100% - 270px);
   height: 100%;
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: 1fr 2fr;
   margin: 0 auto;
+  grid-gap: 70px;
 `;
 
 const TitleBox = styled('div')`
-  padding: 50px;
+  width: 100%;
   display: flex;
-  flex-direction: column-reverse;
+  flex-direction: column;
   justify-content: center;
-  z-index: 7;
   color: white;
 `;
 
@@ -34,7 +36,6 @@ const Title = styled('div')`
 `;
 
 const Content = styled('div')`
-  width: 400px;
   font-size: 22px;
   line-height: 1.5;
   margin-bottom: 15px;
@@ -43,19 +44,39 @@ const Content = styled('div')`
 
 const StartBox = styled('span')`
   display: flex;
+  justify-content: center;
   align-items: center;
-  height: 30px;
-  width: 150px;
+  padding: 20px 30px;
+  width: 160px;
+  color: white;
   background-color: rgba(0, 0, 0, 0.5);
-  padding: 20px 20px;
   font-size: 20px;
   cursor: pointer;
   border-radius: 10px;
   font-weight: 600;
+  margin-left: 10px;
   :hover {
     background-color: rgba(255, 255, 255, 0.7);
     color: black;
   }
+`;
+
+const ThisMonth = styled('span')`
+  display: flex;
+  justify-content: center;
+  margin-left: 20px;
+  border: 2px solid white;
+  padding: 10px 5px;
+  width: 120px;
+  font-size: 20px;
+  font-weight: 600;
+`;
+
+const VideoBox = styled('div')`
+  width: 100%;
+  height: calc(100% - 50px);
+  margin-top: 25px;
+  background-color: rgba(0, 0, 0, 0.7);
 `;
 
 const Play = styled(ControllerPlay)`
@@ -63,21 +84,38 @@ const Play = styled(ControllerPlay)`
   margin-right: 10px;
 `;
 
-const HomeContent = (result, error) => {
+const BackIcon = styled(RotateCcw)`
+  width: 30px;
+  margin-right: 10px;
+`;
+
+const HomeContent = ({ result, error, isClick, handleClick }) => {
   return (
     <Backdrop>
       <Container>
+        {console.log(isClick)}
         <TitleBox>
-          <StartBox>
-            <Play />
-            예고편 재생
-          </StartBox>
+          <ThisMonth>이 달의 영화</ThisMonth>
+          <Title>1917</Title>
           <Content>
             두 명의 병사, 하나의 미션! 그들이 싸워야 할 것은 적이 아니라
             시간이었다!
           </Content>
-          <Title>1917</Title>
+          <StartBox onClick={() => handleClick(isClick)}>
+            {isClick ? (
+              <>
+                <BackIcon />
+                예고편 닫기
+              </>
+            ) : (
+              <>
+                <Play />
+                예고편 열기
+              </>
+            )}
+          </StartBox>
         </TitleBox>
+        <VideoBox>{isClick ? <YoutubePlayer /> : null}</VideoBox>
       </Container>
     </Backdrop>
   );

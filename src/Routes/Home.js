@@ -1,4 +1,4 @@
-import React, { Suspense, useState, useEffect } from 'react';
+import React, { Suspense, useState, useEffect, useRef } from 'react';
 import Loader from 'Components/Loader';
 import HomeContent from 'Components/Page/HomeContent';
 import { movieApi } from 'api';
@@ -10,6 +10,14 @@ const Home = () => {
   });
   const [error, setError] = useState();
   const [isClick, setIsClick] = useState(false);
+
+  const handleClick = isClick => {
+    if (isClick) {
+      setIsClick(false);
+    } else {
+      setIsClick(true);
+    }
+  };
 
   const getResult = async () => {
     try {
@@ -34,7 +42,13 @@ const Home = () => {
 
   return (
     <Suspense fallback={<Loader />}>
-      <HomeContent result={result} error={error} />
+      <div>{isClick ? 'true' : 'false'}</div>
+      <HomeContent
+        result={result}
+        error={error}
+        isClick={isClick}
+        handleClick={handleClick}
+      />
     </Suspense>
   );
 };

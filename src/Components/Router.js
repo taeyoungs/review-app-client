@@ -7,6 +7,7 @@ import {
   Redirect,
 } from 'react-router-dom';
 import Home from 'Routes/Home';
+import Review from 'Routes/Review';
 
 export default () => (
   <Router>
@@ -14,6 +15,7 @@ export default () => (
       <Header />
       <Switch>
         <Route path="/" exact component={Home}></Route>
+        <Route path="/review" exact component={Review}></Route>
         <Redirect from="*" to="/" />
       </Switch>
     </>
