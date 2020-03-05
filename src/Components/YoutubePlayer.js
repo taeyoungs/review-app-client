@@ -13,6 +13,7 @@ const YoutubePlayer = () => {
         url="http://www.youtube.com/embed/MMam74uzhzs"
         width="100%"
         height="100%"
+        allow="fullscreen"
       />
     </PlayerBox>
   );

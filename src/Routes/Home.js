@@ -2,6 +2,7 @@ import React, { Suspense, useState, useEffect, useRef } from 'react';
 import Loader from 'Components/Loader';
 import HomeContent from 'Components/Page/HomeContent';
 import { movieApi } from 'api';
+import BoxOffice from 'Components/BoxOffice';
 
 const Home = () => {
   const [result, setResult] = useState({
@@ -10,6 +11,7 @@ const Home = () => {
   });
   const [error, setError] = useState();
   const [isClick, setIsClick] = useState(false);
+  const [show, setShow] = useState(true);
 
   const handleClick = isClick => {
     if (isClick) {
@@ -17,6 +19,13 @@ const Home = () => {
     } else {
       setIsClick(true);
     }
+  };
+
+  const showNow = () => {
+    setShow(true);
+  };
+  const showComing = () => {
+    setShow(false);
   };
 
   const getResult = async () => {
@@ -43,11 +52,13 @@ const Home = () => {
   return (
     <Suspense fallback={<Loader />}>
       <div>{isClick ? 'true' : 'false'}</div>
-      <HomeContent
+      <HomeContent isClick={isClick} handleClick={handleClick} />
+      <BoxOffice
         result={result}
         error={error}
-        isClick={isClick}
-        handleClick={handleClick}
+        showNow={showNow}
+        showComing={showComing}
+        show={show}
       />
     </Suspense>
   );

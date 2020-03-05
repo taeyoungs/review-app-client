@@ -9,6 +9,7 @@ const Backdrop = styled('div')`
   background-image: url('https://image.tmdb.org/t/p/original/cqa3sa4c4jevgnEJwq3CMF8UfTG.jpg');
   background-size: cover;
   background-position: center center;
+  margin-bottom: 50px;
 `;
 
 const Container = styled('div')`
@@ -89,13 +90,19 @@ const BackIcon = styled(RotateCcw)`
   margin-right: 10px;
 `;
 
+const Text = styled('span')`
+  color: #f9ca24;
+  margin-left: 5px;
+`;
+
 const HomeContent = ({ result, error, isClick, handleClick }) => {
   return (
     <Backdrop>
       <Container>
-        {console.log(isClick)}
         <TitleBox>
-          <ThisMonth>이 달의 영화</ThisMonth>
+          <ThisMonth>
+            이 달의 <Text>영화</Text>
+          </ThisMonth>
           <Title>1917</Title>
           <Content>
             두 명의 병사, 하나의 미션! 그들이 싸워야 할 것은 적이 아니라

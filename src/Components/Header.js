@@ -30,6 +30,9 @@ const BList = styled('ul')`
 const Item = styled('li')`
   height: 60px;
   width: 90px;
+  border-bottom: 3px solid
+    ${props => (props.current ? '#f9ca24' : 'transparent')};
+  transition: border-bottom 0.5s ease-in-out;
   :first-child {
     width: 60px;
   }
