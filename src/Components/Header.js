@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { withRouter, Link } from 'react-router-dom';
+import SignIn from './SignIn';
+import SignUp from './SignUp';
 
-const Header = styled('header')`
+const HeaderContainer = styled('header')`
   position: fixed;
   top: 0;
   left: 0;
@@ -53,27 +55,64 @@ const SLink = styled(Link)`
   }
 `;
 
-export default withRouter(({ location: { pathname } }) => (
-  <Header>
-    {console.log(pathname)}
-    <FList>
-      <Item current={pathname === '/'}>
-        <SLink to="/">홈</SLink>
-      </Item>
-      <Item current={pathname === '/review'}>
-        <SLink to="/review">리뷰</SLink>
-      </Item>
-      <Item current={pathname === '/search'}>
-        <SLink to="/search">영화검색</SLink>
-      </Item>
-    </FList>
-    <BList>
-      <Item>
-        <SLink to="#">로그인</SLink>
-      </Item>
-      <Item>
-        <SLink to="#">회원가입</SLink>
-      </Item>
-    </BList>
-  </Header>
-));
+const Sign = styled('div')`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 60px;
+  color: rgba(255, 255, 255, 0.8);
+  cursor: pointer;
+  :hover {
+    opacity: 0.8;
+  }
+`;
+
+const Header = withRouter(({ location: { pathname } }) => {
+  const [showSi, setShowSi] = useState(false);
+  const [showSu, setShowSu] = useState(false);
+
+  const clickSi = () => {
+    setShowSi(true);
+  };
+  const clickSiExit = () => {
+    setShowSi(false);
+  };
+
+  const clickSu = () => {
+    setShowSu(true);
+  };
+  const clickSuExit = () => {
+    setShowSu(false);
+  };
+
+  return (
+    <>
+      <HeaderContainer>
+        <FList>
+          <Item current={pathname === '/'}>
+            <SLink to="/">홈</SLink>
+          </Item>
+          <Item current={pathname === '/review'}>
+            <SLink to="/review">리뷰</SLink>
+          </Item>
+          <Item current={pathname === '/search'}>
+            <SLink to="/search">영화검색</SLink>
+          </Item>
+        </FList>
+        <BList>
+          <Item>
+            <Sign onClick={() => clickSi()}>로그인</Sign>
+          </Item>
+          <Item>
+            <Sign onClick={() => clickSu()}>회원가입</Sign>
+          </Item>
+        </BList>
+      </HeaderContainer>
+      <SignIn showSi={showSi} clickSiExit={clickSiExit} />
+      <SignUp showSu={showSu} clickSuExit={clickSuExit} />
+    </>
+  );
+});
+
+export default Header;

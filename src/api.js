@@ -11,6 +11,7 @@ const axios = Axios.create({
 export const movieApi = {
   nowPlaying: () => axios.get('movie/now_playing'),
   upComing: () => axios.get('movie/upcoming'),
+  genre: () => axios.get('genre/movie/list'),
   search: term =>
     axios.get('search/movie', {
       params: {

@@ -8,10 +8,10 @@ const Home = () => {
   const [result, setResult] = useState({
     nowPlaying: null,
     upComing: null,
+    gernes: [],
   });
   const [error, setError] = useState();
   const [isClick, setIsClick] = useState(false);
-  const [show, setShow] = useState(true);
 
   const handleClick = isClick => {
     if (isClick) {
@@ -19,13 +19,6 @@ const Home = () => {
     } else {
       setIsClick(true);
     }
-  };
-
-  const showNow = () => {
-    setShow(true);
-  };
-  const showComing = () => {
-    setShow(false);
   };
 
   const getResult = async () => {
@@ -36,9 +29,13 @@ const Home = () => {
       const {
         data: { results: upComing },
       } = await movieApi.upComing();
+      const {
+        data: { genres },
+      } = await movieApi.genre();
       setResult({
         nowPlaying,
         upComing,
+        genres,
       });
     } catch (e) {
       setError(e);
@@ -53,13 +50,7 @@ const Home = () => {
     <Suspense fallback={<Loader />}>
       <div>{isClick ? 'true' : 'false'}</div>
       <HomeContent isClick={isClick} handleClick={handleClick} />
-      <BoxOffice
-        result={result}
-        error={error}
-        showNow={showNow}
-        showComing={showComing}
-        show={show}
-      />
+      <BoxOffice result={result} error={error} />
     </Suspense>
   );
 };

@@ -48,7 +48,7 @@ const StartBox = styled('span')`
   justify-content: center;
   align-items: center;
   padding: 20px 30px;
-  width: 160px;
+  width: 200px;
   color: white;
   background-color: rgba(0, 0, 0, 0.5);
   font-size: 20px;

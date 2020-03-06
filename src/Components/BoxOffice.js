@@ -3,30 +3,16 @@ import styled from 'styled-components';
 
 const NowOrComing = styled('div')`
   overflow: hidden;
+  margin-bottom: 30px;
 `;
 
-const List = styled('ul')`
-  @keyframes slide {
-    0% {
-      margin-left: 0;
-    } /* 0 ~ 10  : 정지 */
-    30% {
-      margin-left: 0;
-    } /* 10 ~ 25 : 변이 */
-    50% {
-      margin-left: -100%;
-    } /* 25 ~ 35 : 정지 */
-    70% {
-      margin-left: -100%;
-    } /* 35 ~ 50 : 변이 */
-    100% {
-      margin-left: 0;
-    }
-  }
-
+const List = styled.ul.attrs(props => ({
+  className: props.now ? 'left' : 'right',
+}))`
+  margin-left: ${props => (props.now ? '0' : '-100%')};
   width: calc(100% * 2);
   display: flex;
-  animation: slide 8s infinite;
+  transition: margin-left 1s ease-in-out;
 `;
 
 const Item = styled('li')`
@@ -71,13 +57,13 @@ const Info = styled('div')`
 `;
 
 const Title = styled('div')`
-  font-size: 16px;
-  margin-bottom: 3px;
+  font-size: 17px;
+  margin-bottom: 5px;
 `;
 
 const Year = styled('div')`
-  font-size: 13px;
-  color: rgba(255, 255, 255, 0.7);
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.6);
 `;
 
 const Menu = styled('div')`
@@ -85,44 +71,60 @@ const Menu = styled('div')`
   margin: 0 auto;
   margin-bottom: 30px;
   display: flex;
-  & div:first-child() {
-    opacity: ${props => (props.show ? 1 : 0.7)};
+  & .now {
+    opacity: ${props => (props.now ? '1' : '0.6')};
+    border-bottom: 3px solid ${props => (props.now ? '#f9ca24' : 'transparent')};
   }
-  & div:last-child() {
-    opacity: ${props => (props.show ? 0.7 : 1)};
+  & .coming {
+    opacity: ${props => (props.now ? '0.6' : '1')};
+    border-bottom: 3px solid ${props => (props.now ? 'transparent' : '#f9ca24')};
   }
 `;
 
 const Btn = styled('div')`
-  width: 150px;
+  width: 130px;
   padding: 20px 10px;
-  background-color: #f9ca24;
-  color: black;
-  border-radius: 10px;
+  color: white;
   display: flex;
   justify-content: center;
   align-items: center;
   font-weight: 600;
-  font-size: 20px;
-  border: 3px solid transparent;
+  font-size: 22px;
   cursor: pointer;
   margin-right: 20px;
   :hover {
-    border: 3px solid #f9ca24;
-    background-color: transparent;
-    color: #f9ca24;
+    opacity: 0.9;
   }
 `;
 
-const BoxOffice = ({ result, error, show, showNow, showComing }) => {
+const Genres = styled('div')`
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.6);
+  margin-bottom: 2px;
+`;
+
+const BoxOffice = ({ result, error }) => {
+  const [now, setNow] = useState(true);
+
+  const showNow = () => {
+    setNow(true);
+  };
+  const showComing = () => {
+    setNow(false);
+  };
+
   return (
     <>
-      <Menu show={show}>
-        <Btn onClick={() => showNow()}>현재상영작</Btn>
-        <Btn onClick={() => showComing()}>상영예정작</Btn>
+      <Menu now={now}>
+        <Btn className="now" onClick={() => showNow()}>
+          현재상영작
+        </Btn>
+        <Btn className="coming" onClick={() => showComing()}>
+          상영예정작
+        </Btn>
       </Menu>
       <NowOrComing>
-        <List>
+        <List now={now}>
           <Item>
             <GridBox>
               {result.nowPlaying &&
@@ -134,6 +136,17 @@ const BoxOffice = ({ result, error, show, showNow, showComing }) => {
                         <Poster img={movie.poster_path} />
                         <Info>
                           <Title>{movie.title}</Title>
+                          <Genres>
+                            {result.genres
+                              .filter(genre =>
+                                movie.genre_ids.includes(genre.id),
+                              )
+                              .map((genre, index) =>
+                                index === movie.genre_ids.length - 1
+                                  ? genre.name
+                                  : `${genre.name}/`,
+                              )}
+                          </Genres>
                           <Year>{movie.release_date.substring(0, 4)}</Year>
                         </Info>
                       </Container>
@@ -151,6 +164,17 @@ const BoxOffice = ({ result, error, show, showNow, showComing }) => {
                         <Poster img={movie.poster_path} />
                         <Info>
                           <Title>{movie.title}</Title>
+                          <Genres>
+                            {result.genres
+                              .filter(genre =>
+                                movie.genre_ids.includes(genre.id),
+                              )
+                              .map((genre, index) =>
+                                index === movie.genre_ids.length - 1
+                                  ? genre.name
+                                  : `${genre.name}/`,
+                              )}
+                          </Genres>
                           <Year>{movie.release_date.substring(0, 4)}</Year>
                         </Info>
                       </Container>
@@ -169,6 +193,17 @@ const BoxOffice = ({ result, error, show, showNow, showComing }) => {
                         <Poster img={movie.poster_path} />
                         <Info>
                           <Title>{movie.title}</Title>
+                          <Genres>
+                            {result.genres
+                              .filter(genre =>
+                                movie.genre_ids.includes(genre.id),
+                              )
+                              .map((genre, index) =>
+                                index === movie.genre_ids.length - 1
+                                  ? genre.name
+                                  : `${genre.name}/`,
+                              )}
+                          </Genres>
                           <Year>{movie.release_date.substring(0, 4)}</Year>
                         </Info>
                       </Container>
@@ -186,6 +221,17 @@ const BoxOffice = ({ result, error, show, showNow, showComing }) => {
                         <Poster img={movie.poster_path} />
                         <Info>
                           <Title>{movie.title}</Title>
+                          <Genres>
+                            {result.genres
+                              .filter(genre =>
+                                movie.genre_ids.includes(genre.id),
+                              )
+                              .map((genre, index) =>
+                                index === movie.genre_ids.length - 1
+                                  ? genre.name
+                                  : `${genre.name}/`,
+                              )}
+                          </Genres>
                           <Year>{movie.release_date.substring(0, 4)}</Year>
                         </Info>
                       </Container>
