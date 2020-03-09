@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { withRouter, Link } from 'react-router-dom';
 import SignIn from './SignIn';
 import SignUp from './SignUp';
+import { toServerApi } from 'api';
 
 const HeaderContainer = styled('header')`
   position: fixed;
@@ -35,9 +36,6 @@ const Item = styled('li')`
   border-bottom: 3px solid
     ${props => (props.current ? '#f9ca24' : 'transparent')};
   transition: border-bottom 0.5s ease-in-out;
-  :first-child {
-    width: 60px;
-  }
   & a {
     color: ${props => (props.current ? 'white' : 'rgba(255, 255, 255, 0.8)')};
     font-weight: ${props => (props.current ? '600' : '300')};
@@ -71,6 +69,7 @@ const Sign = styled('div')`
 const Header = withRouter(({ location: { pathname } }) => {
   const [showSi, setShowSi] = useState(false);
   const [showSu, setShowSu] = useState(false);
+  const [user, setUser] = useState();
 
   const clickSi = () => {
     setShowSi(true);
@@ -85,6 +84,11 @@ const Header = withRouter(({ location: { pathname } }) => {
   const clickSuExit = () => {
     setShowSu(false);
   };
+
+  // const handleLogout = async () => {
+  //   await toServerApi.logout().then(res => setUser());
+  //   window.location.href = `/`;
+  // };
 
   return (
     <>
@@ -101,12 +105,29 @@ const Header = withRouter(({ location: { pathname } }) => {
           </Item>
         </FList>
         <BList>
-          <Item>
-            <Sign onClick={() => clickSi()}>로그인</Sign>
-          </Item>
-          <Item>
-            <Sign onClick={() => clickSu()}>회원가입</Sign>
-          </Item>
+          {user === undefined ? (
+            <>
+              {' '}
+              <Item>
+                <Sign onClick={() => clickSi()}>로그인</Sign>
+              </Item>
+              <Item>
+                <Sign onClick={() => clickSu()}>회원가입</Sign>
+              </Item>
+            </>
+          ) : (
+            <>
+              <Item>
+                <Sign>리뷰 작성</Sign>
+              </Item>
+              <Item>
+                <Sign>마이페이지</Sign>
+              </Item>
+              <Item>
+                <Sign>로그아웃</Sign>
+              </Item>
+            </>
+          )}
         </BList>
       </HeaderContainer>
       <SignIn showSi={showSi} clickSiExit={clickSiExit} />

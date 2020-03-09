@@ -29,7 +29,6 @@ const GlobalStyles = createGlobalStyle`
         outline: 0;
         background-color: white;
         color: black;
-        border: none;
         font-size: 17px;
         padding: 20px 20px;
         border-radius: 20px;
