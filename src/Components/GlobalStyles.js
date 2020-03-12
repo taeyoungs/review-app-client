@@ -30,7 +30,7 @@ const GlobalStyles = createGlobalStyle`
         background-color: white;
         color: black;
         font-size: 17px;
-        padding: 20px 20px;
+        padding: 20px;
         border-radius: 20px;
         font-family: 'NanumGothic';
         ::placeholder {

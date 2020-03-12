@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
+import React, { useState, useContext } from 'react';
 import styled from 'styled-components';
 import { Cross } from '@styled-icons/entypo';
-import { toServerApi } from 'api';
-import { loginApi } from '../action/user.js';
+import { toAuthApi } from 'api';
+import LoginContext from '../../context/Login.context';
 
 const BackDrop = styled('div')`
   position: fixed;
@@ -132,6 +131,7 @@ const Google = styled('div')`
 `;
 
 const SignIn = ({ showSi, clickSiExit }) => {
+  const { Clogin } = useContext(LoginContext);
   const [state, setState] = useState({
     email: '',
     password: '',
@@ -156,22 +156,19 @@ const SignIn = ({ showSi, clickSiExit }) => {
   const handleSubmit = async event => {
     event.preventDefault();
     const { email, password } = state;
-    const { dispatch } = this.props;
-    // const payload = {
-    //   email,
-    //   password,
-    // };
+    const payload = {
+      email,
+      password,
+    };
 
-    dispatch(loginApi(email, password));
-
-    // await toServerApi.login(payload).then(res => {
-    //   if (res.status === 201) {
-    //     setUser(res.userId);
-    //     window.location.href = `/`;
-    //   } else {
-    //     alert('아이디와 비밀번호가 일치하지 않습니다. 다시 한번 확인해주세요.');
-    //   }
-    // });
+    await toAuthApi.Slogin(payload).then(res => {
+      if (res.status === 200) {
+        Clogin(res.user);
+        window.location.href = '/';
+      } else {
+        alert('아이디와 비밀번호가 일치하지 않습니다. 다시 한번 확인해주세요.');
+      }
+    });
   };
 
   return (
@@ -203,10 +200,6 @@ const SignIn = ({ showSi, clickSiExit }) => {
       </OutContainer>
     </BackDrop>
   );
-};
-
-SignIn.propTypes = {
-  dispatch: PropTypes.func.isRequired,
 };
 
 export default SignIn;

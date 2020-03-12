@@ -1,9 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { withRouter, Link } from 'react-router-dom';
-import SignIn from './SignIn';
-import SignUp from './SignUp';
-import { toServerApi } from 'api';
+import UserMenu from './UserMenu';
 
 const HeaderContainer = styled('header')`
   position: fixed;
@@ -23,11 +21,6 @@ const HeaderContainer = styled('header')`
 const FList = styled('ul')`
   display: flex;
   margin-left: 30px;
-`;
-
-const BList = styled('ul')`
-  display: flex;
-  margin-right: 70px;
 `;
 
 const Item = styled('li')`
@@ -53,38 +46,7 @@ const SLink = styled(Link)`
   }
 `;
 
-const Sign = styled('div')`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 60px;
-  color: rgba(255, 255, 255, 0.8);
-  cursor: pointer;
-  :hover {
-    opacity: 0.8;
-  }
-`;
-
 const Header = withRouter(({ location: { pathname } }) => {
-  const [showSi, setShowSi] = useState(false);
-  const [showSu, setShowSu] = useState(false);
-  const [user, setUser] = useState();
-
-  const clickSi = () => {
-    setShowSi(true);
-  };
-  const clickSiExit = () => {
-    setShowSi(false);
-  };
-
-  const clickSu = () => {
-    setShowSu(true);
-  };
-  const clickSuExit = () => {
-    setShowSu(false);
-  };
-
   // const handleLogout = async () => {
   //   await toServerApi.logout().then(res => setUser());
   //   window.location.href = `/`;
@@ -104,34 +66,8 @@ const Header = withRouter(({ location: { pathname } }) => {
             <SLink to="/search">영화검색</SLink>
           </Item>
         </FList>
-        <BList>
-          {user === undefined ? (
-            <>
-              {' '}
-              <Item>
-                <Sign onClick={() => clickSi()}>로그인</Sign>
-              </Item>
-              <Item>
-                <Sign onClick={() => clickSu()}>회원가입</Sign>
-              </Item>
-            </>
-          ) : (
-            <>
-              <Item>
-                <Sign>리뷰 작성</Sign>
-              </Item>
-              <Item>
-                <Sign>마이페이지</Sign>
-              </Item>
-              <Item>
-                <Sign>로그아웃</Sign>
-              </Item>
-            </>
-          )}
-        </BList>
+        <UserMenu />
       </HeaderContainer>
-      <SignIn showSi={showSi} clickSiExit={clickSiExit} />
-      <SignUp showSu={showSu} clickSuExit={clickSuExit} />
     </>
   );
 });

@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Cross } from '@styled-icons/entypo';
-import { toServerApi } from 'api';
+import { toAuthApi } from 'api';
+import storage from '../../lib/storage';
 
 const BackDrop = styled('div')`
   position: fixed;
@@ -121,6 +122,27 @@ const Msg = styled('div')`
   padding: 10px;
 `;
 
+const FlexBox = styled('div')`
+  display: flex;
+  align-items: center;
+  font-size: 13px;
+  padding: 10px;
+  padding-top: 0px;
+  color: black;
+`;
+
+const Check = styled('button')`
+  color: ${props => (props.check ? 'green' : 'red')};
+  background-color: transparent;
+  border: none;
+  outline: 0;
+  font-size: 12px;
+  cursor: pointer;
+  :hover {
+    text-decoration: underline;
+  }
+`;
+
 const SignUp = ({ showSu, clickSuExit }) => {
   const [state, setState] = useState({
     name: '',
@@ -132,6 +154,69 @@ const SignUp = ({ showSu, clickSuExit }) => {
     passwordError: false,
     nameError: false,
   });
+  const [check, setCheck] = useState({
+    email: false,
+    name: false,
+  });
+
+  const checkEmailExists = async event => {
+    event.preventDefault();
+
+    const payload = {
+      type: 'email',
+      value: state.email,
+    };
+
+    if (state.email === '') {
+      alert('아이디를 입력해주세요.');
+      return;
+    }
+
+    // await toAuthApi.exist();
+    await toAuthApi.exists(payload).then(res => {
+      const {
+        data: { exists },
+      } = res;
+      if (exists) {
+        alert('이미 가입된 이메일입니다.');
+      } else {
+        alert('사용 가능한 이메일입니다.');
+        setCheck({
+          ...check,
+          email: true,
+        });
+      }
+    });
+  };
+
+  const checkNameExists = async event => {
+    event.preventDefault();
+
+    const payload = {
+      type: 'username',
+      value: state.name,
+    };
+
+    if (state.name === '') {
+      alert('이름을 입력해주세요.');
+      return;
+    }
+
+    await toAuthApi.exists(payload).then(res => {
+      const {
+        data: { exists },
+      } = res;
+      if (exists) {
+        alert('이미 존재하는 이름입니다.');
+      } else {
+        alert('사용 가능한 이름입니다.');
+        setCheck({
+          ...check,
+          name: true,
+        });
+      }
+    });
+  };
 
   const handleChangeInputName = event => {
     const { value } = event.target;
@@ -215,9 +300,19 @@ const SignUp = ({ showSu, clickSuExit }) => {
     const { email, password, name } = state;
     const payload = { email, password, name };
 
-    await toServerApi.join(payload).then(res => {
-      if (res.status === 201) {
-        alert('회원가입이 완료되었습니다. 로그인을 진행해주세요.');
+    if (!check.email) {
+      alert('이메일의 중복 여부를 확인해주세요.');
+      return;
+    } else if (!check.name) {
+      alert('이름의 중복 여부를 확인해주세요.');
+      return;
+    }
+
+    await toAuthApi.join(payload).then(res => {
+      if (res.status === 200) {
+        console.log(res.data);
+        storage.set('userInfo', res.data.user);
+        alert('회원가입이 완료되었습니다.');
         window.location.href = `/`;
       } else if (400) {
         alert('아이디, 비밀번호, 이름 양식을 확인해주세요.');
@@ -240,6 +335,7 @@ const SignUp = ({ showSu, clickSuExit }) => {
                 onChange={handleChangeInputEmail}
                 onBlur={checkEmail}
               />
+
               <Msg error={error.emailError}>
                 이메일 형식에 맞게 입력해주세요.
               </Msg>
@@ -258,7 +354,18 @@ const SignUp = ({ showSu, clickSuExit }) => {
                 onChange={handleChangeInputName}
                 onBlur={checkName}
               />
+
               <Msg error={error.nameError}>2글자 이상 입력해주세요.</Msg>
+              <FlexBox>
+                중복 확인
+                <Check check={check.email} onClick={checkEmailExists}>
+                  이메일
+                </Check>{' '}
+                |
+                <Check check={check.name} onClick={checkNameExists}>
+                  이름
+                </Check>
+              </FlexBox>
               <Subm onClick={handleSubmit}>회원가입</Subm>
             </SignInForm>
             <SocialContainer>

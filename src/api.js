@@ -20,13 +20,24 @@ export const movieApi = {
     }),
 };
 
+const axiosForAuth = Axios.create({
+  baseURL: 'http://localhost:4000/api/auth/',
+});
+
+export const toAuthApi = {
+  join: payload => axiosForAuth.post(`join/local`, payload),
+  exists: payload =>
+    axiosForAuth.get(`exists/${payload.type}/${payload.value}`),
+  Slogin: payload => axiosForAuth.post(`login/local`, payload),
+  Slogout: () => axiosForAuth.post(`logout`),
+  check: () => axiosForAuth.get(`check`),
+};
+
 const axiosForServer = Axios.create({
-  baseURL: 'http://localhost:8000/api',
+  baseURL: 'http://localhost:4000/api',
 });
 
 export const toServerApi = {
-  join: payload => axiosForServer.post(`/join`, payload),
-  logout: () => axiosForServer.post(`/logout`),
   createUser: payload => axiosForServer.post(`/user`, payload),
   insertReview: payload => axiosForServer.post(`/review`, payload),
 };
