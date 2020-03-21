@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 import { withRouter, Link } from 'react-router-dom';
 import UserMenu from './UserMenu';
+import LoginContext from '../context/Login.context';
 
 const HeaderContainer = styled('header')`
   position: fixed;
@@ -47,10 +48,9 @@ const SLink = styled(Link)`
 `;
 
 const Header = withRouter(({ location: { pathname } }) => {
-  // const handleLogout = async () => {
-  //   await toServerApi.logout().then(res => setUser());
-  //   window.location.href = `/`;
-  // };
+  const { initializeUserInfo } = useContext(LoginContext);
+
+  initializeUserInfo();
 
   return (
     <>

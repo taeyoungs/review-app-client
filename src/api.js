@@ -22,7 +22,10 @@ export const movieApi = {
 
 const axiosForAuth = Axios.create({
   baseURL: 'http://localhost:4000/api/auth/',
+  withCredentials: true,
 });
+
+// axiosForAuth.defaults.withCredentials = true;
 
 export const toAuthApi = {
   join: payload => axiosForAuth.post(`join/local`, payload),
@@ -31,6 +34,7 @@ export const toAuthApi = {
   Slogin: payload => axiosForAuth.post(`login/local`, payload),
   Slogout: () => axiosForAuth.post(`logout`),
   check: () => axiosForAuth.get(`check`),
+  pCheck: () => axiosForAuth.get(`check`),
 };
 
 const axiosForServer = Axios.create({

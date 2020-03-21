@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { Cross } from '@styled-icons/entypo';
 import { toAuthApi } from 'api';
 import LoginContext from '../../context/Login.context';
+import storage from '../../lib/storage';
 
 const BackDrop = styled('div')`
   position: fixed;
@@ -163,10 +164,12 @@ const SignIn = ({ showSi, clickSiExit }) => {
 
     await toAuthApi.Slogin(payload).then(res => {
       if (res.status === 200) {
-        Clogin(res.user);
+        // Clogin(res.data.profile);
+        storage.set('userInfo', res.data);
+        console.log(res);
         window.location.href = '/';
       } else {
-        alert('아이디와 비밀번호가 일치하지 않습니다. 다시 한번 확인해주세요.');
+        alert(res.data.msg);
       }
     });
   };

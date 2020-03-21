@@ -79,7 +79,7 @@ const PwInput = styled.input.attrs(props => ({
 const NameInput = styled.input.attrs(props => ({
   type: 'text',
   placeholder: '이름(2글자 이상)',
-  name: 'name',
+  name: 'username',
 }))`
   border: 1px solid ${props => (props.error ? 'red' : 'rgba(0, 0, 0, 0.5)')};
 `;
@@ -145,7 +145,7 @@ const Check = styled('button')`
 
 const SignUp = ({ showSu, clickSuExit }) => {
   const [state, setState] = useState({
-    name: '',
+    username: '',
     password: '',
     email: '',
   });
@@ -194,10 +194,10 @@ const SignUp = ({ showSu, clickSuExit }) => {
 
     const payload = {
       type: 'username',
-      value: state.name,
+      value: state.username,
     };
 
-    if (state.name === '') {
+    if (state.username === '') {
       alert('이름을 입력해주세요.');
       return;
     }
@@ -223,7 +223,7 @@ const SignUp = ({ showSu, clickSuExit }) => {
 
     setState({
       ...state,
-      name: value,
+      username: value,
     });
   };
 
@@ -297,8 +297,8 @@ const SignUp = ({ showSu, clickSuExit }) => {
 
   const handleSubmit = async event => {
     event.preventDefault();
-    const { email, password, name } = state;
-    const payload = { email, password, name };
+    const { email, password, username } = state;
+    const payload = { email, password, username };
 
     if (!check.email) {
       alert('이메일의 중복 여부를 확인해주세요.');
@@ -311,7 +311,7 @@ const SignUp = ({ showSu, clickSuExit }) => {
     await toAuthApi.join(payload).then(res => {
       if (res.status === 200) {
         console.log(res.data);
-        storage.set('userInfo', res.data.user);
+        // storage.set('userInfo', res.data.profile);
         alert('회원가입이 완료되었습니다.');
         window.location.href = `/`;
       } else if (400) {
@@ -350,7 +350,7 @@ const SignUp = ({ showSu, clickSuExit }) => {
               </Msg>
               <NameInput
                 error={error.nameError}
-                value={state.name}
+                value={state.username}
                 onChange={handleChangeInputName}
                 onBlur={checkName}
               />
