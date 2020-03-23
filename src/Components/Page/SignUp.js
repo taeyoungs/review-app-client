@@ -81,6 +81,17 @@ const NameInput = styled.input.attrs(props => ({
   placeholder: '이름(2글자 이상)',
   name: 'username',
 }))`
+  outline: 0;
+  background-color: white;
+  color: black;
+  font-size: 17px;
+  padding: 20px;
+  border-radius: 20px;
+  font-family: 'NanumGothic';
+  ::placeholder {
+    font-family: 'NanumGothic';
+    font-size: 16px;
+  }
   border: 1px solid ${props => (props.error ? 'red' : 'rgba(0, 0, 0, 0.5)')};
 `;
 
@@ -311,7 +322,7 @@ const SignUp = ({ showSu, clickSuExit }) => {
     await toAuthApi.join(payload).then(res => {
       if (res.status === 200) {
         console.log(res.data);
-        // storage.set('userInfo', res.data.profile);
+        storage.set('userInfo', res.data.profile);
         alert('회원가입이 완료되었습니다.');
         window.location.href = `/`;
       } else if (400) {

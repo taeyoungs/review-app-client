@@ -25,7 +25,7 @@ const GlobalStyles = createGlobalStyle`
         font-family: 'NanumGothic';
         cursor: pointer;
     }
-    input[type=email], input[type=password], input[type=text] {
+    input[type=email], input[type=password] {
         outline: 0;
         background-color: white;
         color: black;

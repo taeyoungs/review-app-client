@@ -8,6 +8,7 @@ import {
 } from 'react-router-dom';
 import Home from 'Routes/Home';
 import Review from 'Routes/Review';
+import Search from 'Routes/Search';
 
 export default () => (
   <Router>
@@ -16,6 +17,7 @@ export default () => (
       <Switch>
         <Route path="/" exact component={Home}></Route>
         <Route path="/review" exact component={Review}></Route>
+        <Route path="/search" exact component={Search}></Route>
         <Redirect from="*" to="/" />
       </Switch>
     </>

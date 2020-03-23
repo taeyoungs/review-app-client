@@ -28,16 +28,16 @@ const LoginProvider = ({ children }) => {
     }
   };
 
-  const setLoggedInfo = userInfo => {
-    storage.set('userInfo', userInfo);
-    setUser(prevState => {
-      return {
-        ...prevState,
-        isLoggedIn: true,
-        userInfo,
-      };
-    });
-  };
+  // const setLoggedInfo = userInfo => {
+  //   storage.set('userInfo', userInfo);
+  //   setUser(prevState => {
+  //     return {
+  //       ...prevState,
+  //       isLoggedIn: true,
+  //       userInfo,
+  //     };
+  //   });
+  // };
 
   // localStorage, Context에 userInfo 저장, isLoggedIn : true
   const Clogin = userInfo => {

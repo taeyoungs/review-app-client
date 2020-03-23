@@ -15,10 +15,12 @@ export const movieApi = {
   search: term =>
     axiosForMovie.get('search/movie', {
       params: {
-        query: encodeURIComponent(term),
+        query: term,
       },
     }),
 };
+
+//encodeURIComponent(term)
 
 const axiosForAuth = Axios.create({
   baseURL: 'http://localhost:4000/api/auth/',
@@ -34,7 +36,6 @@ export const toAuthApi = {
   Slogin: payload => axiosForAuth.post(`login/local`, payload),
   Slogout: () => axiosForAuth.post(`logout`),
   check: () => axiosForAuth.get(`check`),
-  pCheck: () => axiosForAuth.get(`check`),
 };
 
 const axiosForServer = Axios.create({

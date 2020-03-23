@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import LoginContext from '../context/Login.context';
 import SignIn from './Page/SignIn';
 import SignUp from './Page/SignUp';
-import { toAuthApi } from '../api';
 
 const List = styled('ul')`
   display: flex;
@@ -28,15 +27,6 @@ const Sign = styled('div')`
   }
 `;
 
-const BtnBtn = styled('div')`
-  font-size: 20px;
-  color: white;
-  cursor: pointer;
-  :hover {
-    opacity: 0.5;
-  }
-`;
-
 const UserMenu = () => {
   const { isLoggedIn, Clogout } = useContext(LoginContext);
   const [showSi, setShowSi] = useState(false);
@@ -56,20 +46,12 @@ const UserMenu = () => {
     setShowSu(false);
   };
 
-  const serverCheck = async () => {
-    const temp = await toAuthApi.pCheck();
-    console.log(temp);
-  };
-
   return (
     <>
       <List>
         {!isLoggedIn ? (
           <>
             {' '}
-            <Item>
-              <BtnBtn onClick={() => serverCheck()}>서버 유저 체크</BtnBtn>
-            </Item>
             <Item>
               <Sign onClick={() => clickSi()}>로그인</Sign>
             </Item>
