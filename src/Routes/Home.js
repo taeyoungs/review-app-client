@@ -1,4 +1,4 @@
-import React, { Suspense, useState, useEffect, useRef } from 'react';
+import React, { Suspense, useState, useEffect } from 'react';
 import Loader from 'Components/Loader';
 import HomeContent from 'Components/Page/HomeContent';
 import { movieApi } from 'api';

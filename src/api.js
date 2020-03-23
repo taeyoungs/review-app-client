@@ -18,6 +18,12 @@ export const movieApi = {
         query: term,
       },
     }),
+  movieDetail: id =>
+    axiosForMovie.get(`movie/${id}`, {
+      params: {
+        append_to_response: 'videos',
+      },
+    }),
 };
 
 //encodeURIComponent(term)

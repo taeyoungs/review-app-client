@@ -69,7 +69,6 @@ const Search = () => {
   const getSearchResult = async term => {
     const results = await movieApi.search(term);
 
-    console.log(results.data.results);
     return results;
   };
 
@@ -100,8 +99,11 @@ const Search = () => {
           <CloseIcon show={term !== ''} onClick={() => handleCloseIcon()} />
         </SearchBox>
       </Container>
-      {isSearching && <Loader />}
-      <SearchContent results={results}></SearchContent>
+      {isSearching ? (
+        <Loader />
+      ) : (
+        <SearchContent results={results} term={term}></SearchContent>
+      )}
     </>
   );
 };

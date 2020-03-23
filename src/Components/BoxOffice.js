@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 const NowOrComing = styled('div')`
@@ -41,8 +42,10 @@ const Poster = styled('div')`
   background-position: center center;
   background-size: cover;
   border: 3px solid #f9ca24;
+  height: 100%;
+  cursor: pointer;
   :hover {
-    opacity: 0.8;
+    opacity: 0.5;
   }
 `;
 
@@ -133,7 +136,10 @@ const BoxOffice = ({ result, error }) => {
                   (movie, index) =>
                     index < 5 && (
                       <Container key={movie.id}>
-                        <Poster img={movie.poster_path} />
+                        <Link to={`movie/${movie.id}`}>
+                          <Poster img={movie.poster_path} />
+                        </Link>
+
                         <Info>
                           <Title>{movie.title}</Title>
                           <Genres>
@@ -161,7 +167,9 @@ const BoxOffice = ({ result, error }) => {
                     index >= 5 &&
                     index < 10 && (
                       <Container key={movie.id}>
-                        <Poster img={movie.poster_path} />
+                        <Link to={`movie/${movie.id}`}>
+                          <Poster img={movie.poster_path} />
+                        </Link>
                         <Info>
                           <Title>{movie.title}</Title>
                           <Genres>
@@ -190,7 +198,9 @@ const BoxOffice = ({ result, error }) => {
                   (movie, index) =>
                     index < 5 && (
                       <Container key={movie.id}>
-                        <Poster img={movie.poster_path} />
+                        <Link to={`movie/${movie.id}`}>
+                          <Poster img={movie.poster_path} />
+                        </Link>
                         <Info>
                           <Title>{movie.title}</Title>
                           <Genres>
@@ -218,7 +228,9 @@ const BoxOffice = ({ result, error }) => {
                     index >= 5 &&
                     index < 10 && (
                       <Container key={movie.id}>
-                        <Poster img={movie.poster_path} />
+                        <Link to={`movie/${movie.id}`}>
+                          <Poster img={movie.poster_path} />
+                        </Link>
                         <Info>
                           <Title>{movie.title}</Title>
                           <Genres>

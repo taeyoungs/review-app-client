@@ -1,16 +1,24 @@
 import React, { useState } from 'react';
 import LoginContext from '../../context/Login.context';
-import { toAuthApi } from '../../api';
+import { toAuthApi, movieApi } from '../../api';
 import storage from '../../lib/storage';
 
 const LoginProvider = ({ children }) => {
   const localStorageUser = storage.get('userInfo');
+  const genres = storage.get('genresDB');
 
   // 새로고침 시 서버에 로그인 여부 확인
   // check 함수 => status 403 => Server Client 전부 logout
   // status 200 => Context userInfo 업데이트
   const initializeUserInfo = async () => {
     if (localStorageUser === null) return;
+
+    if (genres === null) {
+      const {
+        data: { genres },
+      } = await movieApi.genre();
+      storage.set('genresDB', genres);
+    }
 
     try {
       await toAuthApi.check().then(res => {
@@ -56,6 +64,7 @@ const LoginProvider = ({ children }) => {
   // Server, Client userinfo 초기화
   const Clogout = async () => {
     storage.remove('userInfo');
+    storage.remove('genresDB');
     await toAuthApi.Slogout();
     // setUser(prevState => {
     //   return {

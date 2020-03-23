@@ -19,6 +19,7 @@ const GlobalStyles = createGlobalStyle`
     }
     a {
         text-decoration: none;
+        color: white;
     }
     button {
         outline: 0;
@@ -37,6 +38,10 @@ const GlobalStyles = createGlobalStyle`
             font-family: 'NanumGothic';
             font-size: 16px;
         }
+    }
+    .shadow {
+        -webkit-filter: drop-shadow( 1px 1px 1px #f1c40f);
+        filter: drop-shadow( 1px 1px 1px #f1c40f);
     }
 `;
 
