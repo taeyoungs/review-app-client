@@ -24,6 +24,7 @@ export const movieApi = {
         append_to_response: 'videos',
       },
     }),
+  collection: id => axiosForMovie.get(`collection/${id}`),
 };
 
 //encodeURIComponent(term)

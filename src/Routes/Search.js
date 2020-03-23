@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import Helmet from 'react-helmet';
 import SearchContent from 'Components/Page/SearchContent';
 import useDebounce from 'Hooks/use_debounce';
 import Loader from 'Components/Loader';
@@ -88,6 +89,9 @@ const Search = () => {
 
   return (
     <>
+      <Helmet>
+        <title>Search | Review App</title>
+      </Helmet>
       <Container>
         <SearchBox>
           <SearchIcon />

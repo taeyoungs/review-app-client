@@ -1,4 +1,5 @@
 import React, { Suspense, useState, useEffect } from 'react';
+import Helmet from 'react-helmet';
 import Loader from 'Components/Loader';
 import HomeContent from 'Components/Page/HomeContent';
 import { movieApi } from 'api';
@@ -48,7 +49,9 @@ const Home = () => {
 
   return (
     <Suspense fallback={<Loader />}>
-      <div>{isClick ? 'true' : 'false'}</div>
+      <Helmet>
+        <title>Home | ReviewApp</title>
+      </Helmet>
       <HomeContent isClick={isClick} handleClick={handleClick} />
       <BoxOffice result={result} error={error} />
     </Suspense>

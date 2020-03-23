@@ -152,9 +152,6 @@ const FiCalendar = styled(Calendar)`
 `;
 
 const Detail = props => {
-  const {
-    location: { pathname },
-  } = props;
   const overviewText = React.createRef();
 
   const [result, setResult] = useState();
@@ -208,6 +205,7 @@ const Detail = props => {
       <Helmet>
         <title>
           {result.original_title ? result.original_title : result.original_name}{' '}
+          | ReviewApp
         </title>
       </Helmet>
       <Backdrop
@@ -309,6 +307,7 @@ const Detail = props => {
           </TabsContainer>
         </Data>
       </Content>
+      {error && <div>Error, Not Found Page</div>}
     </Container>
   );
 };

@@ -21,6 +21,12 @@ const Company = styled('div')`
   grid-template-rows: 4fr 0.5fr;
 `;
 
+const ImageContainer = styled('div')`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
 const Image = styled('img')`
   width: 130px;
 `;
@@ -73,13 +79,15 @@ const TabCompany = ({ id }) => {
         detail.data.production_companies.length > 0 &&
         detail.data.production_companies.map(comp => (
           <Company key={comp.id}>
-            <Image
-              src={
-                comp.logo_path
-                  ? `https://image.tmdb.org/t/p/original${comp.logo_path}`
-                  : noPoster
-              }
-            />
+            <ImageContainer>
+              <Image
+                src={
+                  comp.logo_path
+                    ? `https://image.tmdb.org/t/p/original${comp.logo_path}`
+                    : noPoster
+                }
+              />
+            </ImageContainer>
             <Name>{comp.name}</Name>
           </Company>
         ))}

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, Route, withRouter } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 import TabCompany from 'Components/Tabs/TabCompany';
 import TabCountry from 'Components/Tabs/TabCountry';

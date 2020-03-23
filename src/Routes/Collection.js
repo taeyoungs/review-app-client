@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, withRouter } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import Helmet from 'react-helmet';
 import { movieApi } from 'api';
@@ -11,6 +11,7 @@ const Container = styled('div')`
   height: calc(100vh - 50px);
   padding: 40px 30px;
   font-size: 15px;
+  color: white;
 `;
 
 const Backdrop = styled('div')`
@@ -84,8 +85,18 @@ const Grid = styled('div')`
   width: 100%;
   display: grid;
   grid-template-columns: repeat(auto-fill, 170px);
-  grid-auto-rows: 250px;
+  grid-auto-rows: 270px;
   grid-gap: 20px;
+  @media (max-width: 1250px) {
+    grid-template-columns: repeat(auto-fill, 150px);
+    grid-auto-rows: 240px;
+    grid-gap: 10px;
+  }
+  @media (max-width: 1130px) {
+    grid-template-columns: repeat(auto-fill, 130px);
+    grid-auto-rows: 210px;
+    grid-gap: 10px;
+  }
 `;
 
 const ItemContainer = styled('div')`
@@ -116,12 +127,18 @@ const Image = styled('div')`
 
 const Name = styled('div')`
   margin-bottom: 5px;
+  @media (max-width: 1130px) {
+    font-size: 13px;
+  }
 `;
 
 const Year = styled('div')`
   margin-bottom: 5px;
   font-size: 13px;
   color: rgba(255, 255, 255, 0.7);
+  @media (max-width: 1130px) {
+    font-size: 11px;
+  }
 `;
 
 const DLink = styled(Link)``;
@@ -162,7 +179,7 @@ const Collection = props => {
   ) : (
     <Container>
       <Helmet>
-        <title>{result.name} | Youngflix</title>
+        <title>{result.name} | ReviewApp</title>
       </Helmet>
       <Backdrop
         imageUrl={
@@ -204,6 +221,7 @@ const Collection = props => {
           </Grid>
         </Data>
       </Content>
+      {error && <div>Error, Not Found Page</div>}
     </Container>
   );
 };
