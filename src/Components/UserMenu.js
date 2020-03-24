@@ -29,21 +29,85 @@ const Sign = styled('div')`
 
 const UserMenu = () => {
   const { isLoggedIn, Clogout } = useContext(LoginContext);
-  const [showSi, setShowSi] = useState(false);
-  const [showSu, setShowSu] = useState(false);
+
+  const [join, setJoin] = useState({
+    email: '',
+    password: '',
+    username: '',
+  });
+  const [state, setState] = useState({
+    email: '',
+    password: '',
+  });
+  const [show, setShow] = useState({
+    signIn: false,
+    signUp: false,
+  });
 
   const clickSi = () => {
-    setShowSi(true);
+    setShow(prevState => {
+      return {
+        ...prevState,
+        signIn: true,
+      };
+    });
   };
   const clickSiExit = () => {
-    setShowSi(false);
+    setState(prevState => {
+      return {
+        ...prevState,
+        email: '',
+        password: '',
+      };
+    });
+    setShow(prevState => {
+      return {
+        ...prevState,
+        signIn: false,
+      };
+    });
   };
 
   const clickSu = () => {
-    setShowSu(true);
+    setShow(prevState => {
+      return {
+        ...prevState,
+        signUp: true,
+      };
+    });
   };
   const clickSuExit = () => {
-    setShowSu(false);
+    setShow(prevState => {
+      return {
+        ...prevState,
+        signUp: false,
+      };
+    });
+    setJoin(prevState => {
+      return {
+        ...prevState,
+        email: '',
+        password: '',
+        username: '',
+      };
+    });
+  };
+
+  const goSignUp = () => {
+    setState(prevState => {
+      return {
+        ...prevState,
+        email: '',
+        password: '',
+      };
+    });
+    setShow(prevState => {
+      return {
+        ...prevState,
+        signIn: false,
+        signUp: true,
+      };
+    });
   };
 
   return (
@@ -73,8 +137,19 @@ const UserMenu = () => {
           </>
         )}
       </List>
-      <SignIn showSi={showSi} clickSiExit={clickSiExit} />
-      <SignUp showSu={showSu} clickSuExit={clickSuExit} />
+      <SignIn
+        showSi={show.signIn}
+        clickSiExit={clickSiExit}
+        goSignUp={goSignUp}
+        setState={setState}
+        state={state}
+      />
+      <SignUp
+        showSu={show.signUp}
+        clickSuExit={clickSuExit}
+        state={join}
+        setState={setJoin}
+      />
     </>
   );
 };

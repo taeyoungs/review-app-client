@@ -275,6 +275,7 @@ const Detail = props => {
           </ItemContainer>
           <OverviewContainer>
             <Overview ref={overviewText}>
+              {result.overview.length === 0 ? '준비 중입니다.' : null}
               {result.overview.substring(0, 150)}{' '}
               {result.overview.length > 150 ? '•••' : null}
             </Overview>

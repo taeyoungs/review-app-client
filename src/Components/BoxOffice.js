@@ -37,13 +37,13 @@ const Container = styled('div')`
 `;
 
 const Poster = styled('div')`
-  background-image: url(${props =>
-    `https://image.tmdb.org/t/p/w200/${props.img}`});
   background-position: center center;
   background-size: cover;
   border: 3px solid #f9ca24;
   height: 100%;
   cursor: pointer;
+  background-image: url(${props =>
+    `https://image.tmdb.org/t/p/w200/${props.img}`});
   :hover {
     opacity: 0.5;
   }
@@ -60,7 +60,7 @@ const Info = styled('div')`
 `;
 
 const Title = styled('div')`
-  font-size: 17px;
+  font-size: ${props => (props.len ? '15px' : '17px')};
   margin-bottom: 5px;
 `;
 
@@ -139,9 +139,10 @@ const BoxOffice = ({ result, error }) => {
                         <Link to={`movie/${movie.id}`}>
                           <Poster img={movie.poster_path} />
                         </Link>
-
                         <Info>
-                          <Title>{movie.title}</Title>
+                          <Title len={movie.title.length > 10 ? true : false}>
+                            {movie.title}
+                          </Title>
                           <Genres>
                             {result.genres
                               .filter(genre =>
@@ -171,7 +172,9 @@ const BoxOffice = ({ result, error }) => {
                           <Poster img={movie.poster_path} />
                         </Link>
                         <Info>
-                          <Title>{movie.title}</Title>
+                          <Title len={movie.title.length > 10 ? true : false}>
+                            {movie.title}
+                          </Title>
                           <Genres>
                             {result.genres
                               .filter(genre =>
@@ -202,7 +205,9 @@ const BoxOffice = ({ result, error }) => {
                           <Poster img={movie.poster_path} />
                         </Link>
                         <Info>
-                          <Title>{movie.title}</Title>
+                          <Title len={movie.title.length > 10 ? true : false}>
+                            {movie.title}
+                          </Title>
                           <Genres>
                             {result.genres
                               .filter(genre =>
@@ -232,7 +237,9 @@ const BoxOffice = ({ result, error }) => {
                           <Poster img={movie.poster_path} />
                         </Link>
                         <Info>
-                          <Title>{movie.title}</Title>
+                          <Title len={movie.title.length > 10 ? true : false}>
+                            {movie.title}
+                          </Title>
                           <Genres>
                             {result.genres
                               .filter(genre =>

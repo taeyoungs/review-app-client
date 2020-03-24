@@ -13,12 +13,12 @@ const LoginProvider = ({ children }) => {
   const initializeUserInfo = async () => {
     if (localStorageUser === null) return;
 
-    if (genres === null) {
-      const {
-        data: { genres },
-      } = await movieApi.genre();
-      storage.set('genresDB', genres);
-    }
+    // if (genres === null) {
+    //   const {
+    //     data: { genres },
+    //   } = await movieApi.genre();
+    //   storage.set('genresDB', genres);
+    // }
 
     try {
       await toAuthApi.check().then(res => {
@@ -64,7 +64,6 @@ const LoginProvider = ({ children }) => {
   // Server, Client userinfo 초기화
   const Clogout = async () => {
     storage.remove('userInfo');
-    storage.remove('genresDB');
     await toAuthApi.Slogout();
     // setUser(prevState => {
     //   return {

@@ -154,12 +154,7 @@ const Check = styled('button')`
   }
 `;
 
-const SignUp = ({ showSu, clickSuExit }) => {
-  const [state, setState] = useState({
-    username: '',
-    password: '',
-    email: '',
-  });
+const SignUp = ({ showSu, clickSuExit, state, setState }) => {
   const [error, setError] = useState({
     emailError: false,
     passwordError: false,
@@ -321,7 +316,7 @@ const SignUp = ({ showSu, clickSuExit }) => {
 
     await toAuthApi.join(payload).then(res => {
       if (res.status === 200) {
-        console.log(res.data);
+        // console.log(res.data);
         storage.set('userInfo', res.data.profile);
         alert('회원가입이 완료되었습니다.');
         window.location.href = `/`;

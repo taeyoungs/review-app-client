@@ -91,6 +91,7 @@ const TabCompany = ({ id }) => {
             <Name>{comp.name}</Name>
           </Company>
         ))}
+      {error && 'Error, Not Found'}
     </Container>
   );
 };

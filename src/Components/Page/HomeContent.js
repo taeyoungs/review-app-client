@@ -34,6 +34,9 @@ const Title = styled('div')`
   font-family: 'Anton';
   font-weight: 900;
   margin-bottom: 15px;
+  @media (max-width: 1440px) {
+    font-size: 150px;
+  }
 `;
 
 const Content = styled('div')`
@@ -41,6 +44,10 @@ const Content = styled('div')`
   line-height: 1.5;
   margin-bottom: 15px;
   margin-left: 15px;
+  display: flex;
+  @media (max-width: 1440px) {
+    font-size: 19px;
+  }
 `;
 
 const StartBox = styled('span')`
@@ -60,6 +67,10 @@ const StartBox = styled('span')`
     background-color: rgba(255, 255, 255, 0.7);
     color: black;
   }
+  @media (max-width: 1440px) {
+    font-size: 17px;
+    padding: 10px 20px;
+  }
 `;
 
 const ThisMonth = styled('span')`
@@ -71,6 +82,9 @@ const ThisMonth = styled('span')`
   width: 120px;
   font-size: 20px;
   font-weight: 600;
+  @media (max-width: 1440px) {
+    font-size: 17px;
+  }
 `;
 
 const VideoBox = styled('div')`
@@ -105,7 +119,7 @@ const HomeContent = ({ result, error, isClick, handleClick }) => {
           </ThisMonth>
           <Title>1917</Title>
           <Content>
-            두 명의 병사, 하나의 미션! 그들이 싸워야 할 것은 적이 아니라
+            두 명의 병사, 하나의 미션! 그들이 싸워야 <br /> 할 것은 적이 아니라
             시간이었다!
           </Content>
           <StartBox onClick={() => handleClick(isClick)}>

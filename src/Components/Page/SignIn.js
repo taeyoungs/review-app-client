@@ -131,13 +131,7 @@ const Google = styled('div')`
   height: 30px;
 `;
 
-const SignIn = ({ showSi, clickSiExit }) => {
-  const { Clogin } = useContext(LoginContext);
-  const [state, setState] = useState({
-    email: '',
-    password: '',
-  });
-
+const SignIn = ({ showSi, clickSiExit, goSignUp, setState, state }) => {
   const handleChangeInputEmail = event => {
     const { value } = event.target;
     setState({
@@ -189,7 +183,7 @@ const SignIn = ({ showSi, clickSiExit }) => {
                 onChange={handleChangeInputPassword}
               />
               <SmallContainer>
-                <LogUp>회원가입</LogUp>
+                <LogUp onClick={() => goSignUp()}>회원가입</LogUp>
                 <span>|</span> <PwSearch>비밀번호 찾기</PwSearch>
               </SmallContainer>
               <Subm onClick={handleSubmit}>로그인</Subm>

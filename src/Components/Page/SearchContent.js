@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import noPoster from 'assets/noPoster.png';
-import storage from 'lib/storage';
+import { movieApi } from 'api';
 
 const SearchGridBox = styled('div')`
   margin-top: 50px;
@@ -85,7 +85,24 @@ const Genres = styled('div')`
 `;
 
 const SearchContent = ({ results, term }) => {
-  const genres = storage.get('genresDB');
+  // const genres = storage.get('genresDB');
+
+  const [genres, setGenres] = useState([]);
+
+  const getGenresDB = async () => {
+    try {
+      const {
+        data: { genres },
+      } = await movieApi.genre();
+      setGenres(genres);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getGenresDB();
+  }, []);
 
   return (
     <>

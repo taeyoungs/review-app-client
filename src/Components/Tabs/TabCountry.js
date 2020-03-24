@@ -68,7 +68,6 @@ const TabCountry = ({ id }) => {
     'Loading ...'
   ) : (
     <Container>
-      {console.log(detail.data)}
       {detail.data.production_countries &&
         detail.data.production_countries.length > 0 &&
         detail.data.production_countries.map((coun, index) => (
