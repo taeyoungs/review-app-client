@@ -317,7 +317,7 @@ const SignUp = ({ showSu, clickSuExit, state, setState }) => {
     await toAuthApi.join(payload).then(res => {
       if (res.status === 200) {
         // console.log(res.data);
-        storage.set('userInfo', res.data.profile);
+        storage.set('userInfo', res.data);
         alert('회원가입이 완료되었습니다.');
         window.location.href = `/`;
       } else if (400) {

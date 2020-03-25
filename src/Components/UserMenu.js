@@ -1,8 +1,10 @@
 import React, { useState, useContext } from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import LoginContext from '../context/Login.context';
 import SignIn from './Page/SignIn';
 import SignUp from './Page/SignUp';
+import PwChange from 'Components/Page/PwChange';
 
 const List = styled('ul')`
   display: flex;
@@ -27,8 +29,21 @@ const Sign = styled('div')`
   }
 `;
 
+const SLink = styled(Link)`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 60px;
+  color: rgba(255, 255, 255, 0.8);
+  cursor: pointer;
+  :hover {
+    opacity: 0.8;
+  }
+`;
+
 const UserMenu = () => {
-  const { isLoggedIn, Clogout } = useContext(LoginContext);
+  const { isLoggedIn, Clogout, userInfo } = useContext(LoginContext);
 
   const [join, setJoin] = useState({
     email: '',
@@ -39,9 +54,11 @@ const UserMenu = () => {
     email: '',
     password: '',
   });
+  const [email, setEmail] = useState('');
   const [show, setShow] = useState({
     signIn: false,
     signUp: false,
+    pwChange: false,
   });
 
   const clickSi = () => {
@@ -110,6 +127,33 @@ const UserMenu = () => {
     });
   };
 
+  const goPwChange = () => {
+    setState(prevState => {
+      return {
+        ...prevState,
+        email: '',
+        password: '',
+      };
+    });
+    setShow(prevState => {
+      return {
+        ...prevState,
+        signIn: false,
+        pwChange: true,
+      };
+    });
+  };
+
+  const clickExit = () => {
+    setEmail('');
+    setShow(prevState => {
+      return {
+        ...prevState,
+        pwChange: false,
+      };
+    });
+  };
+
   return (
     <>
       <List>
@@ -126,10 +170,7 @@ const UserMenu = () => {
         ) : (
           <>
             <Item>
-              <Sign>리뷰 작성</Sign>
-            </Item>
-            <Item>
-              <Sign>마이페이지</Sign>
+              <SLink to={`/user/${userInfo.id}`}>마이페이지</SLink>
             </Item>
             <Item>
               <Sign onClick={() => Clogout()}>로그아웃</Sign>
@@ -143,12 +184,19 @@ const UserMenu = () => {
         goSignUp={goSignUp}
         setState={setState}
         state={state}
+        goPwChange={goPwChange}
       />
       <SignUp
         showSu={show.signUp}
         clickSuExit={clickSuExit}
         state={join}
         setState={setJoin}
+      />
+      <PwChange
+        show={show.pwChange}
+        state={email}
+        setState={setEmail}
+        clickExit={clickExit}
       />
     </>
   );

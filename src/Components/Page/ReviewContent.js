@@ -1,21 +1,15 @@
 import React from 'react';
 import styled from 'styled-components';
-import Iframe from 'react-iframe';
 
 const Tempbox = styled('div')`
+  margin-top: 60px;
   height: 600px;
+  color: white;
+  font-size: 30px;
 `;
 
 const ReviewContent = () => {
-  return (
-    <Tempbox>
-      <Iframe
-        url="http://www.youtube.com/embed/MMam74uzhzs"
-        width="100%"
-        height="550px"
-      />
-    </Tempbox>
-  );
+  return <Tempbox>유저들이 작성한 리뷰 목록 쭉</Tempbox>;
 };
 
 export default ReviewContent;

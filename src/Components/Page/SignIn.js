@@ -131,7 +131,14 @@ const Google = styled('div')`
   height: 30px;
 `;
 
-const SignIn = ({ showSi, clickSiExit, goSignUp, setState, state }) => {
+const SignIn = ({
+  showSi,
+  clickSiExit,
+  goSignUp,
+  setState,
+  state,
+  goPwChange,
+}) => {
   const handleChangeInputEmail = event => {
     const { value } = event.target;
     setState({
@@ -156,16 +163,18 @@ const SignIn = ({ showSi, clickSiExit, goSignUp, setState, state }) => {
       password,
     };
 
-    await toAuthApi.Slogin(payload).then(res => {
-      if (res.status === 200) {
-        // Clogin(res.data.profile);
-        storage.set('userInfo', res.data);
-        console.log(res);
-        window.location.href = '/';
-      } else {
-        alert(res.data.msg);
-      }
-    });
+    try {
+      await toAuthApi.Slogin(payload).then(res => {
+        if (res.status === 200) {
+          // Clogin(res.data.profile);
+          storage.set('userInfo', res.data);
+          alert('로그인 완료');
+          window.location.href = '/';
+        }
+      });
+    } catch (error) {
+      alert('사용자 정보가 일치하지 않습니다.');
+    }
   };
 
   return (
@@ -184,7 +193,8 @@ const SignIn = ({ showSi, clickSiExit, goSignUp, setState, state }) => {
               />
               <SmallContainer>
                 <LogUp onClick={() => goSignUp()}>회원가입</LogUp>
-                <span>|</span> <PwSearch>비밀번호 찾기</PwSearch>
+                <span>|</span>{' '}
+                <PwSearch onClick={() => goPwChange()}>비밀번호 찾기</PwSearch>
               </SmallContainer>
               <Subm onClick={handleSubmit}>로그인</Subm>
             </SignInForm>

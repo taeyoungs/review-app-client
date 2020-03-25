@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import Helmet from 'react-helmet';
+import { Link } from 'react-router-dom';
 import { Clock } from '@styled-icons/fa-regular';
 import { Calendar } from '@styled-icons/boxicons-regular';
 import { Imdb } from '@styled-icons/fa-brands';
+import { RateReview } from '@styled-icons/material-outlined';
 import StarRatings from 'react-star-ratings';
 import Loader from 'Components/Loader';
 import VideoLinks from 'Components/VideoLinks';
@@ -70,11 +72,32 @@ const Data = styled('div')`
   width: 60%;
 `;
 
+const FlexBox = styled('div')`
+  display: flex;
+`;
+
 const Title = styled('div')`
   margin-top: 30px;
   margin-bottom: 15px;
+  margin-right: 20px;
   font-size: 45px;
   font-weight: 600;
+`;
+
+const ReviewIcon = styled(RateReview)`
+  width: 20px;
+  height: 20px;
+  margin-right: 5px;
+`;
+
+const WriteReview = styled('div')`
+  color: rgba(241, 195, 15, 0.5);
+  font-size: 17px;
+  margin-top: 60px;
+  cursor: pointer;
+  :hover {
+    color: rgba(241, 195, 15, 1);
+  }
 `;
 
 const ItemContainer = styled('div')`
@@ -179,13 +202,12 @@ const Detail = props => {
   const getResult = async () => {
     let result = null;
     const parsedId = Number(id);
-    console.log(parsedId);
     if (isNaN(parsedId)) {
       return push('/');
     }
     try {
       ({ data: result } = await movieApi.movieDetail(parsedId));
-      console.log(result);
+      // console.log(result);
       setResult(result);
     } catch (error) {
       setError("Can't find Anything");
@@ -203,10 +225,7 @@ const Detail = props => {
   ) : (
     <Container>
       <Helmet>
-        <title>
-          {result.original_title ? result.original_title : result.original_name}{' '}
-          | ReviewApp
-        </title>
+        <title>{result.title} | ReviewApp</title>
       </Helmet>
       <Backdrop
         imageUrl={
@@ -224,7 +243,15 @@ const Detail = props => {
           }
         />
         <Data>
-          <Title>{result.title}</Title>
+          <FlexBox>
+            <Title>{result.title}</Title>
+            <Link to={`/writeReview/${Number(id)}`}>
+              <WriteReview>
+                <ReviewIcon />
+                리뷰 작성
+              </WriteReview>
+            </Link>
+          </FlexBox>
           <ItemContainer>
             <FiCalendar className="shadow" />
             <Item>{result.release_date.substring(0, 4)}</Item>

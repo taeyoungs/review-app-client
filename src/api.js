@@ -43,6 +43,7 @@ export const toAuthApi = {
   Slogin: payload => axiosForAuth.post(`login/local`, payload),
   Slogout: () => axiosForAuth.post(`logout`),
   check: () => axiosForAuth.get(`check`),
+  tempPwChange: email => axiosForAuth.post(`tempPwChange`, email),
 };
 
 const axiosForServer = Axios.create({
@@ -52,4 +53,13 @@ const axiosForServer = Axios.create({
 export const toServerApi = {
   createUser: payload => axiosForServer.post(`/user`, payload),
   insertReview: payload => axiosForServer.post(`/review`, payload),
+};
+
+const axiosForUser = Axios.create({
+  baseURL: 'http://localhost:4000/api/users',
+  withCredentials: true,
+});
+
+export const toUserApi = {
+  changePassword: payload => axiosForUser.post(`/change-password`, payload),
 };

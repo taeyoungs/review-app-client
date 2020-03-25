@@ -13,17 +13,10 @@ const LoginProvider = ({ children }) => {
   const initializeUserInfo = async () => {
     if (localStorageUser === null) return;
 
-    // if (genres === null) {
-    //   const {
-    //     data: { genres },
-    //   } = await movieApi.genre();
-    //   storage.set('genresDB', genres);
-    // }
-
     try {
       await toAuthApi.check().then(res => {
         if (res.status === 200) {
-          const userInfo = res.data.profile;
+          const userInfo = res.data;
           storage.set('userInfo', userInfo);
           // setLoggedInfo(userInfo);
         } else {

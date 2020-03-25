@@ -12,6 +12,7 @@ import Search from 'Routes/Search';
 import Detail from 'Routes/Detail';
 import Collection from 'Routes/Collection';
 import WriteReview from 'Routes/WriteReview';
+import Mypage from 'Routes/Mypage';
 
 export default () => (
   <Router>
@@ -23,7 +24,8 @@ export default () => (
         <Route path="/search" exact component={Search}></Route>
         <Route path="/movie/:id" component={Detail} />
         <Route path="/collection/:id" component={Collection} />
-        <Route path="/wrtieReview" exact component={WriteReview} />
+        <Route path="/writeReview/:id" component={WriteReview} />
+        <Route path="/user/:id" component={Mypage} />
         <Redirect from="*" to="/" />
       </Switch>
     </>
