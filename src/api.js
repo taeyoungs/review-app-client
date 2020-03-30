@@ -48,11 +48,15 @@ export const toAuthApi = {
 
 const axiosForServer = Axios.create({
   baseURL: 'http://localhost:4000/api',
+  withCredentials: true,
 });
 
 export const toServerApi = {
   createUser: payload => axiosForServer.post(`/user`, payload),
-  insertReview: payload => axiosForServer.post(`/review`, payload),
+  insertReview: payload => axiosForServer.post(`/reviews/upload`, payload),
+  getReview: id => axiosForServer.get(`/reviews/${id}`),
+  getReviewList: () => axiosForServer.get(`/reviews/list`),
+  deleteReview: id => axiosForServer.get(`/reviews/${id}/delete`),
 };
 
 const axiosForUser = Axios.create({

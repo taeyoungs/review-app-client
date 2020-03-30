@@ -13,6 +13,7 @@ import Detail from 'Routes/Detail';
 import Collection from 'Routes/Collection';
 import WriteReview from 'Routes/WriteReview';
 import Mypage from 'Routes/Mypage';
+import ReviewDetail from 'Routes/ReviewDetail';
 
 export default () => (
   <Router>
@@ -26,6 +27,7 @@ export default () => (
         <Route path="/collection/:id" component={Collection} />
         <Route path="/writeReview/:id" component={WriteReview} />
         <Route path="/user/:id" component={Mypage} />
+        <Route path="/review/:id" component={ReviewDetail} />
         <Redirect from="*" to="/" />
       </Switch>
     </>

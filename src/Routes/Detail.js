@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import Helmet from 'react-helmet';
+import StarRatings from 'react-star-ratings';
 import { Link } from 'react-router-dom';
 import { Clock } from '@styled-icons/fa-regular';
 import { Calendar } from '@styled-icons/boxicons-regular';
 import { Imdb } from '@styled-icons/fa-brands';
 import { RateReview } from '@styled-icons/material-outlined';
-import StarRatings from 'react-star-ratings';
 import Loader from 'Components/Loader';
 import VideoLinks from 'Components/VideoLinks';
 import MovieTabs from 'Components/MovieTabs';
