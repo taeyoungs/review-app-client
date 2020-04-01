@@ -10,6 +10,7 @@ const ReviewDetail = props => {
   const [result, setResult] = useState({
     review: {},
     movie: {},
+    formatCreatedAt: '',
   });
   const [loading, setLoading] = useState(true);
   const {
@@ -21,8 +22,9 @@ const ReviewDetail = props => {
   const getReview = async () => {
     try {
       const result = await toServerApi.getReview(id);
+      console.log(result);
       const { data: movie } = await movieApi.movieDetail(
-        result.data.review.movieId,
+        result.data.review.movie.movieId,
       );
       //   console.log(result);
       setResult(prevState => {
@@ -30,6 +32,7 @@ const ReviewDetail = props => {
           ...prevState,
           review: result.data.review,
           movie,
+          formatCreatedAt: result.data.formatCreatedAt,
         };
       });
     } catch (error) {

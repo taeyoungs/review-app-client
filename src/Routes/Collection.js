@@ -214,7 +214,7 @@ const Collection = props => {
                       />
                     </DLink>
                   </ImageContainer>
-                  <Name>{part.original_title}</Name>
+                  <Name>{part.title}</Name>
                   <Year>{part.release_date}</Year>
                 </ItemContainer>
               ))}

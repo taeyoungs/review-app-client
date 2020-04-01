@@ -129,9 +129,11 @@ const InputContent = styled.div.attrs(props => ({
   height: 600px;
   margin: 20px;
   padding: 10px;
-  font-size: 17px;
+  font-size: 16px;
   color: black;
   font-family: 'NanumGothic';
+  line-height: 1.5;
+  overflow: auto;
   ::placeholder {
     text-align: center;
     font-size: 17px;
@@ -262,8 +264,13 @@ const WriteReview = props => {
       title: review.title,
       content: review.content,
       star: review.star,
-      movieId: parsedId,
       spoiled: review.spoiled,
+      movie: {
+        movieId: parsedId,
+        poster: result.poster_path,
+        genres: result.genres,
+        movieTitle: result.title,
+      },
     };
 
     // console.log(payload);
