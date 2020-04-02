@@ -11,6 +11,8 @@ import { EmotionNormal } from '@styled-icons/remix-line';
 import { Angry } from '@styled-icons/fa-regular';
 import { Smile } from '@styled-icons/boxicons-regular';
 import { Star } from '@styled-icons/boxicons-solid';
+import { Like } from '@styled-icons/evil/';
+import { Edit } from '@styled-icons/feather';
 import { CommentDetail } from '@styled-icons/boxicons-solid';
 
 const Box = styled('div')`
@@ -158,7 +160,8 @@ const StarBox = styled('div')`
 
 const Main = styled('div')`
   padding: 15px;
-  margin-bottom: 50px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 `;
 
 const Title = styled('div')`
@@ -171,16 +174,7 @@ const Content = styled('div')`
   font-size: 16px;
   white-space: pre-wrap;
   line-height: 1.5;
-`;
-
-const DeleteIcon = styled(DeleteForever)`
-  width: 25px;
-  height: 25px;
-  cursor: pointer;
-  color: rgba(255, 255, 255, 0.5);
-  :hover {
-    color: rgba(255, 255, 255, 1);
-  }
+  margin-bottom: 50px;
 `;
 
 const EvalEmotion = styled(EmotionNormal)`
@@ -212,9 +206,67 @@ const EvalText = styled('div')`
   width: 100%;
 `;
 
+const DeleteBtn = styled('div')`
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  color: rgba(255, 255, 255, 0.5);
+  :hover {
+    color: #f1c40f;
+  }
+`;
+
+const DeleteIcon = styled(DeleteForever)`
+  width: 23px;
+  height: 23px;
+  margin-right: 5px;
+`;
+
+const SubMenu = styled('div')`
+  display: flex;
+  align-items: center;
+  flex-direction: row-reverse;
+  height: 40px;
+  margin-bottom: 50px;
+`;
+
+const LikeBtn = styled('div')`
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  color: rgba(255, 255, 255, 0.5);
+  :hover {
+    color: #f1c40f;
+  }
+`;
+
+const LikeIcon = styled(Like)`
+  width: 26px;
+  height: 26px;
+  margin-right: 5px;
+`;
+
+const EditBtn = styled('div')`
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  color: rgba(255, 255, 255, 0.5);
+  :hover {
+    color: #f1c40f;
+  }
+`;
+
+const EditIcon = styled(Edit)`
+  width: 22px;
+  height: 22px;
+  margin-right: 5px;
+`;
+
+const CommentCount = styled('div')``;
+
 const ReviewContent = ({ result }) => {
   const { userInfo } = useContext(LoginContext);
-  console.log(result);
+  // console.log(result);
 
   const handleDelete = async () => {
     try {
@@ -282,13 +334,8 @@ const ReviewContent = ({ result }) => {
                 <UserImage imageUrl={result.review.user.profile.thumnail} />
               )}
               <InfoBox>
-                <Name>
-                  {result.review.user.profile.username}{' '}
-                  {userInfo.id === result.review.user._id ? (
-                    <DeleteIcon onClick={handleDelete} />
-                  ) : null}
-                </Name>
-                <Date>{result.formatCreatedAt}</Date>
+                <Name>{result.review.user.profile.username} </Name>
+                <Date>{result.review.formatCreatedAt}</Date>
               </InfoBox>
             </UserInfo>
             <UserEval>
@@ -314,6 +361,27 @@ const ReviewContent = ({ result }) => {
             <Title>{result.review.title}</Title>
             <Content>{result.review.content}</Content>
           </Main>
+          <SubMenu>
+            <LikeBtn>
+              <LikeIcon />
+              추천
+            </LikeBtn>
+            {userInfo.id === result.review.user._id ? (
+              <DeleteBtn>
+                <DeleteIcon onClick={handleDelete} />
+                삭제 •
+              </DeleteBtn>
+            ) : null}
+
+            {userInfo.id === result.review.user._id ? (
+              <Link to={`/editReview/${result.review._id}`}>
+                <EditBtn>
+                  <EditIcon />
+                  수정 •
+                </EditBtn>
+              </Link>
+            ) : null}
+          </SubMenu>
         </Box>
       </Container>
     </>

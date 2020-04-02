@@ -57,6 +57,9 @@ export const toServerApi = {
   getReview: id => axiosForServer.get(`/reviews/${id}`),
   getReviewList: () => axiosForServer.get(`/reviews/list`),
   deleteReview: id => axiosForServer.get(`/reviews/${id}/delete`),
+  getMovieReviewList: id => axiosForServer.get(`/reviews/movie/${id}`),
+  editReview: payload => axiosForServer.post(`/reviews/edit-review`, payload),
+  likeReview: id => axiosForServer.post(`/reviews/:id/like-review`),
 };
 
 const axiosForUser = Axios.create({

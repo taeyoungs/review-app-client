@@ -12,6 +12,7 @@ import VideoLinks from 'Components/VideoLinks';
 import MovieTabs from 'Components/MovieTabs';
 import { movieApi } from 'api';
 import noPoster from 'assets/noPoster.png';
+import MovieDetailReview from 'Components/Page/MovieDetailReview';
 
 const Container = styled('div')`
   position: relative;
@@ -20,6 +21,7 @@ const Container = styled('div')`
   padding: 40px 30px;
   font-size: 15px;
   color: white;
+  margin-bottom: 50px;
 `;
 
 const Backdrop = styled('div')`
@@ -223,120 +225,123 @@ const Detail = props => {
   return loading ? (
     <Loader />
   ) : (
-    <Container>
-      <Helmet>
-        <title>{result.title} | ReviewApp</title>
-      </Helmet>
-      <Backdrop
-        imageUrl={
-          result.backdrop_path
-            ? `https://image.tmdb.org/t/p/original${result.backdrop_path}`
-            : require('../assets/noPoster.png')
-        }
-      />
-      <Content>
-        <Cover
+    <>
+      <Container>
+        <Helmet>
+          <title>{result.title} | ReviewApp</title>
+        </Helmet>
+        <Backdrop
           imageUrl={
-            result.poster_path
-              ? `https://image.tmdb.org/t/p/original${result.poster_path}`
-              : noPoster
+            result.backdrop_path
+              ? `https://image.tmdb.org/t/p/original${result.backdrop_path}`
+              : require('../assets/noPoster.png')
           }
         />
-        <Data>
-          <FlexBox>
-            <Title>{result.title}</Title>
-            <Link to={`/writeReview/${Number(id)}`}>
-              <WriteReview>
-                <ReviewIcon />
-                리뷰 작성
-              </WriteReview>
-            </Link>
-          </FlexBox>
-          <ItemContainer>
-            <FiCalendar className="shadow" />
-            <Item>{result.release_date.substring(0, 4)}</Item>
-            <Divider>•</Divider>
-            <FiClock className="shadow" />
-            <Item>
-              {result.runtime
-                ? result.runtime
-                : result.episode_run_time
-                ? result.episode_run_time[0]
-                : 'Preparing'}
-            </Item>
-            {result.number_of_seasons ? (
+        <Content>
+          <Cover
+            imageUrl={
+              result.poster_path
+                ? `https://image.tmdb.org/t/p/original${result.poster_path}`
+                : noPoster
+            }
+          />
+          <Data>
+            <FlexBox>
+              <Title>{result.title}</Title>
+              <Link to={`/writeReview/${Number(id)}`}>
+                <WriteReview>
+                  <ReviewIcon />
+                  리뷰 작성
+                </WriteReview>
+              </Link>
+            </FlexBox>
+            <ItemContainer>
+              <FiCalendar className="shadow" />
+              <Item>{result.release_date.substring(0, 4)}</Item>
+              <Divider>•</Divider>
+              <FiClock className="shadow" />
+              <Item>
+                {result.runtime
+                  ? result.runtime
+                  : result.episode_run_time
+                  ? result.episode_run_time[0]
+                  : 'Preparing'}
+              </Item>
+              {result.number_of_seasons ? (
+                <>
+                  <Divider>•</Divider>
+                  <Item>
+                    {result.number_of_seasons === 1
+                      ? `${result.number_of_seasons} season`
+                      : `${result.number_of_seasons} seasons`}{' '}
+                  </Item>
+                </>
+              ) : null}
+              <Divider>•</Divider>
+              <StarRatings
+                rating={result.vote_average / 2}
+                starRatedColor="#f1c40f"
+                starEmptyColor="rgba(255, 255, 255, 0.3)"
+                starDimension="13px"
+                starSpacing="2px"
+              />
+              <Divider>•</Divider>
+              <Item>
+                {result.genres.map((genre, index) =>
+                  index === result.genres.length - 1
+                    ? genre.name
+                    : `${genre.name} / `,
+                )}
+              </Item>
               <>
                 <Divider>•</Divider>
-                <Item>
-                  {result.number_of_seasons === 1
-                    ? `${result.number_of_seasons} season`
-                    : `${result.number_of_seasons} seasons`}{' '}
-                </Item>
+                <ImdbLink
+                  href={`https://www.imdb.com/title/${result.imdb_id}/`}
+                  target="_blank"
+                >
+                  <ImdbIcon />
+                </ImdbLink>
               </>
-            ) : null}
-            <Divider>•</Divider>
-            <StarRatings
-              rating={result.vote_average / 2}
-              starRatedColor="#f1c40f"
-              starEmptyColor="rgba(255, 255, 255, 0.3)"
-              starDimension="13px"
-              starSpacing="2px"
-            />
-            <Divider>•</Divider>
-            <Item>
-              {result.genres.map((genre, index) =>
-                index === result.genres.length - 1
-                  ? genre.name
-                  : `${genre.name} / `,
-              )}
-            </Item>
-            <>
-              <Divider>•</Divider>
-              <ImdbLink
-                href={`https://www.imdb.com/title/${result.imdb_id}/`}
-                target="_blank"
-              >
-                <ImdbIcon />
-              </ImdbLink>
-            </>
-          </ItemContainer>
-          <OverviewContainer>
-            <Overview ref={overviewText}>
-              {result.overview.length === 0 ? '준비 중입니다.' : null}
-              {result.overview.substring(0, 150)}{' '}
-              {result.overview.length > 150 ? '•••' : null}
-            </Overview>
-            {result.overview.length > 150 ? (
-              <OverviewBtn onClick={() => handleClick(result.overview)}>
-                {isClick ? '▶▶' : '◀◀'}
-              </OverviewBtn>
-            ) : null}
-          </OverviewContainer>
-          {result.videos.results && (
-            <VideoContainer>
-              {result.videos.results.map(
-                (video, index) =>
-                  index < 3 && (
-                    <VideoLinks
-                      key={video.id}
-                      id={video.id}
-                      link={video.key}
-                      name={video.name}
-                    />
-                  ),
-              )}
-            </VideoContainer>
-          )}
-          <TabsContainer>
-            <MovieTabs
-              detailId={id}
-              collection={result.belongs_to_collection}
-            />
-          </TabsContainer>
-        </Data>
-      </Content>
-      {error && <div>Error, Not Found Page</div>}
-    </Container>
+            </ItemContainer>
+            <OverviewContainer>
+              <Overview ref={overviewText}>
+                {result.overview.length === 0 ? '준비 중입니다.' : null}
+                {result.overview.substring(0, 150)}{' '}
+                {result.overview.length > 150 ? '•••' : null}
+              </Overview>
+              {result.overview.length > 150 ? (
+                <OverviewBtn onClick={() => handleClick(result.overview)}>
+                  {isClick ? '▶▶' : '◀◀'}
+                </OverviewBtn>
+              ) : null}
+            </OverviewContainer>
+            {result.videos.results && (
+              <VideoContainer>
+                {result.videos.results.map(
+                  (video, index) =>
+                    index < 3 && (
+                      <VideoLinks
+                        key={video.id}
+                        id={video.id}
+                        link={video.key}
+                        name={video.name}
+                      />
+                    ),
+                )}
+              </VideoContainer>
+            )}
+            <TabsContainer>
+              <MovieTabs
+                detailId={id}
+                collection={result.belongs_to_collection}
+              />
+            </TabsContainer>
+          </Data>
+        </Content>
+        {error && <div>Error, Not Found Page</div>}
+      </Container>
+      <MovieDetailReview movieId={result.id} />
+    </>
   );
 };
 

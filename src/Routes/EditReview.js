@@ -105,6 +105,7 @@ const InputTitle = styled.input.attrs(props => ({
   placeholder: '제목을 입력해주세요.',
   name: 'title',
   autoComplete: 'off',
+  value: props.value,
 }))`
   width: 100%;
   border: none;
@@ -124,6 +125,7 @@ const InputTitle = styled.input.attrs(props => ({
 const ContentArea = styled.textarea.attrs(props => ({
   name: 'content',
   placeholder: '리뷰를 입력해주세요.',
+  value: props.value,
 }))`
   width: calc(100% - 50px);
   border: none;
@@ -198,16 +200,20 @@ const SpoiledText = styled('div')`
   margin-bottom: 20px;
 `;
 
-const WriteReview = props => {
+const EditReview = props => {
   const {
     match: {
       params: { id },
     },
   } = props;
 
-  const parsedId = Number(id);
+  //   const parsedId = Number(id);
+  //   console.log(parsedId);
 
-  const [result, setResult] = useState({});
+  const [result, setResult] = useState({
+    beforeReview: {},
+    movie: {},
+  });
   const [loading, setLoading] = useState(true);
   const [review, setReview] = useState({
     title: '',
@@ -270,38 +276,47 @@ const WriteReview = props => {
     event.preventDefault();
 
     const payload = {
+      id: result.beforeReview._id,
       emotion: review.emotion,
       title: review.title,
       content: review.content,
       star: review.star,
       spoiled: review.spoiled,
-      movie: {
-        movieId: parsedId,
-        poster: result.poster_path,
-        genres: result.genres,
-        movieTitle: result.title,
-      },
     };
 
     // console.log(payload);
     try {
-      await toServerApi.insertReview(payload).then(res => {
+      await toServerApi.editReview(payload).then(res => {
         if (res.status === 200) {
           window.location.href = `/#/review/${res.data.reviewId}`;
         }
       });
     } catch (error) {
-      alert('리뷰 등록에 실패했습니다.');
+      alert('리뷰 수정에 실패했습니다.');
       console.log(error);
     }
   };
 
   const getResult = async () => {
     try {
-      const { data } = await movieApi.movieDetail(parsedId);
-      console.log(data);
+      const {
+        data: { review: beforeReview },
+      } = await toServerApi.getReview(id);
 
-      setResult(data);
+      const { data } = await movieApi.movieDetail(beforeReview.movie.movieId);
+      //   console.log(data);
+
+      setResult({ beforeReview, movie: data });
+      setReview(prevState => {
+        return {
+          ...prevState,
+          title: beforeReview.title,
+          star: beforeReview.star,
+          emotion: beforeReview.emotion,
+          spoiled: beforeReview.spoiled,
+          content: beforeReview.content,
+        };
+      });
     } catch (error) {
       console.log(error);
     } finally {
@@ -316,7 +331,7 @@ const WriteReview = props => {
   return (
     <>
       <Helmet>
-        <title>Write review | ReviewApp</title>
+        <title>Edit review | ReviewApp</title>
       </Helmet>
       {loading ? (
         <Loader />
@@ -325,19 +340,19 @@ const WriteReview = props => {
           <ReviewForm>
             <InfoBox>
               <Poster
-                imageUrl={`https://image.tmdb.org/t/p/w200${result.poster_path}`}
+                imageUrl={`https://image.tmdb.org/t/p/w200${result.movie.poster_path}`}
               />
               <Info>
                 <Title>
-                  {result.title} ( {result.original_title} )
+                  {result.movie.title} ( {result.movie.original_title} )
                 </Title>
                 <Sub>
-                  {result.genres.map((genre, index) =>
-                    index !== result.genres.length - 1
+                  {result.movie.genres.map((genre, index) =>
+                    index !== result.movie.genres.length - 1
                       ? `${genre.name}/`
                       : genre.name,
                   )}{' '}
-                  • {result.release_date.substring(0, 4)}
+                  • {result.movie.release_date.substring(0, 4)}
                 </Sub>
                 <Eval>
                   <Text>선호도</Text>
@@ -355,10 +370,10 @@ const WriteReview = props => {
                   />
                 </Eval>
                 <StarRating rate={review} setRate={setReview} />
-                <InputTitle onChange={handleChangeTitle} />
+                <InputTitle onChange={handleChangeTitle} value={review.title} />
               </Info>
             </InfoBox>
-            <ContentArea onChange={handleTextarea} />
+            <ContentArea onChange={handleTextarea} value={review.content} />
             {review.spoiled ? (
               <SpoiledText>
                 <SpoiledTrue onClick={handleSpoiled} />
@@ -371,7 +386,7 @@ const WriteReview = props => {
               </SpoiledText>
             )}
             <SubmitBtnBox>
-              <SubmitBtn onClick={handleSubmit}>리뷰 등록하기</SubmitBtn>
+              <SubmitBtn onClick={handleSubmit}>리뷰 수정하기</SubmitBtn>
             </SubmitBtnBox>
           </ReviewForm>
         </Container>
@@ -380,4 +395,4 @@ const WriteReview = props => {
   );
 };
 
-export default WriteReview;
+export default EditReview;

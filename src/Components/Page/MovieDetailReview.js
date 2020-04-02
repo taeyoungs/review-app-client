@@ -1,64 +1,50 @@
-import React, { useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import Helmet from 'react-helmet';
 import styled from 'styled-components';
-import LoginContext from 'context/Login.context';
-import { DeleteForever } from '@styled-icons/material';
 import StarRatings from 'react-star-ratings';
-import DefaultImage from '../../assets/thumnail.png';
-import { EmotionNormal } from '@styled-icons/remix-line';
+import { RateReview } from '@styled-icons/material-outlined';
 import { Angry } from '@styled-icons/fa-regular';
 import { Smile } from '@styled-icons/boxicons-regular';
+import { EmotionNormal } from '@styled-icons/remix-line';
 import { Detail } from '@styled-icons/boxicons-regular';
-
-const Box = styled('div')`
-  color: white;
-  padding: 0 40px;
-`;
+import { toServerApi } from 'api';
+import DefaultImage from '../../assets/thumnail.png';
 
 const Container = styled('div')`
-  margin: 0 auto;
-  margin-top: 60px;
   width: calc(100% - 600px);
-  display: grid;
-  grid-template-columns: 0.8fr 5fr;
+  margin: 0 auto;
+`;
+
+const ListInfo = styled('div')`
   border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  height: 50px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 40px;
 `;
 
-const PosterAndEval = styled('div')`
-  height: 220px;
-  padding: 10px;
-`;
-
-const Poster = styled('div')`
-  background-size: cover;
-  background-position: center center;
-  background-image: url(${props => props.imageUrl});
-  height: 100%;
-  :hover {
-    opacity: 0.6;
-  }
-`;
-
-const MovieInfo = styled('div')`
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  color: white;
-  margin-bottom: 20px;
-`;
-
-const MovieTitle = styled('div')`
-  font-size: 22px;
+const Head = styled('div')`
+  font-size: 21px;
+  color: #f1c40f;
   font-weight: 600;
-  margin-bottom: 10px;
+  margin-right: 10px;
+  margin-left: 80px;
 `;
 
-const MovieSub = styled('div')`
-  font-size: 12px;
-  color: rgba(255, 255, 255, 0.8);
-  margin-bottom: 20px;
+const ReviewIcon = styled(RateReview)`
+  width: 24px;
+  height: 24px;
+  color: rgba(255, 255, 255, 0.7);
+  margin-right: 10px;
 `;
 
-// 유저 정보하고 별점
+const ReveiwsLength = styled('div')`
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 17px;
+`;
+
+const SortType = styled('div')``;
+
 const UserAndEval = styled('div')`
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -107,6 +93,11 @@ const Name = styled('div')`
   margin-bottom: 10px;
 `;
 
+const Date = styled('div')`
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.7);
+`;
+
 const UserEval = styled('div')`
   display: flex;
   flex-direction: row-reverse;
@@ -144,6 +135,7 @@ const StarBox = styled('div')`
 const Main = styled('div')`
   padding: 15px;
   margin-bottom: 50px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 `;
 
 const Title = styled('div')`
@@ -161,27 +153,9 @@ const Content = styled('div')`
   line-height: 1.5;
 `;
 
-const SortHeader = styled('div')`
-  height: 80px;
-  width: calc(100% - 100px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-  font-size: 20px;
-  margin: 0 auto;
-  margin-top: 30px;
-  display: flex;
-`;
-
-const DescBtn = styled('div')`
-  margin-left: 80px;
-  padding: 20px;
-  color: #f1c40f;
-  cursor: pointer;
-`;
-
-const BestBtn = styled('div')`
-  color: ${props => (props.sort ? '#f1c40f' : 'rgba(255, 255, 255, 0.7)')};
-  padding: 20px;
-  cursor: pointer;
+const Box = styled('div')`
+  color: white;
+  padding: 0 60px;
 `;
 
 const GoReviewBox = styled('div')`
@@ -218,49 +192,37 @@ const DetailIcon = styled(Detail)`
   margin-right: 10px;
 `;
 
-const Date = styled('div')`
-  font-size: 13px;
-  color: rgba(255, 255, 255, 0.7);
-`;
+const MovieDetailReview = ({ movieId }) => {
+  const [reviews, setReviews] = useState([]);
 
-const ReviewContent = ({ reviews }) => {
-  // console.log(reviews);
-  // const { userInfo } = useContext(LoginContext);
+  const getReviews = async () => {
+    try {
+      const result = await toServerApi.getMovieReviewList(movieId);
+
+      console.log(result);
+
+      setReviews(result.data.movieReviews);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getReviews();
+  }, []);
 
   return (
     <>
-      <Helmet>
-        <title>Review List | ReviewApp</title>
-      </Helmet>
-      <SortHeader>
-        <DescBtn>최근 리뷰</DescBtn>
-        <BestBtn>베스트 리뷰</BestBtn>
-      </SortHeader>
-      {reviews &&
-        reviews.map((review, index) => (
-          <Container key={index}>
-            <Link to={`/movie/${review.movie.movieId}`}>
-              <PosterAndEval>
-                <Poster
-                  imageUrl={
-                    review.movie.poster
-                      ? `https://image.tmdb.org/t/p/w200${review.movie.poster}`
-                      : require('../../assets/noPoster.png')
-                  }
-                />
-              </PosterAndEval>
-            </Link>
-            <Box>
-              <MovieInfo>
-                <MovieTitle>{review.movie.movieTitle}</MovieTitle>
-                <MovieSub>
-                  {review.movie.genres.map((genre, index) =>
-                    index !== review.movie.genres.length - 1
-                      ? `${genre.name}/`
-                      : genre.name,
-                  )}
-                </MovieSub>
-              </MovieInfo>
+      <Container>
+        <ListInfo>
+          <Head>리뷰</Head>
+          <ReviewIcon />
+          <ReveiwsLength>{reviews.length}</ReveiwsLength>
+        </ListInfo>
+        {reviews &&
+          reviews.length > 0 &&
+          reviews.map((review, index) => (
+            <Box key={index}>
               <UserAndEval>
                 <UserInfo>
                   {review.user.profile.thumnail === 'default' ? (
@@ -269,7 +231,7 @@ const ReviewContent = ({ reviews }) => {
                     <UserImage imageUrl={review.user.profile.thumnail} />
                   )}
                   <InfoBox>
-                    <Name>{review.user.profile.username}</Name>
+                    <Name>{review.user.profile.username} </Name>
                     <Date>{review.formatCreatedAt}</Date>
                   </InfoBox>
                 </UserInfo>
@@ -308,10 +270,10 @@ const ReviewContent = ({ reviews }) => {
                 </GoReviewBox>
               </Main>
             </Box>
-          </Container>
-        ))}
+          ))}
+      </Container>
     </>
   );
 };
 
-export default ReviewContent;
+export default MovieDetailReview;

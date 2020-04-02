@@ -14,6 +14,7 @@ import Collection from 'Routes/Collection';
 import WriteReview from 'Routes/WriteReview';
 import Mypage from 'Routes/Mypage';
 import ReviewDetail from 'Routes/ReviewDetail';
+import EditReview from 'Routes/EditReview';
 
 export default () => (
   <Router>
@@ -26,6 +27,7 @@ export default () => (
         <Route path="/movie/:id" component={Detail} />
         <Route path="/collection/:id" component={Collection} />
         <Route path="/writeReview/:id" component={WriteReview} />
+        <Route path="/editReview/:id" component={EditReview} />
         <Route path="/user/:id" component={Mypage} />
         <Route path="/review/:id" component={ReviewDetail} />
         <Redirect from="*" to="/" />

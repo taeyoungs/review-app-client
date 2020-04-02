@@ -10,7 +10,6 @@ const ReviewDetail = props => {
   const [result, setResult] = useState({
     review: {},
     movie: {},
-    formatCreatedAt: '',
   });
   const [loading, setLoading] = useState(true);
   const {
@@ -18,6 +17,10 @@ const ReviewDetail = props => {
       params: { id },
     },
   } = props;
+
+  // const temp = (date) => {
+  //   return new Date(date).toLocaleString
+  // }
 
   const getReview = async () => {
     try {
@@ -32,7 +35,6 @@ const ReviewDetail = props => {
           ...prevState,
           review: result.data.review,
           movie,
-          formatCreatedAt: result.data.formatCreatedAt,
         };
       });
     } catch (error) {
