@@ -12,19 +12,19 @@ export const movieApi = {
   nowPlaying: () => axiosForMovie.get('movie/now_playing'),
   upComing: () => axiosForMovie.get('movie/upcoming'),
   genre: () => axiosForMovie.get('genre/movie/list'),
-  search: term =>
+  search: (term) =>
     axiosForMovie.get('search/movie', {
       params: {
         query: term,
       },
     }),
-  movieDetail: id =>
+  movieDetail: (id) =>
     axiosForMovie.get(`movie/${id}`, {
       params: {
         append_to_response: 'videos',
       },
     }),
-  collection: id => axiosForMovie.get(`collection/${id}`),
+  collection: (id) => axiosForMovie.get(`collection/${id}`),
 };
 
 //encodeURIComponent(term)
@@ -37,13 +37,13 @@ const axiosForAuth = Axios.create({
 // axiosForAuth.defaults.withCredentials = true;
 
 export const toAuthApi = {
-  join: payload => axiosForAuth.post(`join/local`, payload),
-  exists: payload =>
+  join: (payload) => axiosForAuth.post(`join/local`, payload),
+  exists: (payload) =>
     axiosForAuth.get(`exists/${payload.type}/${payload.value}`),
-  Slogin: payload => axiosForAuth.post(`login/local`, payload),
+  Slogin: (payload) => axiosForAuth.post(`login/local`, payload),
   Slogout: () => axiosForAuth.post(`logout`),
   check: () => axiosForAuth.get(`check`),
-  tempPwChange: email => axiosForAuth.post(`tempPwChange`, email),
+  tempPwChange: (email) => axiosForAuth.post(`tempPwChange`, email),
 };
 
 const axiosForServer = Axios.create({
@@ -52,14 +52,15 @@ const axiosForServer = Axios.create({
 });
 
 export const toServerApi = {
-  createUser: payload => axiosForServer.post(`/user`, payload),
-  insertReview: payload => axiosForServer.post(`/reviews/upload`, payload),
-  getReview: id => axiosForServer.get(`/reviews/${id}`),
+  createUser: (payload) => axiosForServer.post(`/user`, payload),
+  insertReview: (payload) => axiosForServer.post(`/reviews/upload`, payload),
+  getReview: (id) => axiosForServer.get(`/reviews/${id}`),
   getReviewList: () => axiosForServer.get(`/reviews/list`),
-  deleteReview: id => axiosForServer.get(`/reviews/${id}/delete`),
-  getMovieReviewList: id => axiosForServer.get(`/reviews/movie/${id}`),
-  editReview: payload => axiosForServer.post(`/reviews/edit-review`, payload),
-  likeReview: id => axiosForServer.post(`/reviews/:id/like-review`),
+  deleteReview: (id) => axiosForServer.get(`/reviews/${id}/delete`),
+  getMovieReviewList: (id) => axiosForServer.get(`/reviews/movie/${id}`),
+  editReview: (payload) => axiosForServer.post(`/reviews/edit-review`, payload),
+  likeReview: (id) => axiosForServer.post(`/reviews/${id}/like-review`),
+  dislikeReview: (id) => axiosForServer.post(`/reviews/${id}/dislike-review`),
 };
 
 const axiosForUser = Axios.create({
@@ -68,5 +69,5 @@ const axiosForUser = Axios.create({
 });
 
 export const toUserApi = {
-  changePassword: payload => axiosForUser.post(`/change-password`, payload),
+  changePassword: (payload) => axiosForUser.post(`/change-password`, payload),
 };

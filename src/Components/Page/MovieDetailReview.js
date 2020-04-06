@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import StarRatings from 'react-star-ratings';
@@ -7,7 +7,12 @@ import { Angry } from '@styled-icons/fa-regular';
 import { Smile } from '@styled-icons/boxicons-regular';
 import { EmotionNormal } from '@styled-icons/remix-line';
 import { Detail } from '@styled-icons/boxicons-regular';
+import { DeleteForever } from '@styled-icons/material';
+import { Like } from '@styled-icons/evil/';
+import { Edit } from '@styled-icons/feather';
+import { CommentDetail } from '@styled-icons/boxicons-solid';
 import { toServerApi } from 'api';
+import LoginContext from 'context/Login.context';
 import DefaultImage from '../../assets/thumnail.png';
 
 const Container = styled('div')`
@@ -65,12 +70,12 @@ const UserImage = styled('div')`
   height: 55px;
   margin: 10px;
   margin-top: 0px;
-  background-image: url(${props => props.imageUrl});
+  background-image: url(${(props) => props.imageUrl});
   background-position: center center;
   background-size: cover;
 `;
 
-const DefaultThumnail = styled.img.attrs(props => ({
+const DefaultThumnail = styled.img.attrs((props) => ({
   src: DefaultImage,
   alt: 'DefaultImage',
 }))`
@@ -106,7 +111,7 @@ const UserEval = styled('div')`
 const Normal = styled(EmotionNormal)`
   width: 33px;
   height: 33px;
-  color: ${props =>
+  color: ${(props) =>
     props.check === 2 ? '#f1c40f' : 'rgba(255, 255, 255, 0.4)'};
   margin: 5px;
 `;
@@ -114,7 +119,7 @@ const Normal = styled(EmotionNormal)`
 const Ang = styled(Angry)`
   width: 29px;
   height: 29px;
-  color: ${props =>
+  color: ${(props) =>
     props.check === 1 ? '#EA2027' : 'rgba(255, 255, 255, 0.4)'};
   margin: 5px;
 `;
@@ -122,7 +127,7 @@ const Ang = styled(Angry)`
 const Smil = styled(Smile)`
   width: 33px;
   height: 33px;
-  color: ${props =>
+  color: ${(props) =>
     props.check === 3 ? '#009432' : 'rgba(255, 255, 255, 0.4)'};
   margin: 5px;
 `;
@@ -135,7 +140,7 @@ const StarBox = styled('div')`
 const Main = styled('div')`
   padding: 15px;
   margin-bottom: 50px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 `;
 
 const Title = styled('div')`
@@ -192,8 +197,76 @@ const DetailIcon = styled(Detail)`
   margin-right: 10px;
 `;
 
+const EmptyReview = styled('div')`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  color: #f1c40f;
+  opacity: 0.7;
+`;
+
+const EtcBox = styled('div')`
+  height: 30px;
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 14px;
+  margin: 10px;
+  margin-bottom: 5px;
+`;
+
+const LikeIcon = styled(Like)`
+  width: 24px;
+  height: 24px;
+  margin-right: 3px;
+  margin-left: 5px;
+`;
+
+const EditIcon = styled(Edit)`
+  width: 19px;
+  height: 19px;
+  margin: 0 10px;
+  cursor: pointer;
+  :hover {
+    color: #f1c40f;
+  }
+`;
+
+const DeleteIcon = styled(DeleteForever)`
+  width: 22px;
+  height: 22px;
+  margin: 0 5px;
+  cursor: pointer;
+  :hover {
+    color: #f1c40f;
+  }
+`;
+
+const CommentIcon = styled(CommentDetail)`
+  width: 18px;
+  height: 18px;
+  margin-right: 5px;
+  margin-left: 15px;
+`;
+
 const MovieDetailReview = ({ movieId }) => {
   const [reviews, setReviews] = useState([]);
+
+  const { userInfo } = useContext(LoginContext);
+
+  const handleDelete = async (reviewId) => {
+    try {
+      await toServerApi.deleteReview(reviewId).then((res) => {
+        if (res.status === 200) {
+          window.location.reload();
+        }
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const getReviews = async () => {
     try {
@@ -219,6 +292,9 @@ const MovieDetailReview = ({ movieId }) => {
           <ReviewIcon />
           <ReveiwsLength>{reviews.length}</ReveiwsLength>
         </ListInfo>
+        {reviews && reviews.length === 0 && (
+          <EmptyReview>등록된 리뷰가 없습니다.</EmptyReview>
+        )}
         {reviews &&
           reviews.length > 0 &&
           reviews.map((review, index) => (
@@ -268,6 +344,22 @@ const MovieDetailReview = ({ movieId }) => {
                     </GoReviewBtn>
                   </Link>
                 </GoReviewBox>
+                <EtcBox>
+                  {review.comment.length}
+                  <CommentIcon />
+                  {review.views}
+                  <LikeIcon />
+                  {review.user._id === userInfo.id ? (
+                    <>
+                      <DeleteIcon onClick={() => handleDelete(review._id)} />
+                    </>
+                  ) : null}
+                  {review.user._id === userInfo.id ? (
+                    <Link to={`/editReview/${review._id}`}>
+                      <EditIcon />
+                    </Link>
+                  ) : null}
+                </EtcBox>
               </Main>
             </Box>
           ))}

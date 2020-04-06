@@ -7,6 +7,19 @@ const ReviewContent = React.lazy(() => import('Components/Page/ReviewContent'));
 const Review = () => {
   const [reviews, setReviews] = useState([]);
 
+  const handleDelete = async (reviewId) => {
+    try {
+      await toServerApi.deleteReview(reviewId).then((res) => {
+        if (res.status === 200) {
+          window.location.href = '/#/review';
+        }
+      });
+    } catch (error) {
+      console.log(error);
+      window.location.href = '/';
+    }
+  };
+
   const getResult = async () => {
     try {
       const result = await toServerApi.getReviewList();
@@ -23,7 +36,7 @@ const Review = () => {
 
   return (
     <Suspense fallback={<Loader />}>
-      <ReviewContent reviews={reviews} />
+      <ReviewContent reviews={reviews} handleDelete={handleDelete} />
     </Suspense>
   );
 };

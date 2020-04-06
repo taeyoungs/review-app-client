@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
 import LoginContext from 'context/Login.context';
-import { DeleteForever } from '@styled-icons/material';
 import StarRatings from 'react-star-ratings';
 import { toServerApi } from 'api';
 import DefaultImage from '../../assets/thumnail.png';
@@ -11,6 +10,7 @@ import { EmotionNormal } from '@styled-icons/remix-line';
 import { Angry } from '@styled-icons/fa-regular';
 import { Smile } from '@styled-icons/boxicons-regular';
 import { Star } from '@styled-icons/boxicons-solid';
+import { DeleteForever } from '@styled-icons/material';
 import { Like } from '@styled-icons/evil/';
 import { Edit } from '@styled-icons/feather';
 import { CommentDetail } from '@styled-icons/boxicons-solid';
@@ -38,7 +38,7 @@ const PosterAndEval = styled('div')`
 const Poster = styled('div')`
   background-size: cover;
   background-position: center center;
-  background-image: url(${props => props.imageUrl});
+  background-image: url(${(props) => props.imageUrl});
   height: 300px;
   margin-bottom: 10px;
 `;
@@ -91,12 +91,12 @@ const UserImage = styled('div')`
   height: 55px;
   margin: 10px;
   margin-top: 0px;
-  background-image: url(${props => props.imageUrl});
+  background-image: url(${(props) => props.imageUrl});
   background-position: center center;
   background-size: cover;
 `;
 
-const DefaultThumnail = styled.img.attrs(props => ({
+const DefaultThumnail = styled.img.attrs((props) => ({
   src: DefaultImage,
   alt: 'DefaultImage',
 }))`
@@ -132,7 +132,7 @@ const UserEval = styled('div')`
 const Normal = styled(EmotionNormal)`
   width: 33px;
   height: 33px;
-  color: ${props =>
+  color: ${(props) =>
     props.check === 2 ? '#f1c40f' : 'rgba(255, 255, 255, 0.4)'};
   margin: 5px;
 `;
@@ -140,7 +140,7 @@ const Normal = styled(EmotionNormal)`
 const Ang = styled(Angry)`
   width: 29px;
   height: 29px;
-  color: ${props =>
+  color: ${(props) =>
     props.check === 1 ? '#EA2027' : 'rgba(255, 255, 255, 0.4)'};
   margin: 5px;
 `;
@@ -148,7 +148,7 @@ const Ang = styled(Angry)`
 const Smil = styled(Smile)`
   width: 33px;
   height: 33px;
-  color: ${props =>
+  color: ${(props) =>
     props.check === 3 ? '#009432' : 'rgba(255, 255, 255, 0.4)'};
   margin: 5px;
 `;
@@ -234,9 +234,9 @@ const LikeBtn = styled('div')`
   display: flex;
   align-items: center;
   cursor: pointer;
-  color: rgba(255, 255, 255, 0.5);
+  color: ${(props) => (props.like ? '#f1c40f' : 'rgba(255, 255, 255, 0.5)')};
   :hover {
-    color: #f1c40f;
+    color: ${(props) => (props.like ? 'rgba(255, 255, 255, 0.5)' : '#f1c40f')};
   }
 `;
 
@@ -264,21 +264,9 @@ const EditIcon = styled(Edit)`
 
 const CommentCount = styled('div')``;
 
-const ReviewContent = ({ result }) => {
+const ReviewContent = ({ result, handleDelete, handleLike, handleDislike }) => {
   const { userInfo } = useContext(LoginContext);
   // console.log(result);
-
-  const handleDelete = async () => {
-    try {
-      await toServerApi.deleteReview(result.review._id).then(res => {
-        if (res.status === 200) {
-          window.location.href = '/#/review';
-        }
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   return (
     <>
@@ -361,27 +349,39 @@ const ReviewContent = ({ result }) => {
             <Title>{result.review.title}</Title>
             <Content>{result.review.content}</Content>
           </Main>
-          <SubMenu>
-            <LikeBtn>
-              <LikeIcon />
-              추천
-            </LikeBtn>
-            {userInfo.id === result.review.user._id ? (
-              <DeleteBtn>
-                <DeleteIcon onClick={handleDelete} />
-                삭제 •
-              </DeleteBtn>
-            ) : null}
+          {userInfo && (
+            <SubMenu>
+              {userInfo.likeReview &&
+              userInfo.likeReview.length > 0 &&
+              userInfo.likeReview.includes(result.review._id) ? (
+                <LikeBtn like={true} onClick={handleDislike}>
+                  <LikeIcon />
+                  추천
+                </LikeBtn>
+              ) : (
+                <LikeBtn like={false} onClick={handleLike}>
+                  <LikeIcon />
+                  추천
+                </LikeBtn>
+              )}
 
-            {userInfo.id === result.review.user._id ? (
-              <Link to={`/editReview/${result.review._id}`}>
-                <EditBtn>
-                  <EditIcon />
-                  수정 •
-                </EditBtn>
-              </Link>
-            ) : null}
-          </SubMenu>
+              {userInfo.id === result.review.user._id ? (
+                <DeleteBtn>
+                  <DeleteIcon onClick={handleDelete} />
+                  삭제 •
+                </DeleteBtn>
+              ) : null}
+
+              {userInfo.id === result.review.user._id ? (
+                <Link to={`/editReview/${result.review._id}`}>
+                  <EditBtn>
+                    <EditIcon />
+                    수정 •
+                  </EditBtn>
+                </Link>
+              ) : null}
+            </SubMenu>
+          )}
         </Box>
       </Container>
     </>

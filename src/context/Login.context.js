@@ -6,6 +6,7 @@ const LoginContext = createContext({
   Clogin: () => {},
   Clogout: () => {},
   initializeUserInfo: () => {},
+  updateLikeReview: () => {},
 });
 
 export default LoginContext;

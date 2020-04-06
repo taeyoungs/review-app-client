@@ -10,6 +10,9 @@ import { EmotionNormal } from '@styled-icons/remix-line';
 import { Angry } from '@styled-icons/fa-regular';
 import { Smile } from '@styled-icons/boxicons-regular';
 import { Detail } from '@styled-icons/boxicons-regular';
+import { Like } from '@styled-icons/evil/';
+import { Edit } from '@styled-icons/feather';
+import { CommentDetail } from '@styled-icons/boxicons-solid';
 
 const Box = styled('div')`
   color: white;
@@ -33,7 +36,7 @@ const PosterAndEval = styled('div')`
 const Poster = styled('div')`
   background-size: cover;
   background-position: center center;
-  background-image: url(${props => props.imageUrl});
+  background-image: url(${(props) => props.imageUrl});
   height: 100%;
   :hover {
     opacity: 0.6;
@@ -79,12 +82,12 @@ const UserImage = styled('div')`
   height: 55px;
   margin: 10px;
   margin-top: 0px;
-  background-image: url(${props => props.imageUrl});
+  background-image: url(${(props) => props.imageUrl});
   background-position: center center;
   background-size: cover;
 `;
 
-const DefaultThumnail = styled.img.attrs(props => ({
+const DefaultThumnail = styled.img.attrs((props) => ({
   src: DefaultImage,
   alt: 'DefaultImage',
 }))`
@@ -115,7 +118,7 @@ const UserEval = styled('div')`
 const Normal = styled(EmotionNormal)`
   width: 33px;
   height: 33px;
-  color: ${props =>
+  color: ${(props) =>
     props.check === 2 ? '#f1c40f' : 'rgba(255, 255, 255, 0.4)'};
   margin: 5px;
 `;
@@ -123,7 +126,7 @@ const Normal = styled(EmotionNormal)`
 const Ang = styled(Angry)`
   width: 29px;
   height: 29px;
-  color: ${props =>
+  color: ${(props) =>
     props.check === 1 ? '#EA2027' : 'rgba(255, 255, 255, 0.4)'};
   margin: 5px;
 `;
@@ -131,7 +134,7 @@ const Ang = styled(Angry)`
 const Smil = styled(Smile)`
   width: 33px;
   height: 33px;
-  color: ${props =>
+  color: ${(props) =>
     props.check === 3 ? '#009432' : 'rgba(255, 255, 255, 0.4)'};
   margin: 5px;
 `;
@@ -143,7 +146,7 @@ const StarBox = styled('div')`
 
 const Main = styled('div')`
   padding: 15px;
-  margin-bottom: 50px;
+  margin-bottom: 40px;
 `;
 
 const Title = styled('div')`
@@ -179,7 +182,7 @@ const DescBtn = styled('div')`
 `;
 
 const BestBtn = styled('div')`
-  color: ${props => (props.sort ? '#f1c40f' : 'rgba(255, 255, 255, 0.7)')};
+  color: ${(props) => (props.sort ? '#f1c40f' : 'rgba(255, 255, 255, 0.7)')};
   padding: 20px;
   cursor: pointer;
 `;
@@ -223,9 +226,53 @@ const Date = styled('div')`
   color: rgba(255, 255, 255, 0.7);
 `;
 
-const ReviewContent = ({ reviews }) => {
+const EtcBox = styled('div')`
+  height: 30px;
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 14px;
+  margin: 10px;
+`;
+
+const LikeIcon = styled(Like)`
+  width: 24px;
+  height: 24px;
+  margin-right: 3px;
+  margin-left: 5px;
+`;
+
+const EditIcon = styled(Edit)`
+  width: 19px;
+  height: 19px;
+  margin: 0 10px;
+  cursor: pointer;
+  :hover {
+    color: #f1c40f;
+  }
+`;
+
+const DeleteIcon = styled(DeleteForever)`
+  width: 22px;
+  height: 22px;
+  margin: 0 5px;
+  cursor: pointer;
+  :hover {
+    color: #f1c40f;
+  }
+`;
+
+const CommentIcon = styled(CommentDetail)`
+  width: 18px;
+  height: 18px;
+  margin-right: 5px;
+  margin-left: 15px;
+`;
+
+const ReviewContent = ({ reviews, handleDelete }) => {
   // console.log(reviews);
-  // const { userInfo } = useContext(LoginContext);
+  const { userInfo } = useContext(LoginContext);
 
   return (
     <>
@@ -239,8 +286,8 @@ const ReviewContent = ({ reviews }) => {
       {reviews &&
         reviews.map((review, index) => (
           <Container key={index}>
-            <Link to={`/movie/${review.movie.movieId}`}>
-              <PosterAndEval>
+            <PosterAndEval>
+              <Link to={`/movie/${review.movie.movieId}`}>
                 <Poster
                   imageUrl={
                     review.movie.poster
@@ -248,8 +295,8 @@ const ReviewContent = ({ reviews }) => {
                       : require('../../assets/noPoster.png')
                   }
                 />
-              </PosterAndEval>
-            </Link>
+              </Link>
+            </PosterAndEval>
             <Box>
               <MovieInfo>
                 <MovieTitle>{review.movie.movieTitle}</MovieTitle>
@@ -307,6 +354,22 @@ const ReviewContent = ({ reviews }) => {
                   </Link>
                 </GoReviewBox>
               </Main>
+              <EtcBox>
+                {review.comment.length}
+                <CommentIcon />
+                {review.views}
+                <LikeIcon />
+                {review.user._id === userInfo.id ? (
+                  <>
+                    <DeleteIcon onClick={() => handleDelete(review._id)} />
+                  </>
+                ) : null}
+                {review.user._id === userInfo.id ? (
+                  <Link to={`/editReview/${review._id}`}>
+                    <EditIcon />
+                  </Link>
+                ) : null}
+              </EtcBox>
             </Box>
           </Container>
         ))}
