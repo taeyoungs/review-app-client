@@ -177,12 +177,14 @@ const SortHeader = styled('div')`
 const DescBtn = styled('div')`
   margin-left: 80px;
   padding: 20px;
-  color: #f1c40f;
+  color: ${(props) =>
+    props.sort === 'recent' ? '#f1c40f' : 'rgba(255, 255, 255, 0.7)'};
   cursor: pointer;
 `;
 
 const BestBtn = styled('div')`
-  color: ${(props) => (props.sort ? '#f1c40f' : 'rgba(255, 255, 255, 0.7)')};
+  color: ${(props) =>
+    props.sort === 'best' ? '#f1c40f' : 'rgba(255, 255, 255, 0.7)'};
   padding: 20px;
   cursor: pointer;
 `;
@@ -270,7 +272,7 @@ const CommentIcon = styled(CommentDetail)`
   margin-left: 15px;
 `;
 
-const ReviewContent = ({ reviews, handleDelete }) => {
+const ReviewContent = ({ reviews, handleDelete, recent, best, sortType }) => {
   // console.log(reviews);
   const { userInfo } = useContext(LoginContext);
 
@@ -280,8 +282,12 @@ const ReviewContent = ({ reviews, handleDelete }) => {
         <title>Review List | ReviewApp</title>
       </Helmet>
       <SortHeader>
-        <DescBtn>최근 리뷰</DescBtn>
-        <BestBtn>베스트 리뷰</BestBtn>
+        <DescBtn sort={sortType} onClick={recent}>
+          최근 리뷰
+        </DescBtn>
+        <BestBtn sort={sortType} onClick={best}>
+          베스트 리뷰
+        </BestBtn>
       </SortHeader>
       {reviews &&
         reviews.map((review, index) => (

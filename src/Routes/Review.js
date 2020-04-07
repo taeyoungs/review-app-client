@@ -6,6 +6,7 @@ const ReviewContent = React.lazy(() => import('Components/Page/ReviewContent'));
 
 const Review = () => {
   const [reviews, setReviews] = useState([]);
+  const [sortType, setSortType] = useState('recent');
 
   const handleDelete = async (reviewId) => {
     try {
@@ -20,23 +21,43 @@ const Review = () => {
     }
   };
 
-  const getResult = async () => {
+  const getRecentResult = async () => {
     try {
-      const result = await toServerApi.getReviewList();
+      const result = await toServerApi.getReviewList('recent');
       // console.log(result);
       setReviews(result.data.reviews);
     } catch (error) {
       console.log(error);
+    } finally {
+      setSortType('recent');
+    }
+  };
+
+  const getBestResult = async () => {
+    try {
+      const result = await toServerApi.getReviewList('best');
+      // console.log(result);
+      setReviews(result.data.reviews);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setSortType('best');
     }
   };
 
   useEffect(() => {
-    getResult();
+    getRecentResult();
   }, []);
 
   return (
     <Suspense fallback={<Loader />}>
-      <ReviewContent reviews={reviews} handleDelete={handleDelete} />
+      <ReviewContent
+        reviews={reviews}
+        handleDelete={handleDelete}
+        recent={getRecentResult}
+        best={getBestResult}
+        sortType={sortType}
+      />
     </Suspense>
   );
 };

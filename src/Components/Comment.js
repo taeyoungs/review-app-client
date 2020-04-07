@@ -250,8 +250,13 @@ const Comment = ({ reviewId }) => {
   };
 
   const handleDelete = async (commentId) => {
+    const payload = {
+      reviewId,
+      commentId,
+    };
+
     try {
-      await toServerApi.deleteComment(commentId);
+      await toServerApi.deleteComment(payload);
     } catch (error) {
       console.log(error);
     } finally {

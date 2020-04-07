@@ -247,7 +247,7 @@ const DeleteIcon = styled(DeleteForever)`
 const CommentIcon = styled(CommentDetail)`
   width: 18px;
   height: 18px;
-  margin-right: 5px;
+  margin-right: 8px;
   margin-left: 15px;
 `;
 
