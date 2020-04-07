@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import styled from 'styled-components';
 import Helmet from 'react-helmet';
 import StarRatings from 'react-star-ratings';
@@ -13,6 +13,7 @@ import MovieTabs from 'Components/MovieTabs';
 import { movieApi } from 'api';
 import noPoster from 'assets/noPoster.png';
 import MovieDetailReview from 'Components/Page/MovieDetailReview';
+import LoginContext from 'context/Login.context';
 
 const Container = styled('div')`
   position: relative;
@@ -30,7 +31,7 @@ const Backdrop = styled('div')`
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: url(${props => props.imageUrl});
+  background-image: url(${(props) => props.imageUrl});
   background-position: top center;
   background-size: cover;
   filter: blur(3px);
@@ -55,7 +56,7 @@ const Content = styled('div')`
 const Cover = styled('div')`
   width: 40%;
   height: 100%;
-  background-image: url(${props => props.imageUrl});
+  background-image: url(${(props) => props.imageUrl});
   background-position: center center;
   background-size: cover;
   border-radius: 5px;
@@ -176,13 +177,15 @@ const FiCalendar = styled(Calendar)`
   color: #f1c40f;
 `;
 
-const Detail = props => {
+const Detail = (props) => {
   const overviewText = React.createRef();
 
   const [result, setResult] = useState();
   const [error, setError] = useState();
   const [loading, setLoading] = useState(true);
   const [isClick, setIsClick] = useState(true);
+
+  const { userInfo } = useContext(LoginContext);
 
   const {
     match: {
@@ -191,7 +194,7 @@ const Detail = props => {
     history: { push },
   } = props;
 
-  const handleClick = overview => {
+  const handleClick = (overview) => {
     if (isClick) {
       overviewText.current.innerText = overview;
       setIsClick(false);
@@ -216,6 +219,10 @@ const Detail = props => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const alertLogin = () => {
+    alert('로그인 후에 이용해주세요.');
   };
 
   useEffect(() => {
@@ -248,12 +255,19 @@ const Detail = props => {
           <Data>
             <FlexBox>
               <Title>{result.title}</Title>
-              <Link to={`/writeReview/${Number(id)}`}>
-                <WriteReview>
+              {userInfo ? (
+                <Link to={`/writeReview/${Number(id)}`}>
+                  <WriteReview>
+                    <ReviewIcon />
+                    리뷰 작성
+                  </WriteReview>
+                </Link>
+              ) : (
+                <WriteReview onClick={alertLogin}>
                   <ReviewIcon />
                   리뷰 작성
                 </WriteReview>
-              </Link>
+              )}
             </FlexBox>
             <ItemContainer>
               <FiCalendar className="shadow" />

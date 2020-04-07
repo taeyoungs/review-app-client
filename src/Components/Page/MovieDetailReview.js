@@ -349,12 +349,12 @@ const MovieDetailReview = ({ movieId }) => {
                   <CommentIcon />
                   {review.views}
                   <LikeIcon />
-                  {review.user._id === userInfo.id ? (
+                  {userInfo !== null && review.user._id === userInfo.id ? (
                     <>
                       <DeleteIcon onClick={() => handleDelete(review._id)} />
                     </>
                   ) : null}
-                  {review.user._id === userInfo.id ? (
+                  {userInfo !== null && review.user._id === userInfo.id ? (
                     <Link to={`/editReview/${review._id}`}>
                       <EditIcon />
                     </Link>

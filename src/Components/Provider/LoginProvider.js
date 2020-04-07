@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import LoginContext from '../../context/Login.context';
-import { toAuthApi, movieApi } from '../../api';
+import { toAuthApi } from '../../api';
 import storage from '../../lib/storage';
 
 const LoginProvider = ({ children }) => {

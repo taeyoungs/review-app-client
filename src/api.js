@@ -61,6 +61,10 @@ export const toServerApi = {
   editReview: (payload) => axiosForServer.post(`/reviews/edit-review`, payload),
   likeReview: (id) => axiosForServer.post(`/reviews/${id}/like-review`),
   dislikeReview: (id) => axiosForServer.post(`/reviews/${id}/dislike-review`),
+  createComment: (payload) => axiosForServer.post(`/comments/create`, payload),
+  deleteComment: (id) => axiosForServer.post(`/comments/${id}/delete`),
+  updateComment: (payload) => axiosForServer.post(`/comments/update`, payload),
+  getReviewComments: (id) => axiosForServer.get(`/comments/${id}`),
 };
 
 const axiosForUser = Axios.create({

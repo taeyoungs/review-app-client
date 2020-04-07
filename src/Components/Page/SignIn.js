@@ -1,8 +1,7 @@
-import React, { useState, useContext } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { Cross } from '@styled-icons/entypo';
 import { toAuthApi } from 'api';
-import LoginContext from '../../context/Login.context';
 import storage from '../../lib/storage';
 
 const BackDrop = styled('div')`
@@ -13,7 +12,7 @@ const BackDrop = styled('div')`
   z-index: 2453;
   top: 0;
   left: 0;
-  display: ${props => (props.show ? 'block' : 'none')};
+  display: ${(props) => (props.show ? 'block' : 'none')};
   overflow: hidden;
 `;
 
@@ -61,7 +60,7 @@ const SignInForm = styled('form')`
   border-bottom: 2px solid rgba(0, 0, 0, 0.8);
 `;
 
-const IdInput = styled.input.attrs(props => ({
+const IdInput = styled.input.attrs((props) => ({
   type: 'email',
   placeholder: '아이디(이메일 주소)',
   name: 'email',
@@ -70,7 +69,7 @@ const IdInput = styled.input.attrs(props => ({
   margin-bottom: 20px;
 `;
 
-const PwInput = styled.input.attrs(props => ({
+const PwInput = styled.input.attrs((props) => ({
   type: 'password',
   placeholder: '비밀번호',
   name: 'password',
@@ -139,7 +138,7 @@ const SignIn = ({
   state,
   goPwChange,
 }) => {
-  const handleChangeInputEmail = event => {
+  const handleChangeInputEmail = (event) => {
     const { value } = event.target;
     setState({
       ...state,
@@ -147,7 +146,7 @@ const SignIn = ({
     });
   };
 
-  const handleChangeInputPassword = event => {
+  const handleChangeInputPassword = (event) => {
     const { value } = event.target;
     setState({
       ...state,
@@ -155,7 +154,7 @@ const SignIn = ({
     });
   };
 
-  const handleSubmit = async event => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const { email, password } = state;
     const payload = {
@@ -164,7 +163,7 @@ const SignIn = ({
     };
 
     try {
-      await toAuthApi.Slogin(payload).then(res => {
+      await toAuthApi.Slogin(payload).then((res) => {
         if (res.status === 200) {
           // Clogin(res.data.profile);
           storage.set('userInfo', res.data);

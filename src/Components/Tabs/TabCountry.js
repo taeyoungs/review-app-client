@@ -82,6 +82,7 @@ const TabCountry = ({ id }) => {
             <Name>{coun.name}</Name>
           </Company>
         ))}
+      {error && 'Error, Page Not Found'}
     </Container>
   );
 };

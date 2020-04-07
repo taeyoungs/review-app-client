@@ -4,16 +4,17 @@ import Helmet from 'react-helmet';
 import styled from 'styled-components';
 import LoginContext from 'context/Login.context';
 import StarRatings from 'react-star-ratings';
-import { toServerApi } from 'api';
 import DefaultImage from '../../assets/thumnail.png';
 import { EmotionNormal } from '@styled-icons/remix-line';
 import { Angry } from '@styled-icons/fa-regular';
 import { Smile } from '@styled-icons/boxicons-regular';
 import { Star } from '@styled-icons/boxicons-solid';
 import { DeleteForever } from '@styled-icons/material';
-import { Like } from '@styled-icons/evil/';
 import { Edit } from '@styled-icons/feather';
+import { Like } from '@styled-icons/evil/';
 import { CommentDetail } from '@styled-icons/boxicons-solid';
+import Comment from 'Components/Comment';
+// import { toServerApi } from 'api';
 
 const Box = styled('div')`
   height: 100vh;
@@ -161,7 +162,7 @@ const StarBox = styled('div')`
 const Main = styled('div')`
   padding: 15px;
   margin-bottom: 10px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 `;
 
 const Title = styled('div')`
@@ -262,11 +263,13 @@ const EditIcon = styled(Edit)`
   margin-right: 5px;
 `;
 
-const CommentCount = styled('div')``;
-
 const ReviewContent = ({ result, handleDelete, handleLike, handleDislike }) => {
   const { userInfo } = useContext(LoginContext);
   // console.log(result);
+
+  const alertLogin = () => {
+    alert('로그인 후에 이용해주세요.');
+  };
 
   return (
     <>
@@ -349,6 +352,14 @@ const ReviewContent = ({ result, handleDelete, handleLike, handleDislike }) => {
             <Title>{result.review.title}</Title>
             <Content>{result.review.content}</Content>
           </Main>
+          {userInfo === null && (
+            <SubMenu>
+              <LikeBtn like={false} onClick={alertLogin}>
+                <LikeIcon />
+                추천
+              </LikeBtn>
+            </SubMenu>
+          )}
           {userInfo && (
             <SubMenu>
               {userInfo.likeReview &&
@@ -365,14 +376,14 @@ const ReviewContent = ({ result, handleDelete, handleLike, handleDislike }) => {
                 </LikeBtn>
               )}
 
-              {userInfo.id === result.review.user._id ? (
+              {userInfo !== null && userInfo.id === result.review.user._id ? (
                 <DeleteBtn>
                   <DeleteIcon onClick={handleDelete} />
                   삭제 •
                 </DeleteBtn>
               ) : null}
 
-              {userInfo.id === result.review.user._id ? (
+              {userInfo !== null && userInfo.id === result.review.user._id ? (
                 <Link to={`/editReview/${result.review._id}`}>
                   <EditBtn>
                     <EditIcon />
@@ -382,6 +393,7 @@ const ReviewContent = ({ result, handleDelete, handleLike, handleDislike }) => {
               ) : null}
             </SubMenu>
           )}
+          <Comment reviewId={result.review._id} />
         </Box>
       </Container>
     </>
