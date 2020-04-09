@@ -44,6 +44,7 @@ export const toAuthApi = {
   Slogout: () => axiosForAuth.post(`logout`),
   check: () => axiosForAuth.get(`check`),
   tempPwChange: (email) => axiosForAuth.post(`tempPwChange`, email),
+  checkPassword: (payload) => axiosForAuth.post(`checkPassword`, payload),
 };
 
 const axiosForServer = Axios.create({
@@ -74,4 +75,6 @@ const axiosForUser = Axios.create({
 
 export const toUserApi = {
   changePassword: (payload) => axiosForUser.post(`/change-password`, payload),
+  getUserDetail: (id) => axiosForUser.get(`/${id}`),
+  editUserProfile: (payload) => axiosForUser.post(`/edit-profile`, payload),
 };

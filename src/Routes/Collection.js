@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import Helmet from 'react-helmet';
 import { movieApi } from 'api';
-import Loader from 'Components/Loader';
+import Loader from 'Components/Other/Loader';
 
 const Container = styled('div')`
   position: relative;
@@ -20,7 +20,7 @@ const Backdrop = styled('div')`
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: url(${props => props.imageUrl});
+  background-image: url(${(props) => props.imageUrl});
   background-position: top center;
   background-size: cover;
   filter: blur(3px);
@@ -45,7 +45,7 @@ const Content = styled('div')`
 const Cover = styled('div')`
   width: 40%;
   height: 100%;
-  background-image: url(${props => props.imageUrl});
+  background-image: url(${(props) => props.imageUrl});
   background-position: bottom center;
   background-size: cover;
   border-radius: 5px;
@@ -119,7 +119,7 @@ const ImageContainer = styled('div')`
 const Image = styled('div')`
   height: 100%;
   width: 100%;
-  background-image: url(${props => props.imageUrl});
+  background-image: url(${(props) => props.imageUrl});
   background-position: top center;
   background-size: cover;
   border-radius: 3px;
@@ -143,7 +143,7 @@ const Year = styled('div')`
 
 const DLink = styled(Link)``;
 
-const Collection = props => {
+const Collection = (props) => {
   const [result, setResult] = useState();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState();
@@ -201,7 +201,7 @@ const Collection = props => {
           <Overview>{result.overview}</Overview>
           <Grid>
             {result.parts &&
-              result.parts.map(part => (
+              result.parts.map((part) => (
                 <ItemContainer key={part.id}>
                   <ImageContainer>
                     <DLink to={`/movie/${part.id}`}>

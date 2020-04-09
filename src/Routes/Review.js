@@ -1,5 +1,5 @@
 import React, { Suspense, useState, useEffect } from 'react';
-import Loader from 'Components/Loader';
+import Loader from 'Components/Other/Loader';
 import { toServerApi } from 'api';
 
 const ReviewContent = React.lazy(() => import('Components/Page/ReviewContent'));

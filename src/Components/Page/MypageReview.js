@@ -1,11 +1,9 @@
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
-import Helmet from 'react-helmet';
 import styled from 'styled-components';
 import LoginContext from 'context/Login.context';
 import { DeleteForever } from '@styled-icons/material';
 import StarRatings from 'react-star-ratings';
-import DefaultImage from '../../assets/thumnail.png';
 import { EmotionNormal } from '@styled-icons/remix-line';
 import { Angry } from '@styled-icons/fa-regular';
 import { Smile } from '@styled-icons/boxicons-regular';
@@ -13,6 +11,7 @@ import { Detail } from '@styled-icons/boxicons-regular';
 import { Like } from '@styled-icons/evil/';
 import { Edit } from '@styled-icons/feather';
 import { CommentDetail } from '@styled-icons/boxicons-solid';
+import { sortArray } from 'lib/formatFunc';
 
 const Box = styled('div')`
   color: white;
@@ -21,16 +20,14 @@ const Box = styled('div')`
 
 const Container = styled('div')`
   margin: 0 auto;
-  margin-top: 60px;
   width: calc(100% - 600px);
   display: grid;
   grid-template-columns: 0.8fr 5fr;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  margin-bottom: 20px;
 `;
 
 const PosterAndEval = styled('div')`
   height: 220px;
-  padding: 10px;
 `;
 
 const Poster = styled('div')`
@@ -44,75 +41,42 @@ const Poster = styled('div')`
 `;
 
 const MovieInfo = styled('div')`
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   color: white;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
 `;
 
 const MovieTitle = styled('div')`
-  font-size: 22px;
+  font-size: 20px;
   font-weight: 600;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
 `;
 
 const MovieSub = styled('div')`
-  font-size: 12px;
+  font-size: 14px;
   color: rgba(255, 255, 255, 0.8);
-  margin-bottom: 20px;
+`;
+
+const Date = styled('div')`
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 15px;
 `;
 
 // 유저 정보하고 별점
 const UserAndEval = styled('div')`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  margin-bottom: 10px;
-`;
-
-const UserInfo = styled('div')`
   display: flex;
-`;
-
-const EvalBox = styled('div')`
-  display: flex;
-  align-items: center;
-`;
-
-const UserImage = styled('div')`
-  width: 55px;
-  height: 55px;
-  margin: 10px;
-  margin-top: 0px;
-  background-image: url(${(props) => props.imageUrl});
-  background-position: center center;
-  background-size: cover;
-`;
-
-const DefaultThumnail = styled.img.attrs((props) => ({
-  src: DefaultImage,
-  alt: 'DefaultImage',
-}))`
-  width: 55px;
-  height: 55px;
-  margin: 10px;
-  margin-top: 0px;
-`;
-
-const InfoBox = styled('div')`
-  margin: 5px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-`;
-
-const Name = styled('div')`
-  font-weight: 600;
-  font-size: 20px;
   margin-bottom: 10px;
 `;
 
 const UserEval = styled('div')`
   display: flex;
-  flex-direction: row-reverse;
+  align-items: center;
+`;
+
+const EmotionBox = styled('div')`
+  display: flex;
+  align-items: center;
+  margin-right: 10px;
 `;
 
 const Normal = styled(EmotionNormal)`
@@ -120,7 +84,7 @@ const Normal = styled(EmotionNormal)`
   height: 33px;
   color: ${(props) =>
     props.check === 2 ? '#f1c40f' : 'rgba(255, 255, 255, 0.4)'};
-  margin: 5px;
+  margin: 3px;
 `;
 
 const Ang = styled(Angry)`
@@ -128,7 +92,7 @@ const Ang = styled(Angry)`
   height: 29px;
   color: ${(props) =>
     props.check === 1 ? '#EA2027' : 'rgba(255, 255, 255, 0.4)'};
-  margin: 5px;
+  margin: 3px;
 `;
 
 const Smil = styled(Smile)`
@@ -136,7 +100,7 @@ const Smil = styled(Smile)`
   height: 33px;
   color: ${(props) =>
     props.check === 3 ? '#009432' : 'rgba(255, 255, 255, 0.4)'};
-  margin: 5px;
+  margin: 3px;
 `;
 
 const StarBox = styled('div')`
@@ -146,56 +110,13 @@ const StarBox = styled('div')`
 
 const Main = styled('div')`
   padding: 15px;
-  margin-bottom: 40px;
+  margin-bottom: 15px;
 `;
 
 const Title = styled('div')`
   font-size: 20px;
   font-weight: 600;
   margin-bottom: 30px;
-`;
-
-const Content = styled('div')`
-  position: relative;
-  font-size: 16px;
-  height: 230px;
-  overflow: hidden;
-  white-space: pre-wrap;
-  line-height: 1.5;
-`;
-
-const Overlay = styled('div')`
-  position: absolute;
-  width: 100%;
-  height: 180px;
-  bottom: 0;
-  left: 0;
-  background: linear-gradient(to bottom, transparent, rgba(20, 20, 20, 1));
-`;
-
-const SortHeader = styled('div')`
-  height: 80px;
-  width: calc(100% - 100px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-  font-size: 20px;
-  margin: 0 auto;
-  margin-top: 30px;
-  display: flex;
-`;
-
-const DescBtn = styled('div')`
-  margin-left: 80px;
-  padding: 20px;
-  color: ${(props) =>
-    props.sort === 'recent' ? '#f1c40f' : 'rgba(255, 255, 255, 0.7)'};
-  cursor: pointer;
-`;
-
-const BestBtn = styled('div')`
-  color: ${(props) =>
-    props.sort === 'best' ? '#f1c40f' : 'rgba(255, 255, 255, 0.7)'};
-  padding: 20px;
-  cursor: pointer;
 `;
 
 const GoReviewBox = styled('div')`
@@ -223,11 +144,6 @@ const DetailIcon = styled(Detail)`
   margin-right: 10px;
 `;
 
-const Date = styled('div')`
-  font-size: 13px;
-  color: rgba(255, 255, 255, 0.7);
-`;
-
 const EtcBox = styled('div')`
   height: 30px;
   display: flex;
@@ -236,6 +152,8 @@ const EtcBox = styled('div')`
   color: rgba(255, 255, 255, 0.7);
   font-size: 14px;
   margin: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 `;
 
 const LikeIcon = styled(Like)`
@@ -272,23 +190,41 @@ const CommentIcon = styled(CommentDetail)`
   margin-left: 15px;
 `;
 
-const ReviewContent = ({ reviews, handleDelete, recent, best, sortType }) => {
+const Content = styled('div')`
+  position: relative;
+  font-size: 16px;
+  height: 110px;
+  overflow: hidden;
+  white-space: pre-wrap;
+  line-height: 1.5;
+`;
+
+const Overlay = styled('div')`
+  position: absolute;
+  width: 100%;
+  height: 60px;
+  bottom: 0;
+  left: 0;
+  background: linear-gradient(to bottom, transparent, rgba(20, 20, 20, 1));
+`;
+
+const MypageReview = ({ results, handleDelete, best = false }) => {
   // console.log(reviews);
   const { userInfo } = useContext(LoginContext);
 
+  let reviews = [];
+  reviews = sortArray(results, best);
+
+  if (results.length > 3) {
+    reviews.push(results[0]);
+    reviews.push(results[1]);
+    reviews.push(results[2]);
+  } else {
+    reviews = results;
+  }
+
   return (
     <>
-      <Helmet>
-        <title>Review List | ReviewApp</title>
-      </Helmet>
-      <SortHeader>
-        <DescBtn sort={sortType} onClick={recent}>
-          최근 리뷰
-        </DescBtn>
-        <BestBtn sort={sortType} onClick={best}>
-          베스트 리뷰
-        </BestBtn>
-      </SortHeader>
       {reviews &&
         reviews.map((review, index) => (
           <Container key={index}>
@@ -314,35 +250,23 @@ const ReviewContent = ({ reviews, handleDelete, recent, best, sortType }) => {
                   )}
                 </MovieSub>
               </MovieInfo>
+              <Date>{review.formatCreatedAt}</Date>
               <UserAndEval>
-                <UserInfo>
-                  {review.user.profile.thumnail === 'default' ? (
-                    <DefaultThumnail />
-                  ) : (
-                    <UserImage imageUrl={review.user.profile.thumnail} />
-                  )}
-                  <InfoBox>
-                    <Name>{review.user.profile.username}</Name>
-                    <Date>{review.formatCreatedAt}</Date>
-                  </InfoBox>
-                </UserInfo>
                 <UserEval>
-                  <div>
-                    <EvalBox>
-                      <Ang check={review.emotion} />
-                      <Normal check={review.emotion} />
-                      <Smil check={review.emotion} />
-                    </EvalBox>
-                    <StarBox>
-                      <StarRatings
-                        rating={review.star}
-                        starRatedColor="#f1c40f"
-                        starEmptyColor="rgba(255, 255, 255, 0.3)"
-                        starDimension="19px"
-                        starSpacing="2px"
-                      />
-                    </StarBox>
-                  </div>
+                  <EmotionBox>
+                    <Ang check={review.emotion} />
+                    <Normal check={review.emotion} />
+                    <Smil check={review.emotion} />
+                  </EmotionBox>
+                  <StarBox>
+                    <StarRatings
+                      rating={review.star}
+                      starRatedColor="#f1c40f"
+                      starEmptyColor="rgba(255, 255, 255, 0.3)"
+                      starDimension="19px"
+                      starSpacing="2px"
+                    />
+                  </StarBox>
                 </UserEval>
               </UserAndEval>
               <Main>
@@ -383,4 +307,4 @@ const ReviewContent = ({ reviews, handleDelete, recent, best, sortType }) => {
   );
 };
 
-export default ReviewContent;
+export default MypageReview;

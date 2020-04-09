@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import Helmet from 'react-helmet';
 import { movieApi } from 'api';
-import Loader from 'Components/Loader';
+import Loader from 'Components/Other/Loader';
 import StarRating from 'Components/StarRating';
 import { EmotionNormal } from '@styled-icons/remix-line';
 import { Angry } from '@styled-icons/fa-regular';
@@ -39,7 +39,7 @@ const InfoBox = styled('div')`
 const Poster = styled('div')`
   background-size: cover;
   background-position: top;
-  background-image: url(${props => props.imageUrl});
+  background-image: url(${(props) => props.imageUrl});
 `;
 
 const Info = styled('div')`
@@ -70,7 +70,7 @@ const Normal = styled(EmotionNormal)`
   cursor: pointer;
   width: 33px;
   height: 33px;
-  color: ${props => (props.check ? '#f1c40f' : 'rgba(255, 255, 255, 0.4)')};
+  color: ${(props) => (props.check ? '#f1c40f' : 'rgba(255, 255, 255, 0.4)')};
   margin: 5px;
   :hover {
     color: #f1c40f;
@@ -81,7 +81,7 @@ const Ang = styled(Angry)`
   cursor: pointer;
   width: 29px;
   height: 29px;
-  color: ${props => (props.check ? '#EA2027' : 'rgba(255, 255, 255, 0.4)')};
+  color: ${(props) => (props.check ? '#EA2027' : 'rgba(255, 255, 255, 0.4)')};
   margin: 5px;
   :hover {
     color: #ea2027;
@@ -92,7 +92,7 @@ const Smil = styled(Smile)`
   cursor: pointer;
   width: 33px;
   height: 33px;
-  color: ${props => (props.check ? '#009432' : 'rgba(255, 255, 255, 0.4)')};
+  color: ${(props) => (props.check ? '#009432' : 'rgba(255, 255, 255, 0.4)')};
   margin: 5px;
   margin-right: 20px;
   :hover {
@@ -100,7 +100,7 @@ const Smil = styled(Smile)`
   }
 `;
 
-const InputTitle = styled.input.attrs(props => ({
+const InputTitle = styled.input.attrs((props) => ({
   type: 'text',
   placeholder: '제목을 입력해주세요.',
   name: 'title',
@@ -121,7 +121,7 @@ const InputTitle = styled.input.attrs(props => ({
   }
 `;
 
-const ContentArea = styled.textarea.attrs(props => ({
+const ContentArea = styled.textarea.attrs((props) => ({
   name: 'content',
   placeholder: '리뷰를 입력해주세요.',
 }))`
@@ -198,7 +198,7 @@ const SpoiledText = styled('div')`
   margin-bottom: 20px;
 `;
 
-const WriteReview = props => {
+const WriteReview = (props) => {
   const {
     match: {
       params: { id },
@@ -217,8 +217,8 @@ const WriteReview = props => {
     spoiled: false,
   });
 
-  const handleClickEmotion = num => {
-    setReview(prevState => {
+  const handleClickEmotion = (num) => {
+    setReview((prevState) => {
       return {
         ...prevState,
         emotion: num,
@@ -226,10 +226,10 @@ const WriteReview = props => {
     });
   };
 
-  const handleChangeTitle = event => {
+  const handleChangeTitle = (event) => {
     const { value } = event.target;
 
-    setReview(prevState => {
+    setReview((prevState) => {
       return {
         ...prevState,
         title: value,
@@ -237,10 +237,10 @@ const WriteReview = props => {
     });
   };
 
-  const handleTextarea = event => {
+  const handleTextarea = (event) => {
     const { value } = event.target;
 
-    setReview(prevState => {
+    setReview((prevState) => {
       return {
         ...prevState,
         content: value,
@@ -248,16 +248,16 @@ const WriteReview = props => {
     });
   };
 
-  const handleSpoiled = event => {
+  const handleSpoiled = (event) => {
     if (review.spoiled) {
-      setReview(prevState => {
+      setReview((prevState) => {
         return {
           ...prevState,
           spoiled: false,
         };
       });
     } else {
-      setReview(prevState => {
+      setReview((prevState) => {
         return {
           ...prevState,
           spoiled: true,
@@ -266,7 +266,7 @@ const WriteReview = props => {
     }
   };
 
-  const handleSubmit = async event => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
     const payload = {
@@ -285,7 +285,7 @@ const WriteReview = props => {
 
     // console.log(payload);
     try {
-      await toServerApi.insertReview(payload).then(res => {
+      await toServerApi.insertReview(payload).then((res) => {
         if (res.status === 200) {
           window.location.href = `/#/review/${res.data.reviewId}`;
         }

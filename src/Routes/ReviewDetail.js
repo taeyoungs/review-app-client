@@ -1,5 +1,5 @@
 import React, { Suspense, useState, useEffect, useContext } from 'react';
-import Loader from 'Components/Loader';
+import Loader from 'Components/Other/Loader';
 import LoginContext from 'context/Login.context';
 import { toServerApi, movieApi } from 'api';
 

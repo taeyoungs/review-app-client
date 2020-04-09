@@ -7,7 +7,7 @@ import { Clock } from '@styled-icons/fa-regular';
 import { Calendar } from '@styled-icons/boxicons-regular';
 import { Imdb } from '@styled-icons/fa-brands';
 import { RateReview } from '@styled-icons/material-outlined';
-import Loader from 'Components/Loader';
+import Loader from 'Components/Other/Loader';
 import VideoLinks from 'Components/VideoLinks';
 import MovieTabs from 'Components/MovieTabs';
 import { movieApi } from 'api';

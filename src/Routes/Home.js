@@ -1,6 +1,6 @@
 import React, { Suspense, useState, useEffect } from 'react';
 import Helmet from 'react-helmet';
-import Loader from 'Components/Loader';
+import Loader from 'Components/Other/Loader';
 import HomeContent from 'Components/Page/HomeContent';
 import { movieApi } from 'api';
 import BoxOffice from 'Components/BoxOffice';
@@ -14,7 +14,7 @@ const Home = () => {
   const [error, setError] = useState();
   const [isClick, setIsClick] = useState(false);
 
-  const handleClick = isClick => {
+  const handleClick = (isClick) => {
     if (isClick) {
       setIsClick(false);
     } else {

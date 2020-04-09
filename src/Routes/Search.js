@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import Helmet from 'react-helmet';
 import SearchContent from 'Components/Page/SearchContent';
 import useDebounce from 'Hooks/use_debounce';
-import Loader from 'Components/Loader';
+import Loader from 'Components/Other/Loader';
 import { CloseO } from '@styled-icons/evil';
 import { SearchAlt } from '@styled-icons/boxicons-regular';
 import { movieApi } from 'api';
@@ -24,7 +24,7 @@ const SearchBox = styled('div')`
   width: 600px;
 `;
 
-const SearchInput = styled.input.attrs(props => ({
+const SearchInput = styled.input.attrs((props) => ({
   type: 'text',
   placeholder: '찾고자하는 영화명을 입력해주세요.',
   name: 'term',
@@ -55,7 +55,7 @@ const CloseIcon = styled(CloseO)`
   height: 32px;
   color: #f9ca24;
   cursor: pointer;
-  display: ${props => (props.show ? 'block' : 'none')};
+  display: ${(props) => (props.show ? 'block' : 'none')};
 `;
 
 const Search = () => {
@@ -67,7 +67,7 @@ const Search = () => {
     setTerm('');
   };
 
-  const getSearchResult = async term => {
+  const getSearchResult = async (term) => {
     const results = await movieApi.search(term);
 
     return results;
@@ -78,7 +78,7 @@ const Search = () => {
   useEffect(() => {
     if (debouncedTerm) {
       setIsSearching(true);
-      getSearchResult(debouncedTerm).then(results => {
+      getSearchResult(debouncedTerm).then((results) => {
         setIsSearching(false);
         setResults(results.data.results);
       });
@@ -97,7 +97,7 @@ const Search = () => {
           <SearchIcon />
           <SearchInput
             value={term}
-            onChange={e => setTerm(e.target.value)}
+            onChange={(e) => setTerm(e.target.value)}
             autoComplete="off"
           />
           <CloseIcon show={term !== ''} onClick={() => handleCloseIcon()} />
