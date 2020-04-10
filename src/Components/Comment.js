@@ -297,10 +297,10 @@ const Comment = ({ reviewId }) => {
             <Box key={index}>
               <UserComment>
                 <UserInfo>
-                  {cmt.user.profile.thumnail === 'default' ? (
+                  {cmt.user.profile.thumbnail === 'default' ? (
                     <DefaultThumnail />
                   ) : (
-                    <UserImage imageUrl={cmt.user.profile.thumnail} />
+                    <UserImage imageUrl={cmt.user.profile.thumbnail} />
                   )}
                   <InfoBox>
                     <Name>{cmt.user.profile.username}</Name>

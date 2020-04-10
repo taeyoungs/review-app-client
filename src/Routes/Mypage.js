@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import Helmet from 'react-helmet';
 import LoginContext from 'context/Login.context';
@@ -20,14 +20,16 @@ const UserInfo = styled('div')`
   margin-bottom: 30px;
   width: calc(100% - 400px);
   border-bottom: 1px solid #f1c40f;
+  padding-bottom: 20px;
 `;
 
 const ImageContainer = styled('div')`
   position: relative;
   display: flex;
-  width: 130px;
-  height: 130px;
+  width: 160px;
+  height: 160px;
   margin-right: 30px;
+  margin-left: 30px;
   cursor: pointer;
   :hover {
     & .edit {
@@ -54,6 +56,8 @@ const EditImage = styled.div.attrs((props) => ({
 `;
 
 const UserImage = styled('div')`
+  width: 100%;
+  height: 100%;
   border-radius: 100%;
   background-image: url(${(props) => props.imageUrl});
   background-position: center center;
@@ -71,13 +75,13 @@ const DefaultThumnail = styled.img.attrs((props) => ({
 const ImageFileInput = styled.input.attrs((props) => ({
   type: 'file',
   name: 'thumnail',
+  accept: 'image/*',
 }))`
   display: none;
 `;
 
 const SubInfo = styled('div')`
   padding: 20px;
-  margin-bottom: 10px;
   display: flex;
   flex-direction: column;
 `;
@@ -132,6 +136,19 @@ const PwChangeBtn = styled('span')`
   }
 `;
 
+const EmptyReview = styled('div')`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: calc(100% - 500px);
+  margin: 0 auto;
+  color: #f1c40f;
+  font-size: 16px;
+  opacity: 0.7;
+  height: 150px;
+  margin-bottom: 20px;
+`;
+
 const Mypage = (props) => {
   const { userInfo } = useContext(LoginContext);
   const [user, setUser] = useState();
@@ -158,6 +175,44 @@ const Mypage = (props) => {
       console.log(result.data.user);
     } catch (error) {
       console.log(error);
+    }
+  };
+
+  const fileInput = useRef();
+
+  const clickFileInput = () => {
+    fileInput.current.click();
+  };
+
+  const handleFileInput = async (event) => {
+    console.log(event.target.files[0]);
+
+    // const payload = {
+    //   id: user._id,
+    //   thumbnail: event.target.files[0],
+    // };
+
+    const formData = new FormData();
+    formData.append('id', user._id);
+    formData.append('thumbnail', event.target.files[0]);
+
+    // console.log(formData);
+
+    // for (var key of formData.keys()) {
+    //   console.log(key);
+    // }
+
+    // for (var value of formData.values()) {
+    //   console.log(value);
+    // }
+
+    try {
+      const fileLocation = await toUserApi.uploadThumbnail(formData);
+      console.log(fileLocation);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      getUser();
     }
   };
 
@@ -233,11 +288,6 @@ const Mypage = (props) => {
   };
 
   const handleEditSubmit = async (payload) => {
-    // if (checkEdit(payload)) {
-    //   console.log(checkEdit(payload));
-    //   await toUserApi.editUserProfile(payload);
-    // }
-
     if (checkEdit(payload)) {
       await toUserApi.editUserProfile(payload).then((res) => {
         if (res.status === 200) {
@@ -308,17 +358,18 @@ const Mypage = (props) => {
           </Helmet>
           <Container>
             <UserInfo>
-              {user.profile.thumnail === 'default' ? (
+              {user.profile.thumbnail === 'default' ? (
                 <ImageContainer>
-                  <EditImage>이미지 편집</EditImage>
+                  <EditImage onClick={clickFileInput}>이미지 편집</EditImage>
                   <DefaultThumnail />
                 </ImageContainer>
               ) : (
                 <ImageContainer>
-                  <EditImage>이미지 편집</EditImage>
-                  <UserImage imageUrl={user.profile.thumnail} />
+                  <EditImage onClick={clickFileInput}>이미지 편집</EditImage>
+                  <UserImage imageUrl={user.profile.thumbnail} />
                 </ImageContainer>
               )}
+              <ImageFileInput ref={fileInput} onChange={handleFileInput} />
               <SubInfo>
                 <Name>{user.profile.username}</Name>
                 <Intro>{user.profile.about}</Intro>
@@ -350,11 +401,17 @@ const Mypage = (props) => {
               handleEditSubmit={handleEditSubmit}
             />
             <Title>최근 리뷰 3</Title>
+            {user.reviewList && user.reviewList.length === 0 && (
+              <EmptyReview>등록된 리뷰가 없습니다.</EmptyReview>
+            )}
             <MypageReview results={user.reviewList} />
             <Title>인기 리뷰 3</Title>
+            {user.reviewList && user.reviewList.length === 0 && (
+              <EmptyReview>등록된 리뷰가 없습니다.</EmptyReview>
+            )}
             <MypageReview results={user.reviewList} best={true} />
             <Title>선택한 영화 목록 (모양만 - 자체 DB가 없음)</Title>
-            <Content>영화 목록</Content>
+            <EmptyReview>선택한 영화 목록이 없습니다.</EmptyReview>
           </Container>
         </>
       )}

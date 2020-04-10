@@ -82,9 +82,13 @@ const UserImage = styled('div')`
   height: 55px;
   margin: 10px;
   margin-top: 0px;
+  border-radius: 100%;
   background-image: url(${(props) => props.imageUrl});
   background-position: center center;
   background-size: cover;
+  :hover {
+    opacity: 0.7;
+  }
 `;
 
 const DefaultThumnail = styled.img.attrs((props) => ({
@@ -95,6 +99,9 @@ const DefaultThumnail = styled.img.attrs((props) => ({
   height: 55px;
   margin: 10px;
   margin-top: 0px;
+  :hover {
+    opacity: 0.7;
+  }
 `;
 
 const InfoBox = styled('div')`
@@ -316,11 +323,13 @@ const ReviewContent = ({ reviews, handleDelete, recent, best, sortType }) => {
               </MovieInfo>
               <UserAndEval>
                 <UserInfo>
-                  {review.user.profile.thumnail === 'default' ? (
-                    <DefaultThumnail />
-                  ) : (
-                    <UserImage imageUrl={review.user.profile.thumnail} />
-                  )}
+                  <Link to={`/user/${review.user._id}`}>
+                    {review.user.profile.thumbnail === 'default' ? (
+                      <DefaultThumnail />
+                    ) : (
+                      <UserImage imageUrl={review.user.profile.thumbnail} />
+                    )}
+                  </Link>
                   <InfoBox>
                     <Name>{review.user.profile.username}</Name>
                     <Date>{review.formatCreatedAt}</Date>

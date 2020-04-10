@@ -77,4 +77,6 @@ export const toUserApi = {
   changePassword: (payload) => axiosForUser.post(`/change-password`, payload),
   getUserDetail: (id) => axiosForUser.get(`/${id}`),
   editUserProfile: (payload) => axiosForUser.post(`/edit-profile`, payload),
+  uploadThumbnail: (formData) =>
+    axiosForUser.post(`/upload/thumbnail`, formData),
 };
