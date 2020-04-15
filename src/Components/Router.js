@@ -15,6 +15,7 @@ import WriteReview from 'Routes/WriteReview';
 import Mypage from 'Routes/Mypage';
 import ReviewDetail from 'Routes/ReviewDetail';
 import EditReview from 'Routes/EditReview';
+// import TestNaverLogin from 'Components/SocialLogin/TestNaverLogin';
 
 export default () => (
   <Router>

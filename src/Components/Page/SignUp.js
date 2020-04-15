@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { Cross } from '@styled-icons/entypo';
 import { toAuthApi } from 'api';
 import storage from '../../lib/storage';
+import GLogin from 'Components/SocialLogin/GLogin';
 
 const BackDrop = styled('div')`
   position: fixed;
@@ -12,7 +13,7 @@ const BackDrop = styled('div')`
   z-index: 2453;
   top: 0;
   left: 0;
-  display: ${props => (props.show ? 'block' : 'none')};
+  display: ${(props) => (props.show ? 'block' : 'none')};
   overflow: hidden;
 `;
 
@@ -60,23 +61,23 @@ const SignInForm = styled('form')`
   border-bottom: 2px solid rgba(0, 0, 0, 0.6);
 `;
 
-const IdInput = styled.input.attrs(props => ({
+const IdInput = styled.input.attrs((props) => ({
   type: 'email',
   placeholder: '아이디(이메일 주소)',
   name: 'email',
 }))`
-  border: 1px solid ${props => (props.error ? 'red' : 'rgba(0, 0, 0, 0.5)')};
+  border: 1px solid ${(props) => (props.error ? 'red' : 'rgba(0, 0, 0, 0.5)')};
 `;
 
-const PwInput = styled.input.attrs(props => ({
+const PwInput = styled.input.attrs((props) => ({
   type: 'password',
   placeholder: '비밀번호',
   name: 'password',
 }))`
-  border: 1px solid ${props => (props.error ? 'red' : 'rgba(0, 0, 0, 0.5)')};
+  border: 1px solid ${(props) => (props.error ? 'red' : 'rgba(0, 0, 0, 0.5)')};
 `;
 
-const NameInput = styled.input.attrs(props => ({
+const NameInput = styled.input.attrs((props) => ({
   type: 'text',
   placeholder: '이름(2글자 이상)',
   name: 'username',
@@ -92,7 +93,7 @@ const NameInput = styled.input.attrs(props => ({
     font-family: 'NanumGothic';
     font-size: 16px;
   }
-  border: 1px solid ${props => (props.error ? 'red' : 'rgba(0, 0, 0, 0.5)')};
+  border: 1px solid ${(props) => (props.error ? 'red' : 'rgba(0, 0, 0, 0.5)')};
 `;
 
 const Subm = styled('button')`
@@ -115,20 +116,14 @@ const SocialContainer = styled('div')`
   }
 `;
 
-const Naver = styled('div')`
-  background-color: #2ecc71;
-  height: 30px;
-  margin-bottom: 20px;
-`;
-
-const Google = styled('div')`
-  background-color: white;
-  height: 30px;
+const GoogleLoginBox = styled('div')`
+  display: flex;
+  justify-content: center;
 `;
 
 const Msg = styled('div')`
   color: red;
-  opacity: ${props => (props.error ? '1' : '0')};
+  opacity: ${(props) => (props.error ? '1' : '0')};
   font-size: 12px;
   padding: 10px;
 `;
@@ -143,7 +138,7 @@ const FlexBox = styled('div')`
 `;
 
 const Check = styled('button')`
-  color: ${props => (props.check ? 'green' : 'red')};
+  color: ${(props) => (props.check ? 'green' : 'red')};
   background-color: transparent;
   border: none;
   outline: 0;
@@ -165,7 +160,7 @@ const SignUp = ({ showSu, clickSuExit, state, setState }) => {
     name: false,
   });
 
-  const checkEmailExists = async event => {
+  const checkEmailExists = async (event) => {
     event.preventDefault();
 
     const payload = {
@@ -179,7 +174,7 @@ const SignUp = ({ showSu, clickSuExit, state, setState }) => {
     }
 
     // await toAuthApi.exist();
-    await toAuthApi.exists(payload).then(res => {
+    await toAuthApi.exists(payload).then((res) => {
       const {
         data: { exists },
       } = res;
@@ -195,7 +190,7 @@ const SignUp = ({ showSu, clickSuExit, state, setState }) => {
     });
   };
 
-  const checkNameExists = async event => {
+  const checkNameExists = async (event) => {
     event.preventDefault();
 
     const payload = {
@@ -208,7 +203,7 @@ const SignUp = ({ showSu, clickSuExit, state, setState }) => {
       return;
     }
 
-    await toAuthApi.exists(payload).then(res => {
+    await toAuthApi.exists(payload).then((res) => {
       const {
         data: { exists },
       } = res;
@@ -224,7 +219,7 @@ const SignUp = ({ showSu, clickSuExit, state, setState }) => {
     });
   };
 
-  const handleChangeInputName = event => {
+  const handleChangeInputName = (event) => {
     const { value } = event.target;
 
     setState({
@@ -233,7 +228,7 @@ const SignUp = ({ showSu, clickSuExit, state, setState }) => {
     });
   };
 
-  const checkName = event => {
+  const checkName = (event) => {
     const { value } = event.target;
 
     if (value.length < 2) {
@@ -249,7 +244,7 @@ const SignUp = ({ showSu, clickSuExit, state, setState }) => {
     }
   };
 
-  const handleChangeInputEmail = event => {
+  const handleChangeInputEmail = (event) => {
     const { value } = event.target;
 
     setState({
@@ -258,7 +253,7 @@ const SignUp = ({ showSu, clickSuExit, state, setState }) => {
     });
   };
 
-  const checkEmail = event => {
+  const checkEmail = (event) => {
     const { value } = event.target;
     const regExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
 
@@ -275,7 +270,7 @@ const SignUp = ({ showSu, clickSuExit, state, setState }) => {
     }
   };
 
-  const handleChangeInputPassword = event => {
+  const handleChangeInputPassword = (event) => {
     const { value } = event.target;
 
     setState({
@@ -284,7 +279,7 @@ const SignUp = ({ showSu, clickSuExit, state, setState }) => {
     });
   };
 
-  const checkPassword = event => {
+  const checkPassword = (event) => {
     const { value } = event.target;
     const regExp = /([a-z]+[A-Z]+[0-9]+)|([a-z]+[0-9]+[A-Z]+)|([A-Z]+[a-z]+[0-9]+)|([A-Z]+[0-9]+[a-z]+)|([0-9]+[A-Z]+[a-z]+)|([0-9]+[a-z]+[A-Z]+)/;
 
@@ -301,7 +296,7 @@ const SignUp = ({ showSu, clickSuExit, state, setState }) => {
     }
   };
 
-  const handleSubmit = async event => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const { email, password, username } = state;
     const payload = { email, password, username };
@@ -314,7 +309,7 @@ const SignUp = ({ showSu, clickSuExit, state, setState }) => {
       return;
     }
 
-    await toAuthApi.join(payload).then(res => {
+    await toAuthApi.join(payload).then((res) => {
       if (res.status === 200) {
         // console.log(res.data);
         storage.set('userInfo', res.data);
@@ -375,8 +370,9 @@ const SignUp = ({ showSu, clickSuExit, state, setState }) => {
               <Subm onClick={handleSubmit}>회원가입</Subm>
             </SignInForm>
             <SocialContainer>
-              <Naver>네이버 로그인 자리</Naver>
-              <Google>구글 로그인 자리</Google>
+              <GoogleLoginBox>
+                <GLogin />
+              </GoogleLoginBox>
             </SocialContainer>
           </Content>
         </InContainer>

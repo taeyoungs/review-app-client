@@ -45,6 +45,7 @@ export const toAuthApi = {
   check: () => axiosForAuth.get(`check`),
   tempPwChange: (email) => axiosForAuth.post(`tempPwChange`, email),
   checkPassword: (payload) => axiosForAuth.post(`checkPassword`, payload),
+  googleLogin: (payload) => axiosForAuth.post(`google`, payload),
 };
 
 const axiosForServer = Axios.create({

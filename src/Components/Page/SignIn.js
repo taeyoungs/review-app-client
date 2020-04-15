@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { Cross } from '@styled-icons/entypo';
 import { toAuthApi } from 'api';
 import storage from '../../lib/storage';
+import GLogin from 'Components/SocialLogin/GLogin';
 
 const BackDrop = styled('div')`
   position: fixed;
@@ -27,7 +28,7 @@ const InContainer = styled('div')`
   margin: 0 auto;
   background-color: #f6f9fc;
   width: 480px;
-  height: calc(100% - 180px);
+  height: calc(100% - 300px);
   &::before {
     content: '';
     display: inline-block;
@@ -112,22 +113,16 @@ const Subm = styled('button')`
 `;
 
 const SocialContainer = styled('div')`
-  margin-top: 40px;
+  margin-top: 20px;
   font-size: 18px;
   & div {
     padding: 10px;
   }
 `;
 
-const Naver = styled('div')`
-  background-color: #2ecc71;
-  height: 30px;
-  margin-bottom: 20px;
-`;
-
-const Google = styled('div')`
-  background-color: white;
-  height: 30px;
+const GoogleLoginBox = styled('div')`
+  display: flex;
+  justify-content: center;
 `;
 
 const SignIn = ({
@@ -198,8 +193,9 @@ const SignIn = ({
               <Subm onClick={handleSubmit}>로그인</Subm>
             </SignInForm>
             <SocialContainer>
-              <Naver>네이버 로그인 자리</Naver>
-              <Google>구글 로그인 자리</Google>
+              <GoogleLoginBox>
+                <GLogin />
+              </GoogleLoginBox>
             </SocialContainer>
           </Content>
         </InContainer>
