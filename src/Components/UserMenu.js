@@ -61,8 +61,13 @@ const UserMenu = () => {
     pwChange: false,
   });
 
+  const [check, setCheck] = useState({
+    email: false,
+    name: false,
+  });
+
   const clickSi = () => {
-    setShow(prevState => {
+    setShow((prevState) => {
       return {
         ...prevState,
         signIn: true,
@@ -70,14 +75,14 @@ const UserMenu = () => {
     });
   };
   const clickSiExit = () => {
-    setState(prevState => {
+    setState((prevState) => {
       return {
         ...prevState,
         email: '',
         password: '',
       };
     });
-    setShow(prevState => {
+    setShow((prevState) => {
       return {
         ...prevState,
         signIn: false,
@@ -86,7 +91,7 @@ const UserMenu = () => {
   };
 
   const clickSu = () => {
-    setShow(prevState => {
+    setShow((prevState) => {
       return {
         ...prevState,
         signUp: true,
@@ -94,13 +99,13 @@ const UserMenu = () => {
     });
   };
   const clickSuExit = () => {
-    setShow(prevState => {
+    setShow((prevState) => {
       return {
         ...prevState,
         signUp: false,
       };
     });
-    setJoin(prevState => {
+    setJoin((prevState) => {
       return {
         ...prevState,
         email: '',
@@ -108,17 +113,21 @@ const UserMenu = () => {
         username: '',
       };
     });
+    setCheck({
+      email: false,
+      name: false,
+    });
   };
 
   const goSignUp = () => {
-    setState(prevState => {
+    setState((prevState) => {
       return {
         ...prevState,
         email: '',
         password: '',
       };
     });
-    setShow(prevState => {
+    setShow((prevState) => {
       return {
         ...prevState,
         signIn: false,
@@ -128,14 +137,14 @@ const UserMenu = () => {
   };
 
   const goPwChange = () => {
-    setState(prevState => {
+    setState((prevState) => {
       return {
         ...prevState,
         email: '',
         password: '',
       };
     });
-    setShow(prevState => {
+    setShow((prevState) => {
       return {
         ...prevState,
         signIn: false,
@@ -146,7 +155,7 @@ const UserMenu = () => {
 
   const clickExit = () => {
     setEmail('');
-    setShow(prevState => {
+    setShow((prevState) => {
       return {
         ...prevState,
         pwChange: false,
@@ -191,6 +200,8 @@ const UserMenu = () => {
         clickSuExit={clickSuExit}
         state={join}
         setState={setJoin}
+        check={check}
+        setCheck={setCheck}
       />
       <PwChange
         show={show.pwChange}

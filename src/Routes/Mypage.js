@@ -2,12 +2,12 @@ import React, { useState, useContext, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import Helmet from 'react-helmet';
 import LoginContext from 'context/Login.context';
-import { toUserApi, toAuthApi } from 'api';
+import { toUserApi } from 'api';
 import DefaultImage from '../assets/thumnail.png';
 import MypageReview from 'Components/Page/MypageReview';
 import ProfileEdit from 'Components/ProfileEdit';
-import Check from 'Components/Other/Check';
 import { checkEdit } from 'lib/formatFunc';
+import storage from 'lib/storage';
 
 const Container = styled('div')`
   margin-top: 60px;
@@ -103,10 +103,17 @@ const ReviewAndScore = styled('div')`
 `;
 
 const Revi = styled('div')`
+  color: #f1c40f;
   margin-right: 10px;
 `;
 
-const Score = styled('div')``;
+const Score = styled('div')`
+  color: #f1c40f;
+`;
+
+const Num = styled('span')`
+  color: white;
+`;
 
 const Title = styled('div')`
   font-size: 22px;
@@ -117,11 +124,7 @@ const Title = styled('div')`
   margin-bottom: 30px;
 `;
 
-const Content = styled('div')`
-  margin-bottom: 30px;
-`;
-
-const PwChangeBtn = styled('span')`
+const ProfileChangeBtn = styled('span')`
   display: flex;
   justify-content: center;
   width: 110px;
@@ -131,6 +134,7 @@ const PwChangeBtn = styled('span')`
   font-size: 13px;
   border: 1px solid #f1c40f;
   cursor: pointer;
+  margin-right: 10px;
   :hover {
     opacity: 0.5;
   }
@@ -149,13 +153,31 @@ const EmptyReview = styled('div')`
   margin-bottom: 20px;
 `;
 
+const FlexBox = styled('div')`
+  display: flex;
+  align-items: center;
+`;
+
+const DropOutBtn = styled('div')`
+  display: flex;
+  justify-content: center;
+  width: 110px;
+  padding: 10px 20px;
+  color: rgba(241, 196, 15, 0.6);
+  border-radius: 10px;
+  font-size: 13px;
+  border: 1px solid #f1c40f;
+  cursor: pointer;
+  :hover {
+    opacity: 0.5;
+  }
+`;
+
 const Mypage = (props) => {
   const { userInfo } = useContext(LoginContext);
   const [user, setUser] = useState();
   const [edit, setEdit] = useState({
     show: false,
-    showCheck: false,
-    password: '',
     username: '',
     about: '',
     newP: '',
@@ -266,7 +288,6 @@ const Mypage = (props) => {
       return {
         ...prevState,
         show: true,
-        showCheck: false,
         username: user.profile.username,
         about: user.profile.about,
       };
@@ -279,7 +300,6 @@ const Mypage = (props) => {
         ...prevState,
         show: false,
         username: '',
-        password: '',
         about: '',
         newP: '',
         newP2: '',
@@ -300,54 +320,23 @@ const Mypage = (props) => {
     }
   };
 
-  // check part component part
-  const handlePassChange = (event) => {
-    const { value } = event.target;
-
-    setEdit((prevState) => {
-      return {
-        ...prevState,
-        password: value,
-      };
-    });
-  };
-
-  const handleShowCheck = () => {
-    setEdit((prevState) => {
-      return {
-        ...prevState,
-        showCheck: true,
-        password: '',
-      };
-    });
-  };
-
-  const clickCheckExit = () => {
-    setEdit((prevState) => {
-      return {
-        ...prevState,
-        showCheck: false,
-        password: '',
-      };
-    });
-  };
-
-  const handleCheckSubmit = async (payload) => {
-    try {
-      await toAuthApi.checkPassword(payload).then((res) => {
+  const handleDropOut = async () => {
+    if (window.confirm('정말로 회원 탈퇴하시겠습니까 ?')) {
+      console.log(id);
+      await toUserApi.dropOutUser(id).then((res) => {
         if (res.status === 200) {
-          handleShowEdit();
+          // console.log(res.data);
+          storage.remove('userInfo');
+          alert('회원 탈퇴가 완료되었습니다.');
+          window.location.href = '/';
         }
       });
-    } catch (error) {
-      alert('비밀번호가 일치하지 않습니다.');
-      console.log(error);
     }
   };
 
   useEffect(() => {
     getUser();
-  }, []);
+  }, [id]);
 
   return (
     <>
@@ -374,22 +363,23 @@ const Mypage = (props) => {
                 <Name>{user.profile.username}</Name>
                 <Intro>{user.profile.about}</Intro>
                 <ReviewAndScore>
-                  <Revi>리뷰 {user.reviewList.length}</Revi>
-                  <Score>포인트 {user.reviewScore}</Score>
+                  <Revi>
+                    리뷰 <Num>{user.reviewList.length}</Num>
+                  </Revi>
+                  <Score>
+                    포인트 <Num>{user.reviewScore}</Num>
+                  </Score>
                 </ReviewAndScore>
                 {userInfo && userInfo.id === user._id && (
-                  <PwChangeBtn onClick={handleShowCheck}>
-                    프로필 편집
-                  </PwChangeBtn>
+                  <FlexBox>
+                    <ProfileChangeBtn onClick={handleShowEdit}>
+                      프로필 편집
+                    </ProfileChangeBtn>
+                    <DropOutBtn onClick={handleDropOut}>회원 탈퇴</DropOutBtn>
+                  </FlexBox>
                 )}
               </SubInfo>
             </UserInfo>
-            <Check
-              payload={edit}
-              clickCheckExit={clickCheckExit}
-              handlePassChange={handlePassChange}
-              handleCheckSubmit={handleCheckSubmit}
-            />
             <ProfileEdit
               user={user}
               payload={edit}

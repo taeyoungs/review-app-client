@@ -96,6 +96,7 @@ const UserInfo = styled('div')`
 const UserImage = styled('div')`
   width: 45px;
   height: 45px;
+  border-radius: 100%;
   margin: 10px;
   margin-top: 0px;
   background-image: url(${(props) => props.imageUrl});

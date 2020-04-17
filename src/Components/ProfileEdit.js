@@ -151,7 +151,6 @@ const ProfileEdit = ({
     id: user._id,
     newP: payload.newP,
     newP2: payload.newP2,
-    password: payload.password,
     about: payload.about,
     username: payload.username,
   };

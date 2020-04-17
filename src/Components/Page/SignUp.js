@@ -149,15 +149,11 @@ const Check = styled('button')`
   }
 `;
 
-const SignUp = ({ showSu, clickSuExit, state, setState }) => {
+const SignUp = ({ showSu, clickSuExit, state, setState, check, setCheck }) => {
   const [error, setError] = useState({
     emailError: false,
     passwordError: false,
     nameError: false,
-  });
-  const [check, setCheck] = useState({
-    email: false,
-    name: false,
   });
 
   const checkEmailExists = async (event) => {
@@ -182,9 +178,11 @@ const SignUp = ({ showSu, clickSuExit, state, setState }) => {
         alert('이미 가입된 이메일입니다.');
       } else {
         alert('사용 가능한 이메일입니다.');
-        setCheck({
-          ...check,
-          email: true,
+        setCheck((prevState) => {
+          return {
+            ...prevState,
+            email: true,
+          };
         });
       }
     });
@@ -211,9 +209,11 @@ const SignUp = ({ showSu, clickSuExit, state, setState }) => {
         alert('이미 존재하는 이름입니다.');
       } else {
         alert('사용 가능한 이름입니다.');
-        setCheck({
-          ...check,
-          name: true,
+        setCheck((prevState) => {
+          return {
+            ...prevState,
+            name: true,
+          };
         });
       }
     });

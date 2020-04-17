@@ -80,4 +80,5 @@ export const toUserApi = {
   editUserProfile: (payload) => axiosForUser.post(`/edit-profile`, payload),
   uploadThumbnail: (formData) =>
     axiosForUser.post(`/upload/thumbnail`, formData),
+  dropOutUser: (id) => axiosForUser.get(`/dropOut/${id}`),
 };
