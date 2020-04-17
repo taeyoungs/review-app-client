@@ -6,6 +6,7 @@ import { RateReview } from '@styled-icons/material-outlined';
 
 const Container = styled('div')`
   display: grid;
+  z-index: 201;
   grid-auto-flow: row;
   grid-template-rows: 4fr 1fr;
 `;
@@ -21,10 +22,7 @@ const Poster = styled('div')`
   background-image: url(${(props) => props.img});
   :hover {
     & div.backBlur {
-      display: grid;
-      grid-auto-flow: column;
-      grid-template-rows: 6fr 1fr;
-      justify-content: center;
+      display: ${(props) => (props.user ? 'grid' : 'flex')};
       & .reviewIcon {
         display: flex;
         align-items: center;
@@ -34,6 +32,22 @@ const Poster = styled('div')`
 `;
 
 const Blur = styled.div.attrs((props) => ({
+  className: 'backBlur',
+}))`
+  z-index: 302;
+  display: none;
+  grid-auto-flow: column;
+  grid-template-rows: 6fr 1fr;
+  justify-content: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+`;
+
+const Blur2 = styled.div.attrs((props) => ({
   className: 'backBlur',
 }))`
   z-index: 302;
@@ -90,27 +104,44 @@ const Genres = styled('div')`
   margin-bottom: 2px;
 `;
 
-const LinkArea = styled('div')``;
+const MLink = styled(Link)`
+  z-index: 305;
+  height: 100%;
+  width: 100%;
+`;
+
+const LinkArea = styled('div')`
+  height: ${(props) => (props.user ? 'auto' : '100%')};
+`;
 
 const BoxOfficePoster = ({ movie, genres }) => {
   const { userInfo } = useContext(LoginContext);
 
   return (
     <Container>
-      <Poster img={`https://image.tmdb.org/t/p/w200/${movie.poster_path}`}>
-        <Blur user={userInfo !== null}>
-          <Link to={`/movie/${movie.id}`}>
-            <LinkArea />
-          </Link>
-          {userInfo && (
+      <Poster
+        user={userInfo !== null}
+        img={`https://image.tmdb.org/t/p/w200/${movie.poster_path}`}
+      >
+        {userInfo ? (
+          <Blur>
+            <MLink to={`/movie/${movie.id}`}>
+              <LinkArea user={userInfo !== null} />
+            </MLink>
             <Link to={`/writeReview/${movie.id}`}>
               <BtnBox>
                 <GoReviewBtn />
                 리뷰 작성
               </BtnBox>
             </Link>
-          )}
-        </Blur>
+          </Blur>
+        ) : (
+          <Blur2>
+            <MLink to={`/movie/${movie.id}`}>
+              <LinkArea user={userInfo !== null} />
+            </MLink>
+          </Blur2>
+        )}
       </Poster>
 
       <Info>
