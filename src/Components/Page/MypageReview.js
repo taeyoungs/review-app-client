@@ -11,7 +11,6 @@ import { Detail } from '@styled-icons/boxicons-regular';
 import { Like } from '@styled-icons/evil/';
 import { Edit } from '@styled-icons/feather';
 import { CommentDetail } from '@styled-icons/boxicons-solid';
-import { sortArray } from 'lib/formatFunc';
 
 const Box = styled('div')`
   color: white;
@@ -208,20 +207,34 @@ const Overlay = styled('div')`
   background: linear-gradient(to bottom, transparent, rgba(20, 20, 20, 1));
 `;
 
-const MypageReview = ({ results, handleDelete, best = false }) => {
+const MypageReview = ({
+  results: reviews,
+  handleDelete,
+  best = false,
+  menu = 'prof',
+}) => {
   // console.log(reviews);
   const { userInfo } = useContext(LoginContext);
 
-  let reviews = [];
-  reviews = sortArray(results, best);
+  // let reviews = results;
+  // if (!best) {
+  //   reviews.reverse();
+  // }
+  // if (menu === 'prof') {
+  //   sortArray(results, best);
 
-  if (results.length > 3) {
-    reviews.push(results[0]);
-    reviews.push(results[1]);
-    reviews.push(results[2]);
-  } else {
-    reviews = results;
-  }
+  //   if (results.length > 3) {
+  //     reviews.push(results[0]);
+  //     reviews.push(results[1]);
+  //     reviews.push(results[2]);
+  //   } else {
+  //     reviews = results;
+  //   }
+
+  //   // console.log(reviews);
+  // } else {
+  //   reviews = sortArray(results, best);
+  // }
 
   return (
     <>
@@ -289,12 +302,12 @@ const MypageReview = ({ results, handleDelete, best = false }) => {
                 <CommentIcon />
                 {review.views}
                 <LikeIcon />
-                {userInfo && review.user._id === userInfo.id ? (
+                {userInfo && review.user === userInfo.id ? (
                   <>
                     <DeleteIcon onClick={() => handleDelete(review._id)} />
                   </>
                 ) : null}
-                {userInfo && review.user._id === userInfo.id ? (
+                {userInfo && review.user === userInfo.id ? (
                   <Link to={`/editReview/${review._id}`}>
                     <EditIcon />
                   </Link>

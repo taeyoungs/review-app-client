@@ -1,11 +1,8 @@
-import React, { Suspense, useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import Loader from 'Components/Other/Loader';
 import LoginContext from 'context/Login.context';
 import { toServerApi, movieApi } from 'api';
-
-const ReviewDetailContent = React.lazy(() =>
-  import('Components/Page/ReviewDetailContent'),
-);
+import ReviewDetailContent from 'Components/Page/ReviewDetailContent';
 
 const ReviewDetail = (props) => {
   const [result, setResult] = useState({
@@ -87,17 +84,15 @@ const ReviewDetail = (props) => {
     getReview();
   }, []);
 
-  return (
-    <Suspense fallback={<Loader />}>
-      {loading ? null : (
-        <ReviewDetailContent
-          result={result}
-          handleDelete={handleDelete}
-          handleLike={handleLike}
-          handleDislike={handleDislike}
-        />
-      )}
-    </Suspense>
+  return loading ? (
+    <Loader />
+  ) : (
+    <ReviewDetailContent
+      result={result}
+      handleDelete={handleDelete}
+      handleLike={handleLike}
+      handleDislike={handleDislike}
+    />
   );
 };
 

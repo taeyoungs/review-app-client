@@ -15,12 +15,13 @@ import WriteReview from 'Routes/WriteReview';
 import Mypage from 'Routes/Mypage';
 import ReviewDetail from 'Routes/ReviewDetail';
 import EditReview from 'Routes/EditReview';
-// import TestNaverLogin from 'Components/SocialLogin/TestNaverLogin';
+import GoTop from 'Components/Other/GoTop';
 
 export default () => (
   <Router>
     <>
       <Header />
+      <GoTop />
       <Switch>
         <Route path="/" exact component={Home}></Route>
         <Route path="/review" exact component={Review}></Route>

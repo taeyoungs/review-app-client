@@ -83,3 +83,27 @@ export const checkEdit = (payload) => {
     }
   }
 };
+
+export const calcPaging = (pageNum, len) => {
+  // pageNum : click한 page 번호
+  // len : 현재 유저가 보고 있는 유저 리뷰 타입의 수 (작성 or 추천)
+
+  const start = (pageNum - 1) * 5;
+
+  let end = 0;
+  if (pageNum * 5 > len) {
+    end = len;
+  } else {
+    end = pageNum * 5;
+  }
+
+  console.log(start);
+  console.log(end);
+
+  const payload = {
+    start,
+    end,
+  };
+
+  return payload;
+};

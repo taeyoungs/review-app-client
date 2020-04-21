@@ -13,6 +13,7 @@ import { Detail } from '@styled-icons/boxicons-regular';
 import { Like } from '@styled-icons/evil/';
 import { Edit } from '@styled-icons/feather';
 import { CommentDetail } from '@styled-icons/boxicons-solid';
+import Loader from 'Components/Other/Loader2';
 
 const Box = styled('div')`
   color: white;
@@ -26,6 +27,7 @@ const Container = styled('div')`
   display: grid;
   grid-template-columns: 0.8fr 5fr;
   border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  margin-bottom: 20px;
 `;
 
 const PosterAndEval = styled('div')`
@@ -279,7 +281,47 @@ const CommentIcon = styled(CommentDetail)`
   margin-left: 15px;
 `;
 
-const ReviewContent = ({ reviews, handleDelete, recent, best, sortType }) => {
+const EmptyReview = styled('div')`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  color: #f1c40f;
+  opacity: 0.7;
+`;
+
+const BtnFlexBox = styled('div')`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80px;
+  margin-bottom: 20px;
+`;
+
+const MorePageBtn = styled('div')`
+  padding: 20px 30px;
+  border-radius: 30px;
+  background-color: rgba(241, 196, 15, 0.7);
+  color: rgba(0, 0, 0, 0.7);
+  cursor: pointer;
+  :hover {
+    background-color: rgba(241, 196, 15, 1);
+    color: rgba(0, 0, 0, 1);
+    font-weight: 600;
+  }
+`;
+
+const ReviewContent = ({
+  reviews,
+  handleDelete,
+  sortType,
+  loading,
+  setSortType,
+  handleMoreBtn,
+  handleRecentSort,
+  handleBestSort,
+  full,
+}) => {
   // console.log(reviews);
   const { userInfo } = useContext(LoginContext);
 
@@ -289,105 +331,116 @@ const ReviewContent = ({ reviews, handleDelete, recent, best, sortType }) => {
         <title>Review List | ReviewApp</title>
       </Helmet>
       <SortHeader>
-        <DescBtn sort={sortType} onClick={recent}>
+        <DescBtn sort={sortType} onClick={handleRecentSort}>
           최근 리뷰
         </DescBtn>
-        <BestBtn sort={sortType} onClick={best}>
+        <BestBtn sort={sortType} onClick={handleBestSort}>
           베스트 리뷰
         </BestBtn>
       </SortHeader>
-      {reviews &&
-        reviews.map((review, index) => (
-          <Container key={index}>
-            <PosterAndEval>
-              <Link to={`/movie/${review.movie.movieId}`}>
-                <Poster
-                  imageUrl={
-                    review.movie.poster
-                      ? `https://image.tmdb.org/t/p/w200${review.movie.poster}`
-                      : require('../../assets/noPoster.png')
-                  }
-                />
-              </Link>
-            </PosterAndEval>
-            <Box>
-              <MovieInfo>
-                <MovieTitle>{review.movie.movieTitle}</MovieTitle>
-                <MovieSub>
-                  {review.movie.genres.map((genre, index) =>
-                    index !== review.movie.genres.length - 1
-                      ? `${genre.name}/`
-                      : genre.name,
-                  )}
-                </MovieSub>
-              </MovieInfo>
-              <UserAndEval>
-                <UserInfo>
-                  <Link to={`/user/${review.user._id}`}>
-                    {review.user.profile.thumbnail === 'default' ? (
-                      <DefaultThumnail />
-                    ) : (
-                      <UserImage imageUrl={review.user.profile.thumbnail} />
-                    )}
+      {loading ? (
+        <Loader />
+      ) : (
+        <>
+          {reviews &&
+            reviews.map((review, index) => (
+              <Container key={index}>
+                <PosterAndEval>
+                  <Link to={`/movie/${review.movie.movieId}`}>
+                    <Poster
+                      imageUrl={
+                        review.movie.poster
+                          ? `https://image.tmdb.org/t/p/w200${review.movie.poster}`
+                          : require('../../assets/noPoster.png')
+                      }
+                    />
                   </Link>
-                  <InfoBox>
-                    <Name>{review.user.profile.username}</Name>
-                    <Date>{review.formatCreatedAt}</Date>
-                  </InfoBox>
-                </UserInfo>
-                <UserEval>
-                  <div>
-                    <EvalBox>
-                      <Ang check={review.emotion} />
-                      <Normal check={review.emotion} />
-                      <Smil check={review.emotion} />
-                    </EvalBox>
-                    <StarBox>
-                      <StarRatings
-                        rating={review.star}
-                        starRatedColor="#f1c40f"
-                        starEmptyColor="rgba(255, 255, 255, 0.3)"
-                        starDimension="19px"
-                        starSpacing="2px"
-                      />
-                    </StarBox>
-                  </div>
-                </UserEval>
-              </UserAndEval>
-              <Main>
-                <Title>{review.title}</Title>
-                <Content>
-                  {review.content}
-                  <Overlay />
-                </Content>
-                <GoReviewBox>
-                  <Link to={`/review/${review._id}`}>
-                    <GoReviewBtn>
-                      <DetailIcon />
-                      리뷰 전문 보기
-                    </GoReviewBtn>
-                  </Link>
-                </GoReviewBox>
-              </Main>
-              <EtcBox>
-                {review.comment.length}
-                <CommentIcon />
-                {review.views}
-                <LikeIcon />
-                {userInfo && review.user._id === userInfo.id ? (
-                  <>
-                    <DeleteIcon onClick={() => handleDelete(review._id)} />
-                  </>
-                ) : null}
-                {userInfo && review.user._id === userInfo.id ? (
-                  <Link to={`/editReview/${review._id}`}>
-                    <EditIcon />
-                  </Link>
-                ) : null}
-              </EtcBox>
-            </Box>
-          </Container>
-        ))}
+                </PosterAndEval>
+                <Box>
+                  <MovieInfo>
+                    <MovieTitle>{review.movie.movieTitle}</MovieTitle>
+                    <MovieSub>
+                      {review.movie.genres.map((genre, index) =>
+                        index !== review.movie.genres.length - 1
+                          ? `${genre.name}/`
+                          : genre.name,
+                      )}
+                    </MovieSub>
+                  </MovieInfo>
+                  <UserAndEval>
+                    <UserInfo>
+                      <Link to={`/user/${review.user._id}`}>
+                        {review.user.profile.thumbnail === 'default' ? (
+                          <DefaultThumnail />
+                        ) : (
+                          <UserImage imageUrl={review.user.profile.thumbnail} />
+                        )}
+                      </Link>
+                      <InfoBox>
+                        <Name>{review.user.profile.username}</Name>
+                        <Date>{review.formatCreatedAt}</Date>
+                      </InfoBox>
+                    </UserInfo>
+                    <UserEval>
+                      <div>
+                        <EvalBox>
+                          <Ang check={review.emotion} />
+                          <Normal check={review.emotion} />
+                          <Smil check={review.emotion} />
+                        </EvalBox>
+                        <StarBox>
+                          <StarRatings
+                            rating={review.star}
+                            starRatedColor="#f1c40f"
+                            starEmptyColor="rgba(255, 255, 255, 0.3)"
+                            starDimension="19px"
+                            starSpacing="2px"
+                          />
+                        </StarBox>
+                      </div>
+                    </UserEval>
+                  </UserAndEval>
+                  <Main>
+                    <Title>{review.title}</Title>
+                    <Content>
+                      {review.content}
+                      <Overlay />
+                    </Content>
+                    <GoReviewBox>
+                      <Link to={`/review/${review._id}`}>
+                        <GoReviewBtn>
+                          <DetailIcon />
+                          리뷰 전문 보기
+                        </GoReviewBtn>
+                      </Link>
+                    </GoReviewBox>
+                  </Main>
+                  <EtcBox>
+                    {review.comment.length}
+                    <CommentIcon />
+                    {review.views}
+                    <LikeIcon />
+                    {userInfo && review.user._id === userInfo.id ? (
+                      <>
+                        <DeleteIcon onClick={() => handleDelete(review._id)} />
+                      </>
+                    ) : null}
+                    {userInfo && review.user._id === userInfo.id ? (
+                      <Link to={`/editReview/${review._id}`}>
+                        <EditIcon />
+                      </Link>
+                    ) : null}
+                  </EtcBox>
+                </Box>
+              </Container>
+            ))}
+          {full ? null : (
+            <BtnFlexBox>
+              <MorePageBtn onClick={handleMoreBtn}>더 불러오기</MorePageBtn>
+            </BtnFlexBox>
+          )}
+        </>
+      )}
     </>
   );
 };

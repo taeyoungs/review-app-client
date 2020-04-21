@@ -57,7 +57,8 @@ export const toServerApi = {
   createUser: (payload) => axiosForServer.post(`/user`, payload),
   insertReview: (payload) => axiosForServer.post(`/reviews/upload`, payload),
   getReview: (id) => axiosForServer.get(`/reviews/${id}`),
-  getReviewList: (key) => axiosForServer.get(`/reviews/${key}/list`),
+  getReviewList: (payload) =>
+    axiosForServer.get(`/reviews/${payload.key}/list/${payload.page}`),
   deleteReview: (id) => axiosForServer.get(`/reviews/${id}/delete`),
   getMovieReviewList: (id) => axiosForServer.get(`/reviews/movie/${id}`),
   editReview: (payload) => axiosForServer.post(`/reviews/edit-review`, payload),
@@ -67,6 +68,8 @@ export const toServerApi = {
   deleteComment: (payload) => axiosForServer.post(`/comments/delete`, payload),
   updateComment: (payload) => axiosForServer.post(`/comments/update`, payload),
   getReviewComments: (id) => axiosForServer.get(`/comments/${id}`),
+  getReviewPaging: (payload) =>
+    axiosForServer.post(`/reviews/reviewPaging`, payload),
 };
 
 const axiosForUser = Axios.create({

@@ -2,12 +2,14 @@ import React, { useState, useContext, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import Helmet from 'react-helmet';
 import LoginContext from 'context/Login.context';
-import { toUserApi } from 'api';
+import { toUserApi, toServerApi } from 'api';
 import DefaultImage from '../assets/thumnail.png';
 import MypageReview from 'Components/Page/MypageReview';
 import ProfileEdit from 'Components/ProfileEdit';
-import { checkEdit } from 'lib/formatFunc';
 import storage from 'lib/storage';
+import { checkEdit } from 'lib/formatFunc';
+import Loader from 'Components/Other/Loader';
+import ReviewsPaging from 'Components/Other/ReviewsPaging';
 
 const Container = styled('div')`
   margin-top: 60px;
@@ -17,9 +19,7 @@ const Container = styled('div')`
 const UserInfo = styled('div')`
   display: flex;
   margin: 0 auto;
-  margin-bottom: 30px;
   width: calc(100% - 400px);
-  border-bottom: 1px solid #f1c40f;
   padding-bottom: 20px;
 `;
 
@@ -173,9 +173,47 @@ const DropOutBtn = styled('div')`
   }
 `;
 
+const Menu = styled('div')`
+  height: 80px;
+  background-color: rgba(241, 196, 15, 0.1);
+  margin-bottom: 50px;
+`;
+
+const MenuBox = styled('div')`
+  display: flex;
+  width: calc(100% - 500px);
+  margin: 0 auto;
+  height: 100%;
+`;
+
+const MenuItem = styled('div')`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 150px;
+  font-size: 20px;
+  cursor: pointer;
+  background-color: ${(props) =>
+    props.menu ? 'rgba(241, 196, 15, 0.5)' : 'transparent'};
+  color: ${(props) => (props.menu ? 'white' : 'rgba(255, 255, 255, 0.5)')};
+  font-weight: ${(props) => (props.menu ? '600' : '300')};
+  :hover {
+    background-color: rgba(241, 196, 15, 0.5);
+    color: white;
+    font-weight: 600;
+  }
+`;
+
 const Mypage = (props) => {
   const { userInfo } = useContext(LoginContext);
   const [user, setUser] = useState();
+  const [rb, setRb] = useState({
+    recent: [],
+    best: [],
+  });
+  const [menu, setMenu] = useState('prof');
+  const [loading, setLoading] = useState(true);
   const [edit, setEdit] = useState({
     show: false,
     username: '',
@@ -194,9 +232,15 @@ const Mypage = (props) => {
     try {
       const result = await toUserApi.getUserDetail(id);
       setUser(result.data.user);
-      console.log(result.data.user);
+      setRb({
+        recent: result.data.recent,
+        best: result.data.best,
+      });
+      // console.log(result.data);
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -207,18 +251,11 @@ const Mypage = (props) => {
   };
 
   const handleFileInput = async (event) => {
-    console.log(event.target.files[0]);
-
-    // const payload = {
-    //   id: user._id,
-    //   thumbnail: event.target.files[0],
-    // };
+    // console.log(event.target.files[0]);
 
     const formData = new FormData();
     formData.append('id', user._id);
     formData.append('thumbnail', event.target.files[0]);
-
-    // console.log(formData);
 
     // for (var key of formData.keys()) {
     //   console.log(key);
@@ -229,8 +266,8 @@ const Mypage = (props) => {
     // }
 
     try {
-      const fileLocation = await toUserApi.uploadThumbnail(formData);
-      console.log(fileLocation);
+      await toUserApi.uploadThumbnail(formData);
+      // console.log(fileLocation);
     } catch (error) {
       console.log(error);
     } finally {
@@ -320,9 +357,22 @@ const Mypage = (props) => {
     }
   };
 
+  const handleDelete = async (reviewId) => {
+    try {
+      await toServerApi.deleteReview(reviewId).then((res) => {
+        if (res.status === 200) {
+          getUser();
+        }
+      });
+    } catch (error) {
+      console.log(error);
+      window.location.href = '/';
+    }
+  };
+
   const handleDropOut = async () => {
     if (window.confirm('정말로 회원 탈퇴하시겠습니까 ?')) {
-      console.log(id);
+      // console.log(id);
       await toUserApi.dropOutUser(id).then((res) => {
         if (res.status === 200) {
           // console.log(res.data);
@@ -334,11 +384,21 @@ const Mypage = (props) => {
     }
   };
 
+  const handleSetMenu = () => {
+    if (menu === 'prof') {
+      setMenu('revi');
+    } else {
+      setMenu('prof');
+    }
+  };
+
   useEffect(() => {
     getUser();
   }, [id]);
 
-  return (
+  return loading ? (
+    <Loader />
+  ) : (
     <>
       {user && (
         <>
@@ -390,18 +450,49 @@ const Mypage = (props) => {
               handleAboutChange={handleAboutChange}
               handleEditSubmit={handleEditSubmit}
             />
-            <Title>최근 리뷰 3</Title>
-            {user.reviewList && user.reviewList.length === 0 && (
-              <EmptyReview>등록된 리뷰가 없습니다.</EmptyReview>
+            <Menu>
+              <MenuBox>
+                <MenuItem menu={menu === 'prof'} onClick={handleSetMenu}>
+                  프로필
+                </MenuItem>
+                <MenuItem menu={menu === 'revi'} onClick={handleSetMenu}>
+                  리뷰
+                </MenuItem>
+              </MenuBox>
+            </Menu>
+            {menu === 'prof' ? (
+              <>
+                <Title>인기 리뷰 3</Title>
+                {user.reviewList && user.reviewList.length === 0 && (
+                  <EmptyReview>등록된 리뷰가 없습니다.</EmptyReview>
+                )}
+                <MypageReview
+                  results={rb.best}
+                  handleDelete={handleDelete}
+                  best={true}
+                  menu={menu}
+                />
+                <Title>최근 리뷰 3</Title>
+                {user.reviewList && user.reviewList.length === 0 && (
+                  <EmptyReview>등록된 리뷰가 없습니다.</EmptyReview>
+                )}
+                <MypageReview
+                  results={rb.recent}
+                  menu={menu}
+                  handleDelete={handleDelete}
+                />
+
+                <Title>선택한 영화 목록 (모양만 - 자체 DB가 없음)</Title>
+                <EmptyReview>선택한 영화 목록이 없습니다.</EmptyReview>
+              </>
+            ) : (
+              <ReviewsPaging
+                id={user._id}
+                wroteLen={user.reviewList.length}
+                recoLen={user.likeReview.length}
+                handleDelete={handleDelete}
+              />
             )}
-            <MypageReview results={user.reviewList} />
-            <Title>인기 리뷰 3</Title>
-            {user.reviewList && user.reviewList.length === 0 && (
-              <EmptyReview>등록된 리뷰가 없습니다.</EmptyReview>
-            )}
-            <MypageReview results={user.reviewList} best={true} />
-            <Title>선택한 영화 목록 (모양만 - 자체 DB가 없음)</Title>
-            <EmptyReview>선택한 영화 목록이 없습니다.</EmptyReview>
           </Container>
         </>
       )}
