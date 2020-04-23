@@ -34,7 +34,7 @@ const Title = styled('div')`
   font-family: 'Anton';
   font-weight: 900;
   margin-bottom: 15px;
-  @media (max-width: 1440px) {
+  @media (max-width: 1500px) {
     font-size: 150px;
   }
 `;
@@ -45,7 +45,7 @@ const Content = styled('div')`
   margin-bottom: 15px;
   margin-left: 15px;
   display: flex;
-  @media (max-width: 1440px) {
+  @media (max-width: 1500px) {
     font-size: 19px;
   }
 `;
@@ -67,7 +67,7 @@ const StartBox = styled('span')`
     background-color: rgba(255, 255, 255, 0.7);
     color: black;
   }
-  @media (max-width: 1440px) {
+  @media (max-width: 1500px) {
     font-size: 17px;
     padding: 10px 20px;
   }
@@ -82,7 +82,7 @@ const ThisMonth = styled('span')`
   width: 120px;
   font-size: 20px;
   font-weight: 600;
-  @media (max-width: 1440px) {
+  @media (max-width: 1500px) {
     font-size: 17px;
   }
 `;
