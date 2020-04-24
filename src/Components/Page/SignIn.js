@@ -28,7 +28,7 @@ const InContainer = styled('div')`
   margin: 0 auto;
   background-color: #f6f9fc;
   width: 480px;
-  height: calc(100% - 300px);
+  height: calc(100% - 150px);
   &::before {
     content: '';
     display: inline-block;
