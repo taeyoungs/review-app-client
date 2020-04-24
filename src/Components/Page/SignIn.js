@@ -115,6 +115,7 @@ const Subm = styled('button')`
 const SocialContainer = styled('div')`
   margin-top: 20px;
   font-size: 18px;
+  margin-bottom: 40px;
   & div {
     padding: 10px;
   }

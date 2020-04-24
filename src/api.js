@@ -1,5 +1,7 @@
 import Axios from 'axios';
 
+const API_URL = 'https://youngs-review.mooo.com';
+
 const axiosForMovie = Axios.create({
   baseURL: 'https://api.themoviedb.org/3/',
   params: {
@@ -30,7 +32,7 @@ export const movieApi = {
 //encodeURIComponent(term)
 
 const axiosForAuth = Axios.create({
-  baseURL: 'http://localhost:4000/api/auth/',
+  baseURL: `${API_URL}/api/auth/`,
   withCredentials: true,
 });
 
@@ -49,7 +51,7 @@ export const toAuthApi = {
 };
 
 const axiosForServer = Axios.create({
-  baseURL: 'http://localhost:4000/api',
+  baseURL: `${API_URL}/api`,
   withCredentials: true,
 });
 
@@ -73,7 +75,7 @@ export const toServerApi = {
 };
 
 const axiosForUser = Axios.create({
-  baseURL: 'http://localhost:4000/api/users',
+  baseURL: `${API_URL}/api/users`,
   withCredentials: true,
 });
 
