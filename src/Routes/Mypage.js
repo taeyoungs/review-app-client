@@ -232,6 +232,7 @@ const Mypage = (props) => {
     try {
       const result = await toUserApi.getUserDetail(id);
       setUser(result.data.user);
+      console.log(result.data.user);
       setRb({
         recent: result.data.recent,
         best: result.data.best,
@@ -403,7 +404,7 @@ const Mypage = (props) => {
       {user && (
         <>
           <Helmet>
-            <title>{user.profile.username} | ReviewApp</title>
+            <title>{user.profile.username} | YoungsReview</title>
           </Helmet>
           <Container>
             <UserInfo>

@@ -90,7 +90,7 @@ const Search = () => {
   return (
     <>
       <Helmet>
-        <title>Search | Review App</title>
+        <title>Search | YoungsReview</title>
       </Helmet>
       <Container>
         <SearchBox>

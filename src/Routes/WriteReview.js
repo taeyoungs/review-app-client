@@ -11,26 +11,26 @@ import { CheckboxChecked, Checkbox } from '@styled-icons/boxicons-regular';
 import { toServerApi } from 'api';
 
 const Container = styled('div')`
-  width: calc(100% - 700px);
+  width: calc(100% - 600px);
   margin: 0 auto;
   margin-top: 10px;
   border: 1px solid #f1c40f;
   margin-bottom: 50px;
   @media (max-width: 1450px) {
-    width: calc(100% - 500px);
+    width: calc(100% - 400px);
   }
 `;
 
 const Title = styled('div')`
   color: white;
-  font-size: 30px;
+  font-size: 28px;
   margin-bottom: 20px;
 `;
 
 const InfoBox = styled('div')`
   display: grid;
-  grid-template-columns: 1fr 4fr;
-  grid-auto-rows: 300px;
+  grid-template-columns: 1.1fr 4fr;
+  grid-auto-rows: 280px;
   @media (max-width: 1450px) {
     grid-auto-rows: 280px;
   }
@@ -50,7 +50,7 @@ const Info = styled('div')`
 
 const Sub = styled('div')`
   margin-bottom: 20px;
-  font-size: 15px;
+  font-size: 13px;
   color: rgba(255, 255, 255, 0.7);
 `;
 
@@ -68,8 +68,8 @@ const Eval = styled('div')`
 
 const Normal = styled(EmotionNormal)`
   cursor: pointer;
-  width: 33px;
-  height: 33px;
+  width: 31px;
+  height: 31px;
   color: ${(props) => (props.check ? '#f1c40f' : 'rgba(255, 255, 255, 0.4)')};
   margin: 5px;
   :hover {
@@ -79,8 +79,8 @@ const Normal = styled(EmotionNormal)`
 
 const Ang = styled(Angry)`
   cursor: pointer;
-  width: 29px;
-  height: 29px;
+  width: 27px;
+  height: 27px;
   color: ${(props) => (props.check ? '#EA2027' : 'rgba(255, 255, 255, 0.4)')};
   margin: 5px;
   :hover {
@@ -90,8 +90,8 @@ const Ang = styled(Angry)`
 
 const Smil = styled(Smile)`
   cursor: pointer;
-  width: 33px;
-  height: 33px;
+  width: 31px;
+  height: 31px;
   color: ${(props) => (props.check ? '#009432' : 'rgba(255, 255, 255, 0.4)')};
   margin: 5px;
   margin-right: 20px;
@@ -316,7 +316,7 @@ const WriteReview = (props) => {
   return (
     <>
       <Helmet>
-        <title>Write review | ReviewApp</title>
+        <title>Write review | YoungsReview</title>
       </Helmet>
       {loading ? (
         <Loader />

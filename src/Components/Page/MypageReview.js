@@ -21,12 +21,12 @@ const Container = styled('div')`
   margin: 0 auto;
   width: calc(100% - 600px);
   display: grid;
-  grid-template-columns: 0.8fr 5fr;
+  grid-template-columns: 1fr 5fr;
   margin-bottom: 20px;
 `;
 
 const PosterAndEval = styled('div')`
-  height: 220px;
+  height: 230px;
 `;
 
 const Poster = styled('div')`
@@ -113,7 +113,7 @@ const Main = styled('div')`
 `;
 
 const Title = styled('div')`
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 600;
   margin-bottom: 30px;
 `;
@@ -126,7 +126,7 @@ const GoReviewBox = styled('div')`
 `;
 
 const GoReviewBtn = styled('div')`
-  font-size: 18px;
+  font-size: 16px;
   color: #f1c40f;
   padding: 20px 0px;
   cursor: pointer;
@@ -191,11 +191,11 @@ const CommentIcon = styled(CommentDetail)`
 
 const Content = styled('div')`
   position: relative;
-  font-size: 16px;
+  font-size: 14px;
   height: 110px;
   overflow: hidden;
   white-space: pre-wrap;
-  line-height: 1.5;
+  line-height: 1.7;
 `;
 
 const Overlay = styled('div')`

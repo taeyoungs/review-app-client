@@ -50,7 +50,7 @@ const Home = () => {
   return (
     <Suspense fallback={<Loader />}>
       <Helmet>
-        <title>Home | ReviewApp</title>
+        <title>Home | YoungsReview</title>
       </Helmet>
       <HomeContent isClick={isClick} handleClick={handleClick} />
       <BoxOffice result={result} error={error} />

@@ -235,7 +235,7 @@ const Detail = (props) => {
     <>
       <Container>
         <Helmet>
-          <title>{result.title} | ReviewApp</title>
+          <title>{result.title} | YoungsReview</title>
         </Helmet>
         <Backdrop
           imageUrl={

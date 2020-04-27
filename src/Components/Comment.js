@@ -80,6 +80,7 @@ const CommentContent = styled('div')`
   margin: 10px;
   white-space: pre-wrap;
   line-height: 1.5;
+  font-size: 14px;
 `;
 
 const UserComment = styled('div')`
@@ -125,7 +126,7 @@ const InfoBox = styled('div')`
 
 const Name = styled('div')`
   font-weight: 600;
-  font-size: 17px;
+  font-size: 14px;
   margin-bottom: 10px;
 `;
 

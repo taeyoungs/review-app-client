@@ -281,7 +281,7 @@ const ReviewContent = ({ result, handleDelete, handleLike, handleDislike }) => {
   return (
     <>
       <Helmet>
-        <title>Review Detail | ReviewApp</title>
+        <title>Review Detail | YoungsReview</title>
       </Helmet>
       <Container>
         <Link to={`/movie/${result.review.movie.movieId}`}>

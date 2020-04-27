@@ -23,15 +23,15 @@ const Box = styled('div')`
 const Container = styled('div')`
   margin: 0 auto;
   margin-top: 60px;
-  width: calc(100% - 600px);
+  width: calc(100% - 500px);
   display: grid;
-  grid-template-columns: 0.8fr 5fr;
+  grid-template-columns: 1fr 5fr;
   border-bottom: 1px solid rgba(255, 255, 255, 0.2);
   margin-bottom: 20px;
 `;
 
 const PosterAndEval = styled('div')`
-  height: 220px;
+  height: 240px;
   padding: 10px;
 `;
 
@@ -328,7 +328,7 @@ const ReviewContent = ({
   return (
     <>
       <Helmet>
-        <title>Review List | ReviewApp</title>
+        <title>Review List | YoungsReview</title>
       </Helmet>
       <SortHeader>
         <DescBtn sort={sortType} onClick={handleRecentSort}>

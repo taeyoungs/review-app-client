@@ -179,7 +179,7 @@ const Collection = (props) => {
   ) : (
     <Container>
       <Helmet>
-        <title>{result.name} | ReviewApp</title>
+        <title>{result.name} | YoungsReview</title>
       </Helmet>
       <Backdrop
         imageUrl={

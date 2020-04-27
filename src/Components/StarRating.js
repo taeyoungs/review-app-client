@@ -4,9 +4,9 @@ import { Star } from '@styled-icons/fa-solid';
 
 const FullStar1 = styled(Star)`
   cursor: pointer;
-  width: 27px;
-  height: 27px;
-  color: ${props =>
+  width: 25px;
+  height: 25px;
+  color: ${(props) =>
     props.condition
       ? props.state >= 1
         ? '#f1c30f'
@@ -18,10 +18,10 @@ const FullStar1 = styled(Star)`
 
 const FullStar2 = styled(Star)`
   cursor: pointer;
-  width: 27px;
-  height: 27px;
+  width: 25px;
+  height: 25px;
   color: rgba(255, 255, 255, 0.5);
-  color: ${props =>
+  color: ${(props) =>
     props.condition
       ? props.state >= 2
         ? '#f1c30f'
@@ -33,10 +33,10 @@ const FullStar2 = styled(Star)`
 
 const FullStar3 = styled(Star)`
   cursor: pointer;
-  width: 27px;
-  height: 27px;
+  width: 25px;
+  height: 25px;
   color: rgba(255, 255, 255, 0.5);
-  color: ${props =>
+  color: ${(props) =>
     props.condition
       ? props.state >= 3
         ? '#f1c30f'
@@ -48,10 +48,10 @@ const FullStar3 = styled(Star)`
 
 const FullStar4 = styled(Star)`
   cursor: pointer;
-  width: 27px;
-  height: 27px;
+  width: 25px;
+  height: 25px;
   color: rgba(255, 255, 255, 0.5);
-  color: ${props =>
+  color: ${(props) =>
     props.condition
       ? props.state >= 4
         ? '#f1c30f'
@@ -63,10 +63,10 @@ const FullStar4 = styled(Star)`
 
 const FullStar5 = styled(Star)`
   cursor: pointer;
-  width: 27px;
-  height: 27px;
+  width: 25px;
+  height: 25px;
   color: rgba(255, 255, 255, 0.5);
-  color: ${props =>
+  color: ${(props) =>
     props.condition
       ? props.state >= 5
         ? '#f1c30f'
@@ -95,7 +95,7 @@ const StarRating = ({ rate, setRate }) => {
 
   // state 보다 작다면 color 색 체인지
   // mouse over하고 click을 통해 state가 변경
-  const handleMouseOver = num => {
+  const handleMouseOver = (num) => {
     setCondition(true);
     setState(num);
   };
@@ -104,8 +104,8 @@ const StarRating = ({ rate, setRate }) => {
     setCondition(false);
   };
 
-  const handleClick = num => {
-    setRate(prevState => {
+  const handleClick = (num) => {
+    setRate((prevState) => {
       return {
         ...prevState,
         star: num,
