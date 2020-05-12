@@ -5,6 +5,7 @@ import { toServerApi } from 'api';
 import { formatDate } from 'lib/formatFunc';
 import DefaultImage from '../assets/thumnail.png';
 import UpdateComment from 'Components/UpdateComment';
+import Loader2 from './Other/Loader2';
 
 const Container = styled('div')`
   width: calc(100% - 70px);
@@ -177,6 +178,7 @@ const Comment = ({ reviewId }) => {
     commentId: '',
     content: '',
   });
+  const [loading, setLoading] = useState(false);
 
   const textareaRef = useRef();
   const { userInfo } = useContext(LoginContext);
@@ -187,6 +189,11 @@ const Comment = ({ reviewId }) => {
       setComments(result.data.comments);
     } catch (error) {
       console.log(error);
+    } finally {
+      // console.log(loading);
+      if (loading) {
+        setLoading(false);
+      }
     }
   };
 
@@ -214,7 +221,7 @@ const Comment = ({ reviewId }) => {
     } catch (error) {
       console.log(error);
     } finally {
-      getComments();
+      setLoading(true);
     }
   };
 
@@ -247,7 +254,7 @@ const Comment = ({ reviewId }) => {
     } catch (error) {
       console.log(error);
     } finally {
-      getComments();
+      setLoading(true);
     }
   };
 
@@ -262,7 +269,8 @@ const Comment = ({ reviewId }) => {
     } catch (error) {
       console.log(error);
     } finally {
-      getComments();
+      setLoading(true);
+      // getComments();
     }
   };
 
@@ -278,7 +286,7 @@ const Comment = ({ reviewId }) => {
 
   useEffect(() => {
     getComments();
-  }, []);
+  }, [loading]);
 
   return (
     <Container>
@@ -321,6 +329,7 @@ const Comment = ({ reviewId }) => {
               ) : null}
             </Box>
           ))}
+          <Loader2 loading={loading ? 1 : 0} />
         </CommentsContainer>
       )}
       <UpdateComment

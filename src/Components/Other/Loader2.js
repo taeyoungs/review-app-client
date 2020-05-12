@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import gifImage from 'assets/loading.gif';
 
 const BackDrop = styled('div')`
+  display: ${(props) => (props.loading === 1 ? 'block' : 'none')};
   position: fixed;
   top: 0;
   left: 0;
@@ -24,9 +25,9 @@ const Image = styled('img')`
   height: 45px;
 `;
 
-const Loader2 = () => {
+const Loader2 = ({ loading }) => {
   return (
-    <BackDrop>
+    <BackDrop loading={loading}>
       <GifBox>
         <Image src={gifImage}></Image>
       </GifBox>

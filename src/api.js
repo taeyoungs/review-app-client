@@ -1,7 +1,7 @@
 import Axios from 'axios';
 
-const API_URL = 'https://youngs-review.mooo.com';
-// const API_URL = 'http://localhost:4000';
+// const API_URL = 'https://youngs-review.mooo.com';
+const API_URL = 'http://localhost:4000';
 
 const axiosForMovie = Axios.create({
   baseURL: 'https://api.themoviedb.org/3/',
@@ -62,17 +62,20 @@ export const toServerApi = {
   getReview: (id) => axiosForServer.get(`/reviews/${id}`),
   getReviewList: (payload) =>
     axiosForServer.get(`/reviews/${payload.key}/list/${payload.page}`),
-  deleteReview: (id) => axiosForServer.get(`/reviews/${id}/delete`),
+  deleteReview: (id) => axiosForServer.delete(`/reviews/${id}`),
   getMovieReviewList: (id) => axiosForServer.get(`/reviews/movie/${id}`),
-  editReview: (payload) => axiosForServer.post(`/reviews/edit-review`, payload),
-  likeReview: (id) => axiosForServer.post(`/reviews/${id}/like-review`),
-  dislikeReview: (id) => axiosForServer.post(`/reviews/${id}/dislike-review`),
+  editReview: (payload) => axiosForServer.put(`/reviews/edit-review`, payload),
+  likeReview: (id) => axiosForServer.put(`/reviews/${id}/like-review`),
+  dislikeReview: (id) => axiosForServer.put(`/reviews/${id}/dislike-review`),
   createComment: (payload) => axiosForServer.post(`/comments/create`, payload),
-  deleteComment: (payload) => axiosForServer.post(`/comments/delete`, payload),
-  updateComment: (payload) => axiosForServer.post(`/comments/update`, payload),
+  deleteComment: (payload) =>
+    axiosForServer.delete(`/comments/${payload.reviewId}/${payload.commentId}`),
+  updateComment: (payload) => axiosForServer.put(`/comments/update`, payload),
   getReviewComments: (id) => axiosForServer.get(`/comments/${id}`),
   getReviewPaging: (payload) =>
-    axiosForServer.post(`/reviews/reviewPaging`, payload),
+    axiosForServer.get(
+      `/reviews/reviewPaging?id=${payload.id}&key=${payload.key}&len=${payload.len}&page=${payload.page}`,
+    ),
 };
 
 const axiosForUser = Axios.create({
@@ -81,10 +84,10 @@ const axiosForUser = Axios.create({
 });
 
 export const toUserApi = {
-  changePassword: (payload) => axiosForUser.post(`/change-password`, payload),
+  changePassword: (payload) => axiosForUser.put(`/change-password`, payload),
   getUserDetail: (id) => axiosForUser.get(`/${id}`),
-  editUserProfile: (payload) => axiosForUser.post(`/edit-profile`, payload),
+  editUserProfile: (payload) => axiosForUser.put(`/edit-profile`, payload),
   uploadThumbnail: (formData) =>
     axiosForUser.post(`/upload/thumbnail`, formData),
-  dropOutUser: (id) => axiosForUser.get(`/dropOut/${id}`),
+  dropOutUser: (id) => axiosForUser.delete(`/dropOut/${id}`),
 };

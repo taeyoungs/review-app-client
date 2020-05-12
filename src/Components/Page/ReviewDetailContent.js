@@ -386,8 +386,8 @@ const ReviewContent = ({ result, handleDelete, handleLike, handleDislike }) => {
               )}
 
               {userInfo !== null && userInfo.id === result.review.user._id ? (
-                <DeleteBtn>
-                  <DeleteIcon onClick={handleDelete} />
+                <DeleteBtn onClick={handleDelete}>
+                  <DeleteIcon />
                   삭제 •
                 </DeleteBtn>
               ) : null}

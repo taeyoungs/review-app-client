@@ -339,7 +339,7 @@ const ReviewContent = ({
         </BestBtn>
       </SortHeader>
       {loading ? (
-        <Loader />
+        <Loader loading={loading ? 1 : 0} />
       ) : (
         <>
           {reviews &&
@@ -404,7 +404,7 @@ const ReviewContent = ({
                     <Title>{review.title}</Title>
                     <Content>
                       {review.content}
-                      <Overlay />
+                      {review.content.length > 184 && <Overlay />}
                     </Content>
                     <GoReviewBox>
                       <Link to={`/review/${review._id}`}>
